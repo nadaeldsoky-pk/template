@@ -1,0 +1,255 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =============================================
+   THEME SYSTEM — 4 Themes
+   To switch theme: change activeTheme in src/store/modules/theme.js
+   ============================================= */
+
+/* ── Shared defaults (always applied) ──────── */
+:root {
+  --color-danger: #c62828;
+  --color-bg-danger: #f5e5e3;
+  --color-success: #2e7d32;
+  --color-bg-success: #e6f4ea;
+  --color-warning: #e68f1d;
+  --color-bg-warning: #fff4e1;
+  --color-shadow-1: #0000001a;
+  --color-shadow-2: #00000026;
+  --color-shadow-3: #00000026;
+  --font-family-base: "Cairo", sans-serif;
+}
+
+/* ── 🔵 Theme 1: Blue (Classic) ─────────────── */
+.theme-blue {
+  --color-main: #2f4fa2;
+  --color-secondary: #5b78d1;
+  --color-hover: #2f4fa2;
+  --color-border: #c3d0e5;
+  --color-bg: #f2f4f8;
+  --color-bg-selected: #e7edff;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-disabled: #94a3b8;
+  --color-info: #2f4fa2;
+  --color-bg-info: #e3f2fd;
+
+  --color-sidebar-bg: #1e3a8a;
+  --color-sidebar-avatar: #3b82f6;
+  --color-sidebar-active-parent: rgba(90, 62, 112, 0.3);
+  --color-sidebar-active-item: rgba(255, 255, 255, 0.25);
+  --color-sidebar-hover-item: rgba(255, 255, 255, 0.1);
+  --color-sidebar-text: #ffffff;
+  --color-sidebar-text-secondary: rgba(255, 255, 255, 0.7);
+  --color-sidebar-text-tertiary: rgba(255, 255, 255, 0.6);
+  --color-sidebar-scrollbar: rgba(255, 255, 255, 0.3);
+  --color-sidebar-scrollbar-hover: rgba(255, 255, 255, 0.5);
+  --color-sidebar-border: rgba(255, 255, 255, 0.15);
+  --color-sidebar-overlay: rgba(0, 0, 0, 0.5);
+  --color-sidebar-logout-hover: rgba(220, 53, 69, 0.1);
+  --color-sidebar-search-text: #1e3a8a;
+  --color-sidebar-search-placeholder: rgba(30, 58, 138, 0.6);
+}
+
+/* ── 🌙 Theme 2: Dark (Modern Dark) ─────────── */
+.theme-dark {
+  --color-main: #60a5fa;
+  --color-secondary: #93c5fd;
+  --color-hover: #3b82f6;
+  --color-border: #334155;
+  --color-bg: #0f172a;
+  --color-bg-selected: #1e293b;
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #94a3b8;
+  --color-text-disabled: #475569;
+  --color-info: #60a5fa;
+  --color-bg-info: #1e3a5f;
+
+  --color-sidebar-bg: #1e293b;
+  --color-sidebar-avatar: #3b82f6;
+  --color-sidebar-active-parent: rgba(96, 165, 250, 0.15);
+  --color-sidebar-active-item: rgba(96, 165, 250, 0.2);
+  --color-sidebar-hover-item: rgba(255, 255, 255, 0.06);
+  --color-sidebar-text: #f1f5f9;
+  --color-sidebar-text-secondary: rgba(241, 245, 249, 0.65);
+  --color-sidebar-text-tertiary: rgba(241, 245, 249, 0.5);
+  --color-sidebar-scrollbar: rgba(255, 255, 255, 0.15);
+  --color-sidebar-scrollbar-hover: rgba(255, 255, 255, 0.3);
+  --color-sidebar-border: rgba(255, 255, 255, 0.08);
+  --color-sidebar-overlay: rgba(0, 0, 0, 0.7);
+  --color-sidebar-logout-hover: rgba(239, 68, 68, 0.15);
+  --color-sidebar-search-text: #f1f5f9;
+  --color-sidebar-search-placeholder: rgba(241, 245, 249, 0.4);
+}
+
+/* ── 💜 Theme 3: Purple (Cyber) ──────────────── */
+.theme-purple {
+  --color-main: #7c3aed;
+  --color-secondary: #a855f7;
+  --color-hover: #6d28d9;
+  --color-border: #ddd6fe;
+  --color-bg: #faf5ff;
+  --color-bg-selected: #ede9fe;
+  --color-text-primary: #1e1b4b;
+  --color-text-secondary: #6d28d9;
+  --color-text-disabled: #c4b5fd;
+  --color-info: #7c3aed;
+  --color-bg-info: #ede9fe;
+
+  --color-sidebar-bg: #2d1b69;
+  --color-sidebar-avatar: #a855f7;
+  --color-sidebar-active-parent: rgba(168, 85, 247, 0.25);
+  --color-sidebar-active-item: rgba(168, 85, 247, 0.3);
+  --color-sidebar-hover-item: rgba(255, 255, 255, 0.08);
+  --color-sidebar-text: #f5f3ff;
+  --color-sidebar-text-secondary: rgba(245, 243, 255, 0.7);
+  --color-sidebar-text-tertiary: rgba(245, 243, 255, 0.5);
+  --color-sidebar-scrollbar: rgba(168, 85, 247, 0.4);
+  --color-sidebar-scrollbar-hover: rgba(168, 85, 247, 0.6);
+  --color-sidebar-border: rgba(168, 85, 247, 0.2);
+  --color-sidebar-overlay: rgba(45, 27, 105, 0.6);
+  --color-sidebar-logout-hover: rgba(220, 53, 69, 0.12);
+  --color-sidebar-search-text: #f5f3ff;
+  --color-sidebar-search-placeholder: rgba(245, 243, 255, 0.45);
+}
+
+/* ── 🌿 Theme 4: Green (Nature) ──────────────── */
+.theme-green {
+  --color-main: #059669;
+  --color-secondary: #10b981;
+  --color-hover: #047857;
+  --color-border: #a7f3d0;
+  --color-bg: #f0fdf4;
+  --color-bg-selected: #d1fae5;
+  --color-text-primary: #064e3b;
+  --color-text-secondary: #065f46;
+  --color-text-disabled: #6ee7b7;
+  --color-info: #059669;
+  --color-bg-info: #d1fae5;
+
+  --color-sidebar-bg: #064e3b;
+  --color-sidebar-avatar: #10b981;
+  --color-sidebar-active-parent: rgba(16, 185, 129, 0.25);
+  --color-sidebar-active-item: rgba(16, 185, 129, 0.3);
+  --color-sidebar-hover-item: rgba(255, 255, 255, 0.08);
+  --color-sidebar-text: #f0fdf4;
+  --color-sidebar-text-secondary: rgba(240, 253, 244, 0.7);
+  --color-sidebar-text-tertiary: rgba(240, 253, 244, 0.5);
+  --color-sidebar-scrollbar: rgba(16, 185, 129, 0.4);
+  --color-sidebar-scrollbar-hover: rgba(16, 185, 129, 0.65);
+  --color-sidebar-border: rgba(16, 185, 129, 0.2);
+  --color-sidebar-overlay: rgba(6, 78, 59, 0.6);
+  --color-sidebar-logout-hover: rgba(220, 53, 69, 0.12);
+  --color-sidebar-search-text: #f0fdf4;
+  --color-sidebar-search-placeholder: rgba(240, 253, 244, 0.45);
+}
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* RTL Utilities */
+[dir="rtl"] {
+  direction: rtl;
+}
+
+/* Custom Animations */
+@keyframes slideInRight {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.slide-in-right {
+  animation: slideInRight 0.3s ease-out;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Vuetify Overrides */
+.v-application {
+  font-family:
+    "Cairo", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+/* Custom Card Styles */
+.card-hover {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom Utilities */
+.text-gradient {
+  background: linear-gradient(135deg, #4a6fa5 0%, #2e4a7c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #4a6fa5;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Custom Badge */
+.custom-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #ef4444;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 10px;
+  font-weight: bold;
+}

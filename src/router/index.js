@@ -1,0 +1,159 @@
+import { createRouter, createWebHistory } from 'vue-router'
+import DashboardLayout from '../layouts/DashboardLayout.vue'
+import KpiModule from '../modules/kpi'
+
+const routes = [
+  {
+    path: '/',
+    component: DashboardLayout,
+    children: [
+      {
+        path: '',
+        name: 'dashboard',
+        component: () => import('../views/Dashboard.vue'),
+        meta: {
+          title: 'لوحة التحكم',
+          breadcrumbs: [
+            { text: 'الرئيسية', path: '/' },
+            { text: 'لوحة التحكم', path: '/' }
+          ]
+        }
+      },
+      {
+        path: 'analytics',
+        name: 'analytics',
+        component: () => import('../views/Analytics.vue'),
+        meta: {
+          title: 'نظرة تحليلية',
+          breadcrumbs: [
+            { text: 'الرئيسية', path: '/' },
+            { text: 'نظرة تحليلية', path: '/analytics' }
+          ]
+        }
+      },
+      {
+        path: 'governance',
+        name: 'governance',
+        component: () => import('../views/Governance.vue'),
+        meta: {
+          title: 'الحوكمة',
+          breadcrumbs: [
+            { text: 'الرئيسية', path: '/' },
+            { text: 'الحوكمة', path: '/governance' }
+          ]
+        }
+      },
+      {
+        path: 'risk-management',
+        name: 'risk-management',
+        component: () => import('../views/RiskManagement.vue'),
+        meta: {
+          title: 'إدارة المخاطر',
+          breadcrumbs: [
+            { text: 'الرئيسية', path: '/' },
+            { text: 'إدارة المخاطر', path: '/risk-management' }
+          ]
+        }
+      },
+      {
+        path: 'compliance',
+        name: 'compliance',
+        component: () => import('../views/Compliance.vue'),
+        meta: {
+          title: 'الامتثال والالتزام',
+          breadcrumbs: [
+            { text: 'الرئيسية', path: '/' },
+            { text: 'الامتثال', path: '/compliance' }
+          ]
+        }
+      },
+      {
+        path: 'awareness',
+        name: 'awareness',
+        component: () => import('../views/Awareness.vue'),
+        meta: {
+          title: 'التوعية',
+          breadcrumbs: [
+            { text: 'الرئيسية', path: '/' },
+            { text: 'التوعية', path: '/awareness' }
+          ]
+        }
+      },
+      {
+        path: 'workflows',
+        name: 'workflows',
+        component: () => import('../views/Workflows.vue'),
+        meta: {
+          title: 'قوالب سير الأعمال',
+          breadcrumbs: [
+            { text: 'الرئيسية', path: '/' },
+            { text: 'قوالب سير الأعمال', path: '/workflows' }
+          ]
+        }
+      },
+      {
+        path: 'settings',
+        name: 'settings',
+        component: () => import('../views/Settings.vue'),
+        meta: {
+          title: 'الإعدادات',
+          breadcrumbs: [
+            { text: 'الرئيسية', path: '/' },
+            { text: 'الإعدادات', path: '/settings' }
+          ]
+        }
+      },
+      ...KpiModule.routesWithMeta
+    ]
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/Login.vue'),
+    meta: {
+      layout: 'auth',
+      title: 'تسجيل الدخول'
+    }
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: () => import('../views/NotFound.vue'),
+    meta: {
+      title: 'الصفحة غير موجودة'
+    }
+  }
+]
+
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { top: 0 }
+    }
+  }
+})
+
+// Navigation Guards
+router.beforeEach((to, from, next) => {
+  // Set page title
+  document.title = to.meta.title 
+    ? `${to.meta.title} - CyberMode` 
+    : 'CyberMode - GRC Platform'
+  
+  // Authentication check - localStorage only (Pinia store may not be ready here)
+  const isAuthenticated = !!localStorage.getItem('auth_token')
+  
+  if (to.name !== 'login' && to.name !== 'not-found' && !isAuthenticated) {
+    next({ name: 'login' })
+  } else if (to.name === 'login' && isAuthenticated) {
+    next({ name: 'dashboard' })
+  } else {
+    next()
+  }
+})
+
+export default router
