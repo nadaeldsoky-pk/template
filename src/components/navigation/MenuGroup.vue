@@ -35,9 +35,30 @@
       </template>
 
       <template v-if="!rail">
-        <v-list-item v-for="subItem in item.children" :key="subItem.title" :to="subItem.path" :title="subItem.title"
-          :class="['sub-menu-item', 'text-sm', 'rounded-lg', isRtl ? 'pl-12' : 'pr-12']"
-          active-class="active-sub-item"></v-list-item>
+        <template v-for="subItem in item.children" :key="subItem.title">
+          <!-- Sub-item WITH grandchildren -->
+          <v-list-group v-if="subItem.children && subItem.children.length" :value="subItem.title">
+            <template v-slot:activator="{ props: subProps }">
+              <v-list-item v-bind="subProps" :title="subItem.title"
+                :class="['sub-menu-item', 'rounded-lg', isRtl ? 'pl-12' : 'pr-12']"
+                active-class="active-sub-item">
+                <template v-slot:append>
+                  <v-icon size="small">mdi-chevron-down</v-icon>
+                </template>
+              </v-list-item>
+            </template>
+            <!-- Grandchildren -->
+            <v-list-item v-for="grandChild in subItem.children" :key="grandChild.title"
+              :to="grandChild.path" :title="grandChild.title"
+              :class="['sub-menu-item', 'grand-sub-item', 'rounded-lg', isRtl ? 'pl-16' : 'pr-16']"
+              active-class="active-sub-item" />
+          </v-list-group>
+
+          <!-- Sub-item WITHOUT grandchildren -->
+          <v-list-item v-else :to="subItem.path" :title="subItem.title"
+            :class="['sub-menu-item', 'text-sm', 'rounded-lg', isRtl ? 'pl-12' : 'pr-12']"
+            active-class="active-sub-item" />
+        </template>
       </template>
     </v-list-group>
   </div>
@@ -111,6 +132,12 @@ const props = defineProps({
   color: var(--color-sidebar-text) !important;
   background-color: var(--color-sidebar-active-item) !important;
   font-weight: 500;
+}
+
+.grand-sub-item {
+  color: var(--color-sidebar-text-secondary) !important;
+  font-size: 13px;
+  margin-bottom: 2px;
 }
 
 :deep(.v-list-item__overlay) {

@@ -43,6 +43,33 @@ const routes = [
         }
       },
       {
+        path: 'governance/business-units',
+        name: 'business-units',
+        component: () => import('../views/BusinessUnits.vue'),
+        meta: {
+          title: 'وحدات الأعمال',
+          breadcrumbs: [
+            { text: 'الرئيسية', path: '/' },
+            { text: 'الحوكمة', path: '/governance' },
+            { text: 'وحدات الأعمال', path: '/governance/business-units' }
+          ]
+        }
+      },
+      {
+        path: 'governance/business-units/departments',
+        name: 'departments',
+        component: () => import('../views/Departments.vue'),
+        meta: {
+          title: 'الأقسام',
+          breadcrumbs: [
+            { text: 'الرئيسية', path: '/' },
+            { text: 'الحوكمة', path: '/governance' },
+            { text: 'وحدات الأعمال', path: '/governance/business-units' },
+            { text: 'الأقسام', path: '/governance/business-units/departments' }
+          ]
+        }
+      },
+      {
         path: 'risk-management',
         name: 'risk-management',
         component: () => import('../views/RiskManagement.vue'),

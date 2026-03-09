@@ -75,7 +75,15 @@ const menuItems = ref([
     title: 'الحوكمة',
     icon: 'mdi-bank',
     path: '/governance',
-    children: []
+    children: [
+      {
+        title: 'وحدات الأعمال',
+        path: '/governance/business-units',
+        children: [
+          { title: 'الأقسام', path: '/governance/business-units/departments' }
+        ]
+      }
+    ]
   },
   {
     id: 3,
