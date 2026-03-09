@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DashboardLayout from '../layouts/DashboardLayout.vue'
-import KpiModule from '../modules/kpi'
 
 const routes = [
   {
@@ -68,30 +67,6 @@ const routes = [
         }
       },
       {
-        path: 'awareness',
-        name: 'awareness',
-        component: () => import('../views/Awareness.vue'),
-        meta: {
-          title: 'التوعية',
-          breadcrumbs: [
-            { text: 'الرئيسية', path: '/' },
-            { text: 'التوعية', path: '/awareness' }
-          ]
-        }
-      },
-      {
-        path: 'workflows',
-        name: 'workflows',
-        component: () => import('../views/Workflows.vue'),
-        meta: {
-          title: 'قوالب سير الأعمال',
-          breadcrumbs: [
-            { text: 'الرئيسية', path: '/' },
-            { text: 'قوالب سير الأعمال', path: '/workflows' }
-          ]
-        }
-      },
-      {
         path: 'settings',
         name: 'settings',
         component: () => import('../views/Settings.vue'),
@@ -102,8 +77,7 @@ const routes = [
             { text: 'الإعدادات', path: '/settings' }
           ]
         }
-      },
-      ...KpiModule.routesWithMeta
+      }
     ]
   },
   {
@@ -140,13 +114,13 @@ const router = createRouter({
 // Navigation Guards
 router.beforeEach((to, from, next) => {
   // Set page title
-  document.title = to.meta.title 
-    ? `${to.meta.title} - CyberMode` 
+  document.title = to.meta.title
+    ? `${to.meta.title} - CyberMode`
     : 'CyberMode - GRC Platform'
-  
+
   // Authentication check - localStorage only (Pinia store may not be ready here)
   const isAuthenticated = !!localStorage.getItem('auth_token')
-  
+
   if (to.name !== 'login' && to.name !== 'not-found' && !isAuthenticated) {
     next({ name: 'login' })
   } else if (to.name === 'login' && isAuthenticated) {

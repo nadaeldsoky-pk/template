@@ -7,7 +7,7 @@
     <Sidebar v-model:rail="rail" />
 
     <!-- Main Content -->
-    <v-main class="bg-gray-50">
+    <v-main class="bg-gray-50 flex flex-col justify-between">
       <v-container fluid class="pa-6">
         <router-view v-slot="{ Component }">
           <transition name="fade" mode="out-in">
@@ -16,7 +16,7 @@
         </router-view>
       </v-container>
 
-      <!-- Footer - يظهر هنا ليتحرك مع المحتوى -->
+      <!-- Footer -->
       <Footer />
     </v-main>
   </v-app>
@@ -32,7 +32,6 @@ const rail = ref(false)
 </script>
 
 <style scoped>
-/* Page transition */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease;
@@ -44,6 +43,12 @@ const rail = ref(false)
 }
 
 .v-main {
-  min-height: calc(100vh - 120px);
+  min-height: calc(100vh - 100px); /* adjusted per feedback to reduce height */
+  display: flex !important;
+  flex-direction: column;
+}
+
+.v-main > .v-container {
+  flex-grow: 1;
 }
 </style>

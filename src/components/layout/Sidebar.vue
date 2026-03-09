@@ -98,39 +98,6 @@ const menuItems = ref([
       { title: 'التدقيق', path: '/compliance/audit' },
       { title: 'التقارير', path: '/compliance/reports' }
     ]
-  },
-  {
-    id: 5,
-    title: 'التوعية',
-    icon: 'mdi-lightbulb',
-    path: '/awareness',
-    children: []
-  },
-  {
-    id: 6,
-    title: 'قوالب سير الأعمال',
-    icon: 'mdi-sitemap',
-    path: '/workflows',
-    children: []
-  },
-  {
-    id: 8,
-    title: 'مؤشرات الأداء (KPIs)',
-    icon: 'mdi-gauge',
-    path: '/kpi',
-    children: [
-      { title: 'قائمة المؤشرات', path: '/kpi' },
-      { title: 'إدخال البيانات', path: '/kpisubmission' },
-      { title: 'أنواع المؤشرات', path: '/kpitype' },
-      { title: 'وحدات القياس', path: '/kpiunit' }
-    ]
-  },
-  {
-    id: 7,
-    title: 'الإدارات',
-    icon: 'mdi-account-group',
-    path: '/settings/users',
-    children: []
   }
 ])
 

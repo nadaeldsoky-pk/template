@@ -13,10 +13,6 @@ import '@mdi/font/css/materialdesignicons.css'
 // Tailwind CSS
 import './assets/styles/main.css'
 
-// Modules
-import KpiModule from './modules/kpi'
-
-KpiModule.init()
 
 const vuetify = createVuetify({
   components,
