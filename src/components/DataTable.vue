@@ -1,4109 +1,1011 @@
 <template>
-    <div class="text-[var(--color-text-primary)]">
-        <!-- Filters Section -->
-        <div v-if="showFilter"
-            class="bg-[var(--color-bg)] mb-6 p-4 border border-[var(--color-border)] rounded-xl shadow-sm">
-            <slot name="filters"></slot>
-        </div>
-        <div class="mb-4">
-            <div class="flex flex-wrap gap-3 justify-center md:justify-end">
-                <!-- Import Button -->
-                <div class="flex-shrink-0" v-if="!hideAddImportButton">
-                    <button
-                        class="px-4 py-2 bg-[var(--color-bg)] border border-[var(--color-border)] text-[var(--color-text-primary)] rounded-lg hover:bg-[var(--color-bg-selected)] transition-all flex items-center justify-center gap-2 shadow-sm"
-                        @click="toggleModal()" title="Import Data">
-                        <svg width="14" height="14" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg"
-                            class="flex-shrink-0">
-                            <path
-                                d="M9.91504 13.7236C9.91777 13.7242 9.9215 13.7248 9.92578 13.7256C9.93471 13.7271 9.94786 13.7295 9.96289 13.7305C9.99078 13.7323 10.0246 13.7288 10.0635 13.7197C10.2322 13.7054 10.3913 13.6346 10.5107 13.5137L14.1963 9.83496L14.1992 9.83203C14.3363 9.69037 14.4128 9.49989 14.4111 9.30273C14.4093 9.10572 14.3299 8.9175 14.1904 8.77832C14.0509 8.63908 13.8621 8.5603 13.665 8.55859C13.468 8.55693 13.2776 8.6318 13.1357 8.76855L13.1328 8.77246L10.7314 11.168V1.00098C10.7314 0.80167 10.6518 0.610507 10.5107 0.469727C10.3697 0.32908 10.1787 0.250082 9.97949 0.25C9.78013 0.25 9.5884 0.328896 9.44727 0.469727C9.3062 0.610506 9.22665 0.80167 9.22656 1.00098V11.1689L6.82422 8.77246L6.82129 8.76855L6.70605 8.67773C6.58359 8.599 6.43966 8.55731 6.29199 8.55859C6.09495 8.56034 5.9061 8.63911 5.7666 8.77832C5.62727 8.91748 5.5477 9.1058 5.5459 9.30273C5.54418 9.49989 5.62071 9.69037 5.75781 9.83203L5.76074 9.83496L9.44727 13.5137C9.5738 13.6416 9.7441 13.716 9.92383 13.7236C9.92039 13.7234 9.91738 13.7239 9.91504 13.7236ZM9.91504 13.7236H9.91211C9.91094 13.7235 9.90998 13.7228 9.90918 13.7227L9.91504 13.7236ZM18.46 8.53516C18.6592 8.53522 18.8501 8.61508 18.9912 8.75586C19.1323 8.89671 19.2119 9.08771 19.2119 9.28711C19.2119 11.5033 19.2975 13.7677 19.2119 16.001C19.202 16.3741 19.1179 16.7415 18.9648 17.082C18.8113 17.4236 18.5911 17.7315 18.3174 17.9873C18.0436 18.2431 17.7216 18.4428 17.3701 18.5732C17.0216 18.7026 16.6508 18.7608 16.2793 18.7471L3.51758 18.75H3.50977C3.12975 18.7393 2.75596 18.6518 2.41016 18.4941C2.06421 18.3363 1.75303 18.1111 1.49609 17.8311C1.2392 17.5511 1.04124 17.2221 0.914062 16.8643C0.788705 16.5114 0.735538 16.1374 0.755859 15.7637C0.743804 13.6045 0.754882 11.4435 0.754883 9.28711C0.754883 9.08785 0.83466 8.89668 0.975586 8.75586C1.11672 8.61502 1.30845 8.53516 1.50781 8.53516C1.70713 8.53519 1.89796 8.61506 2.03906 8.75586C2.18021 8.89672 2.25977 9.08768 2.25977 9.28711C2.25976 11.4979 2.22765 13.6969 2.25977 15.9004C2.2668 16.386 2.44968 16.7099 2.71973 16.9189C2.99826 17.1345 3.3957 17.247 3.85645 17.2471H16.3838C16.6492 17.2531 16.9101 17.1787 17.1318 17.0332C17.3505 16.8897 17.519 16.6833 17.6191 16.4424C17.7044 16.1305 17.7354 15.8066 17.708 15.4844L17.707 15.4736V9.28711C17.707 9.08782 17.7868 8.89669 17.9277 8.75586C18.0689 8.61502 18.2606 8.53516 18.46 8.53516Z"
-                                fill="#43235C" stroke="#404040" stroke-width="0.5" />
-                        </svg>
-                        <span class="">{{ $t("common.import") }}</span>
-                    </button>
-                </div>
+  <div class="text-[var(--color-text-primary)]">
 
-                <!-- Export Button with Dropdown -->
-                <div class="flex-shrink-0 relative" v-if="!hideAddExportButton">
-                    <div class="inline-block">
-                        <button
-                            class="px-4 py-2 bg-[var(--color-bg)] border border-[var(--color-border)] text-[var(--color-text-primary)] rounded-lg hover:bg-[var(--color-bg-selected)] transition-all flex items-center justify-center gap-2 shadow-sm"
-                            @click="toggleExportDropdown($event)" title="Export Data">
-                            <svg width="14" height="14" viewBox="0 0 20 19" fill="none"
-                                xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0">
-                                <path
-                                    d="M18.46 8.52832C18.6592 8.52839 18.8502 8.60735 18.9912 8.74805C19.1323 8.88899 19.2119 9.08081 19.2119 9.28027C19.2119 11.4981 19.2975 13.7641 19.2119 15.999C19.202 16.3725 19.118 16.7402 18.9648 17.0811C18.8112 17.4229 18.5912 17.7312 18.3174 17.9873C18.0436 18.2433 17.7216 18.4427 17.3701 18.5732C17.0216 18.7027 16.6508 18.7608 16.2793 18.7471L3.51758 18.75H3.50977C3.12977 18.7393 2.75594 18.6519 2.41016 18.4941C2.0642 18.3362 1.75302 18.1103 1.49609 17.8301C1.23928 17.5499 1.04121 17.2213 0.914062 16.8633C0.788554 16.5099 0.735404 16.1351 0.755859 15.7607L0.754883 15.7617C0.742826 13.6009 0.754881 11.4383 0.754883 9.28027C0.754883 9.08082 0.83447 8.88899 0.975586 8.74805C1.1167 8.60711 1.30839 8.52832 1.50781 8.52832C1.7072 8.52835 1.89895 8.60714 2.04004 8.74805C2.18108 8.88898 2.25977 9.08087 2.25977 9.28027C2.25976 11.4927 2.22765 13.6933 2.25977 15.8984C2.2668 16.3845 2.44966 16.7088 2.71973 16.918C2.99825 17.1337 3.39572 17.2461 3.85645 17.2461H16.3838V17.2471C16.6492 17.2531 16.9101 17.1778 17.1318 17.0322C17.3504 16.8887 17.519 16.6824 17.6191 16.4414C17.7045 16.1291 17.7354 15.8041 17.708 15.4814L17.707 15.4717V9.28027C17.707 9.08081 17.7866 8.88899 17.9277 8.74805C18.0688 8.60715 18.2606 8.52832 18.46 8.52832ZM10.0205 0.259766H10.0312C10.2121 0.266825 10.3837 0.341964 10.5107 0.470703L14.1973 4.15234L14.2012 4.15527C14.3382 4.29701 14.4138 4.48744 14.4121 4.68457C14.4103 4.8816 14.3308 5.06972 14.1914 5.20898C14.0519 5.34832 13.8632 5.42798 13.666 5.42969C13.4689 5.43134 13.2786 5.35559 13.1367 5.21875L13.1338 5.21582L10.7314 2.81641V12.9922C10.7314 13.1917 10.6519 13.3835 10.5107 13.5244C10.3697 13.6651 10.1786 13.7441 9.97949 13.7441C9.78015 13.7441 9.58837 13.6652 9.44727 13.5244C9.30614 13.3835 9.22656 13.1917 9.22656 12.9922V2.81641L6.82422 5.21582L6.82129 5.21875C6.67938 5.3556 6.48912 5.4314 6.29199 5.42969C6.09489 5.42794 5.90608 5.34828 5.7666 5.20898C5.62733 5.06973 5.54768 4.88152 5.5459 4.68457C5.54418 4.48738 5.62073 4.29702 5.75781 4.15527L5.76074 4.15234L9.44727 0.470703C9.5603 0.35635 9.70872 0.288082 9.86719 0.268555C9.87196 0.266794 9.87648 0.263347 9.88184 0.261719C9.91336 0.252143 9.94793 0.248342 9.9834 0.250977C9.99698 0.252009 10.0089 0.257313 10.0205 0.259766Z"
-                                    fill="#43235C" stroke="#404040" stroke-width="0.5" />
-                            </svg>
-                            <span class="ms-2">{{ $t("common.export") }}</span>
-                        </button>
-
-                        <!-- Export Dropdown Menu -->
-                        <div v-if="showExportDropdown"
-                            class="absolute right-0 mt-2 w-48 bg-white border border-[var(--color-border)] rounded-lg shadow-lg z-50 overflow-hidden"
-                            @click.stop>
-                            <div class="flex items-center gap-2 px-4 py-2 hover:bg-[var(--color-bg-selected)] cursor-pointer transition-colors"
-                                @click="handleExportAll">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                    <path d="M14 10v2.667A1.333 1.333 0 0112.667 14H3.333A1.333 1.333 0 012 12.667V10"
-                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path d="M11.333 5.333L8 2 4.667 5.333M8 2v8" stroke="currentColor"
-                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                <span class="text-sm font-medium">{{ $t("common.export_all_data") }}</span>
-                            </div>
-                            <div class="flex items-center gap-2 px-4 py-2 hover:bg-[var(--color-bg-selected)] cursor-pointer transition-colors"
-                                @click="handleExportCurrent">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                    <path d="M14 10v2.667A1.333 1.333 0 0112.667 14H3.333A1.333 1.333 0 012 12.667V10"
-                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path d="M11.333 5.333L8 2 4.667 5.333M8 2v8" stroke="currentColor"
-                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                <span class="text-sm font-medium">{{ $t("common.export_current_page") }}</span>
-                            </div>
-                            <div class="flex items-center gap-2 px-4 py-2 hover:bg-[var(--color-bg-selected)] cursor-pointer transition-colors border-t border-[var(--color-border)]"
-                                @click="openColumnSelection">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                    <path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.5"
-                                        stroke-linecap="round" />
-                                </svg>
-                                <span class="text-sm font-medium">{{ $t("common.select_columns") }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <input ref="importInput" type="file" accept=".xlsx, .xls, .csv" class="hidden"
-                        @change="importFromExcel" />
-                </div>
-
-                <!-- PDF Button with Dropdown -->
-                <div class="flex-shrink-0 relative" v-if="!hideAddExportButton">
-                    <div class="inline-block">
-                        <button
-                            class="px-4 py-2 bg-[var(--color-bg)] border border-[var(--color-border)] text-[var(--color-text-primary)] rounded-lg hover:bg-[var(--color-bg-selected)] transition-all flex items-center justify-center gap-2 shadow-sm"
-                            @click="togglePdfDropdown($event)" title="Export to PDF">
-                            <svg width="14" height="14" viewBox="0 0 20 19" fill="none"
-                                xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0">
-                                <path
-                                    d="M18.46 8.52832C18.6592 8.52839 18.8502 8.60735 18.9912 8.74805C19.1323 8.88899 19.2119 9.08081 19.2119 9.28027C19.2119 11.4981 19.2975 13.7641 19.2119 15.999C19.202 16.3725 19.118 16.7402 18.9648 17.0811C18.8112 17.4229 18.5912 17.7312 18.3174 17.9873C18.0436 18.2433 17.7216 18.4427 17.3701 18.5732C17.0216 18.7027 16.6508 18.7608 16.2793 18.7471L3.51758 18.75H3.50977C3.12977 18.7393 2.75594 18.6519 2.41016 18.4941C2.0642 18.3362 1.75302 18.1103 1.49609 17.8301C1.23928 17.5499 1.04121 17.2213 0.914062 16.8633C0.788554 16.5099 0.735404 16.1351 0.755859 15.7607L0.754883 15.7617C0.742826 13.6009 0.754881 11.4383 0.754883 9.28027C0.754883 9.08082 0.83447 8.88899 0.975586 8.74805C1.1167 8.60711 1.30839 8.52832 1.50781 8.52832C1.7072 8.52835 1.89895 8.60714 2.04004 8.74805C2.18108 8.88898 2.25977 9.08087 2.25977 9.28027C2.25976 11.4927 2.22765 13.6933 2.25977 15.8984C2.2668 16.3845 2.44966 16.7088 2.71973 16.918C2.99825 17.1337 3.39572 17.2461 3.85645 17.2461H16.3838V17.2471C16.6492 17.2531 16.9101 17.1778 17.1318 17.0322C17.3504 16.8887 17.519 16.6824 17.6191 16.4414C17.7045 16.1291 17.7354 15.8041 17.708 15.4814L17.707 15.4717V9.28027C17.707 9.08081 17.7866 8.88899 17.9277 8.74805C18.0688 8.60715 18.2606 8.52832 18.46 8.52832ZM10.0205 0.259766H10.0312C10.2121 0.266825 10.3837 0.341964 10.5107 0.470703L14.1973 4.15234L14.2012 4.15527C14.3382 4.29701 14.4138 4.48744 14.4121 4.68457C14.4103 4.8816 14.3308 5.06972 14.1914 5.20898C14.0519 5.34832 13.8632 5.42798 13.666 5.42969C13.4689 5.43134 13.2786 5.35559 13.1367 5.21875L13.1338 5.21582L10.7314 2.81641V12.9922C10.7314 13.1917 10.6519 13.3835 10.5107 13.5244C10.3697 13.6651 10.1786 13.7441 9.97949 13.7441C9.78015 13.7441 9.58837 13.6652 9.44727 13.5244C9.30614 13.3835 9.22656 13.1917 9.22656 12.9922V2.81641L6.82422 5.21582L6.82129 5.21875C6.67938 5.3556 6.48912 5.4314 6.29199 5.42969C6.09489 5.42794 5.90608 5.34828 5.7666 5.20898C5.62733 5.06973 5.54768 4.88152 5.5459 4.68457C5.54418 4.48738 5.62073 4.29702 5.75781 4.15527L5.76074 4.15234L9.44727 0.470703C9.5603 0.35635 9.70872 0.288082 9.86719 0.268555C9.87196 0.266794 9.87648 0.263347 9.88184 0.261719C9.91336 0.252143 9.94793 0.248342 9.9834 0.250977C9.99698 0.252009 10.0089 0.257313 10.0205 0.259766Z"
-                                    fill="#43235C" stroke="#404040" stroke-width="0.5" />
-                            </svg>
-                            <span class="ms-2">{{ $t("common.pdf") }}</span>
-                        </button>
-
-                        <!-- PDF Dropdown Menu -->
-                        <div v-if="showPdfDropdown"
-                            class="absolute right-0 mt-2 w-48 bg-white border border-[var(--color-border)] rounded-lg shadow-lg z-50 overflow-hidden"
-                            @click.stop>
-                            <div class="flex items-center gap-3 px-4 py-2 hover:bg-[var(--color-bg-selected)] cursor-pointer transition-colors"
-                                @click="handlePdfExportAll">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                    <path d="M14 10v2.667A1.333 1.333 0 0112.667 14H3.333A1.333 1.333 0 012 12.667V10"
-                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path d="M11.333 5.333L8 2 4.667 5.333M8 2v8" stroke="currentColor"
-                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                <span class="text-sm font-medium">{{ $t("common.export_all_to_pdf") }}</span>
-                            </div>
-                            <div class="flex items-center gap-3 px-4 py-2 hover:bg-[var(--color-bg-selected)] cursor-pointer transition-colors"
-                                @click="handlePdfExportCurrent">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                    <path d="M14 10v2.667A1.333 1.333 0 0112.667 14H3.333A1.333 1.333 0 012 12.667V10"
-                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path d="M11.333 5.333L8 2 4.667 5.333M8 2v8" stroke="currentColor"
-                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                <span class="text-sm font-medium">{{ $t("common.export_current_page_to_pdf") }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Add New Button -->
-                <div class="flex-shrink-0" v-if="!hideAddNewButton">
-                    <button
-                        class="px-4 py-2 bg-[var(--color-main)] text-white rounded-lg hover:bg-[var(--color-hover)] transition-all flex items-center justify-center gap-2 shadow-sm font-medium"
-                        @click="openForm" :title="addNewButtonTitle" :aria-label="addNewButtonTitle">
-                        <v-icon left size="18">{{ addNewButtonIcon }}</v-icon>
-                        <span class="">{{ $t('common.' + addNewButtonTitle) }}</span>
-                    </button>
-                </div>
-
-                <!-- Configurations Button -->
-                <div class="flex-shrink-0" v-if="!hideConfigurationsButton">
-                    <button
-                        class="px-4 py-2 bg-[var(--color-main)] text-white rounded-lg hover:bg-[var(--color-hover)] transition-all flex items-center justify-center gap-2 shadow-sm font-medium"
-                        @click="Configurations" title="Configurations">
-                        <v-icon left size="18">mdi-cog</v-icon>
-                        <span>{{ $t("common.configs") }}</span>
-                    </button>
-                </div>
-
-                <!-- Link Requirement Button -->
-                <div class="col-4 col-md-auto" v-if="!hideLinkRequirementButton">
-                    <button class="w-100 main-btn d-flex align-items-center justify-content-center"
-                        @click="linkRequirement" title="Link Requirement">
-                        <v-icon size="18" class="action-icon">mdi-link-variant</v-icon>
-                        <span>Link Req.</span>
-                    </button>
-                </div>
-                <!-- Statistics Button -->
-                <div class="col-4 col-md-auto" v-if="!hideStatisticsButton">
-                    <button class="w-100 main-btn d-flex align-items-center justify-content-center" @click="Statistics"
-                        title="Configurations">
-                        <!-- <v-icon left class="icon-add m-rtl">mdi-chart-box</v-icon> -->
-                        <span>{{ $t("common.statistics") }}</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <!-- Search and Filter Section -->
-        <div
-            class="flex flex-wrap gap-4 items-center justify-between mb-6 bg-white p-4 border border-[var(--color-border)] rounded-xl shadow-sm">
-            <div class="flex-1 max-w-md relative">
-                <input v-model="searchQuery" @input="debouncedFetchData" type="text"
-                    class="w-full pl-10 pr-4 py-2 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg focus:ring-2 focus:ring-[var(--color-main)] outline-none transition-all text-sm"
-                    :placeholder="$t('common.Search')" />
-                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 14 15" fill="none">
-                        <path
-                            d="M13.5036 13.2377L11.212 10.9972L11.1583 10.9155C11.0584 10.8161 10.9219 10.7601 10.7794 10.7601C10.6368 10.7601 10.5003 10.8161 10.4004 10.9155C8.45291 12.7022 5.45202 12.7993 3.38792 11.1425C1.32383 9.4856 0.837031 6.58889 2.25038 4.37343C3.66372 2.15796 6.53863 1.31121 8.96848 2.39474C11.3983 3.47826 12.6291 6.15584 11.8446 8.65171C11.7881 8.83202 11.8343 9.0281 11.9657 9.16609C12.0972 9.30408 12.294 9.36302 12.4819 9.32071C12.6699 9.27839 12.8205 9.14125 12.877 8.96094C13.8148 5.99908 12.3984 2.81168 9.544 1.46068C6.68958 0.109687 3.25381 1.00053 1.45929 3.55692C-0.335235 6.11332 0.050038 9.56808 2.36587 11.6863C4.68171 13.8046 8.23311 13.9506 10.7227 12.0299L12.7517 14.0137C12.9612 14.2176 13.3 14.2176 13.5096 14.0137C13.7189 13.8068 13.7189 13.4737 13.5096 13.2668L13.5036 13.2377Z"
-                            fill="currentColor" />
-                    </svg>
-                </span>
-            </div>
-
-            <div class="flex items-center gap-3 rtl">
-                <!-- Visibility toggle button converted to Tailwind -->
-                <button
-                    class="p-2 bg-[var(--color-main)] text-white rounded-lg hover:bg-[var(--color-hover)] transition-all shadow-sm"
-                    @click="toggleDropdown($event)" title="Column Visibility">
-                    <svg width="18" height="18" viewBox="0 0 28 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1.5 1.5H26.5M1.5 11.5H26.5M1.5 21.5H26.5" stroke="currentColor" stroke-width="2.5"
-                            stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </button>
-
-                <button
-                    class="flex items-center gap-2 px-4 py-2 bg-[var(--color-main)] text-white rounded-lg hover:bg-[var(--color-hover)] transition-all shadow-sm font-medium"
-                    @click="openFilterModal" :disabled="!filters || filters.length === 0"
-                    :class="{ 'opacity-50 cursor-not-allowed': !filters || filters.length === 0 }">
-                    <svg width="18" height="18" viewBox="0 0 22 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1.5 2H20.5M4.89286 9.5H17.1071M8.96429 17H13.0357" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    <span class="text-sm">Filter</span>
-                </button>
-
-                <div class="flex items-center gap-2 text-sm font-medium">
-                    <span>Show</span>
-                    <select
-                        class="bg-white border border-[var(--color-border)] rounded-lg px-2 py-1 outline-none focus:ring-2 focus:ring-[var(--color-main)]"
-                        v-model="perPage">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <!-- Table Container -->
-        <div class="overflow-x-auto bg-white border border-[var(--color-border)] rounded-xl shadow-sm">
-            <table :id="id" class="w-full text-sm text-right rtl">
-                <thead class="bg-[var(--color-main)] text-white uppercase text-xs font-semibold">
-                    <tr>
-                        <th v-for="columnIndex in orderedColumnIndexes" :key="`header-${columnIndex}`"
-                            class="px-6 py-4 whitespace-nowrap"
-                            v-show="visibleColumns.length === 0 || visibleColumns[columnIndex] !== false">
-                            <span v-if="
-                                processedColumns[columnIndex].sortable !== false &&
-                                processedColumns[columnIndex].data
-                            " @click="sortBy(processedColumns[columnIndex].data)" class="sortable-header">
-                                {{ processedColumns[columnIndex].title }}
-                                <span v-if="currentSort === processedColumns[columnIndex].data" class="sort-indicator">
-                                    {{ sortDirection === "asc" ? "↑" : "↓" }}
-                                </span>
-                            </span>
-                            <span v-else>{{ processedColumns[columnIndex].title }}</span>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody v-if="!load" class="divide-y divide-[var(--color-border)]">
-                    <tr v-for="(row, index) in paginatedData" :key="`row-${row.id || index}`"
-                        class="hover:bg-[var(--color-bg-selected)] transition-colors">
-                        <template v-for="columnIndex in orderedColumnIndexes" :key="`cell-${columnIndex}`">
-                            <td class="px-6 py-4 whitespace-nowrap align-middle"
-                                v-show="visibleColumns.length === 0 || visibleColumns[columnIndex] !== false">
-                                <div v-if="columnIndex === 0" class="flex items-center justify-center">
-                                    <input
-                                        class="w-4 h-4 rounded border-[var(--color-border)] text-[var(--color-main)] focus:ring-[var(--color-main)] cursor-pointer"
-                                        :value="row.id" v-model="selected" type="checkbox" />
-                                </div>
-                                <div v-else-if="columnIndex === 1">
-                                    {{ (currentPage - 1) * perPage + index + 1 }}
-                                </div>
-
-                                <div v-else-if="
-                                    processedColumns[columnIndex].title === 'Actions' ||
-                                    processedColumns[columnIndex].title === $t('common.actions')
-                                " style="display: block">
-                                    <!-- Enhanced Vuetify Actions Menu -->
-                                    <div class="flex items-center justify-center">
-                                        <v-menu location="bottom end" transition="scale-transition" offset="8"
-                                            :close-on-content-click="true">
-                                            <template v-slot:activator="{ props }">
-                                                <button v-bind="props"
-                                                    class="p-1 hover:bg-gray-100 rounded-full transition-colors">
-                                                    <svg width="24" height="24" viewBox="0 0 44 20" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg" class="scale-50">
-                                                        <circle cx="22" cy="2" r="2" fill="currentColor" />
-                                                        <circle cx="22" cy="10" r="2" fill="currentColor" />
-                                                        <circle cx="22" cy="18" r="2" fill="currentColor" />
-                                                    </svg>
-                                                </button>
-                                            </template>
-
-                                            <v-list class="actions-menu-list" density="compact" min-width="200">
-                                                <!-- Custom Slots -->
-                                                <slot name="addAction" :item="row"></slot>
-                                                <slot name="AddStatus" :item="row"></slot>
-                                                <slot name="view" :item="row"></slot>
-                                                <slot name="taskComment" :item="row"></slot>
-
-                                                <!-- Divider if there are custom slots -->
-                                                <v-divider v-if="
-                                                    $slots.addAction ||
-                                                    $slots.AddStatus ||
-                                                    $slots.view ||
-                                                    $slots.taskComment
-                                                " class="my-2">
-                                                </v-divider>
-
-                                                <!-- Edit Action -->
-                                                <slot name="edit" :item="row">
-                                                    <v-list-item v-if="!hideActionsColumn && !hideActions(row).edit"
-                                                        v-anyPermission="['update', 'edit']" @click="editItem(row)"
-                                                        class="action-list-item">
-                                                        <template v-slot:prepend>
-                                                            <v-icon size="18"
-                                                                class="action-icon">mdi-pencil-outline</v-icon>
-                                                        </template>
-                                                        <v-list-item-title class="action-title">
-                                                            {{ $t("datatable.edit") }}
-                                                        </v-list-item-title>
-                                                    </v-list-item>
-                                                </slot>
-
-                                                <!-- Delete Action -->
-                                                <slot name="delete" :item="row">
-                                                    <v-list-item v-if="
-                                                        !hideActionsColumn && !hideActions(row).delete
-                                                    " v-anyPermission="['destroy', 'delete']" @click="deleteItem(row)"
-                                                        class="action-list-item delete-item">
-                                                        <template v-slot:prepend>
-                                                            <v-icon size="18"
-                                                                class="action-icon">mdi-delete-outline</v-icon>
-                                                        </template>
-                                                        <v-list-item-title class="action-title">
-                                                            {{ $t("datatable.delete") || "Delete" }}
-                                                        </v-list-item-title>
-                                                    </v-list-item>
-                                                </slot>
-                                            </v-list>
-                                        </v-menu>
-                                    </div>
-                                </div>
-                                <slot v-else-if="processedColumns[columnIndex].html" :name="processedColumns[columnIndex].id ||
-                                    processedColumns[columnIndex].title
-                                    " :item="row" :rowIndex="columnIndex" v-html="processedColumns[columnIndex].html"></slot>
-                                <slot v-else :name="processedColumns[columnIndex].id ||
-                                    processedColumns[columnIndex].title
-                                    " :item="row" :rowIndex="columnIndex">
-                                    <!-- Cell content with optimized truncation functionality -->
-                                    <div class="flex items-center gap-2">
-                                        <template v-if="
-                                            shouldTruncate(
-                                                getCellValue(row, processedColumns[columnIndex])
-                                            )
-                                        ">
-                                            <span class="truncate max-w-[200px]">{{
-                                                getTruncatedText(
-                                                    getCellValue(row, processedColumns[columnIndex])
-                                                )
-                                                }}</span>
-                                            <button class="text-xs font-bold text-[var(--color-main)] hover:underline"
-                                                @click="
-                                                    showFullContent(
-                                                        processedColumns[columnIndex].title,
-                                                        getCellValue(row, processedColumns[columnIndex])
-                                                    )
-                                                    " title="Click to see full content">
-                                                see more
-                                            </button>
-                                        </template>
-                                        <template v-else>
-                                            <span class="whitespace-normal">
-                                                {{
-                                                    stripHtmlTags(
-                                                        getCellValue(row, processedColumns[columnIndex])
-                                                )
-                                                }}
-                                            </span>
-                                        </template>
-                                    </div>
-                                </slot>
-                            </td>
-                        </template>
-                    </tr>
-                </tbody>
-                <tbody v-if="load">
-                    <tr>
-                        <td :colspan="visibleColumnCount" class="text-center py-4">
-                            <div class="d-flex justify-content-center align-items-center">
-                                <div class="loader"></div>
-                            </div>
-                            <div class="mt-2">{{ $t("datatable.loading") }}</div>
-                        </td>
-                    </tr>
-                </tbody>
-                <tbody v-if="!load && paginatedData.length === 0">
-                    <tr>
-                        <td :colspan="visibleColumnCount" class="text-center py-4">
-                            <div class="text-muted">{{ $t("common.no_data_available") }}</div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Pagination -->
-        <div class="flex flex-wrap items-center justify-between gap-4 mt-6 p-4 bg-white border border-[var(--color-border)] rounded-xl shadow-sm" :dir="isArabic ? 'rtl' : 'ltr'">
-            <div class="flex items-center gap-2">
-                <span class="text-sm font-medium text-gray-500">
-                    {{ $t('common.showing') }} {{ startRecord }} {{ $t('common.to') }} {{ endRecord }} {{ $t('common.of') }} {{ totalRecords }}
-                </span>
-            </div>
-
-            <nav class="flex items-center gap-1 rtl">
-                <!-- Previous Button -->
-                <button
-                    @click.prevent="currentPage > 1 ? goToPage(currentPage - 1) : null"
-                    :disabled="currentPage <= 1 || !canNavigate()"
-                    class="p-2 rounded-lg border border-[var(--color-border)] hover:bg-[var(--color-bg-selected)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                    <v-icon size="18">{{ isRtl ? 'mdi-chevron-right' : 'mdi-chevron-left' }}</v-icon>
-                </button>
-
-                <!-- Page Numbers -->
-                <div class="flex items-center gap-1">
-                    <button
-                        v-for="page in paginationPages"
-                        :key="page"
-                        @click="goToPage(page)"
-                        class="min-w-[36px] h-9 px-2 rounded-lg text-sm font-medium transition-all"
-                        :class="currentPage === page
-                            ? 'bg-[var(--color-main)] text-white shadow-md'
-                            : 'hover:bg-[var(--color-bg-selected)] text-[var(--color-text-primary)] border border-transparent'
-                        "
-                    >
-                        {{ page }}
-                    </button>
-                </div>
-
-                <!-- Next Button -->
-                <button
-                    @click.prevent="currentPage < totalPages ? goToPage(currentPage + 1) : null"
-                    :disabled="currentPage >= totalPages || !canNavigate()"
-                    class="p-2 rounded-lg border border-[var(--color-border)] hover:bg-[var(--color-bg-selected)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                    <v-icon size="18">{{ isRtl ? 'mdi-chevron-left' : 'mdi-chevron-right' }}</v-icon>
-                </button>
-            </nav>
-
-            <!-- Go to page -->
-            <div class="flex items-center gap-3">
-                <span class="text-sm font-medium text-gray-500 whitespace-nowrap">{{ $t('dashboard.go_to_page') }}:</span>
-                <div class="flex items-center gap-1">
-                    <input
-                        type="number"
-                        v-model.number="goToPageInput"
-                        @keyup.enter="handleGoToPage"
-                        :min="1"
-                        :max="totalPages"
-                        class="w-16 px-2 py-1 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg outline-none focus:ring-2 focus:ring-[var(--color-main)] text-sm"
-                        :disabled="!canNavigate()"
-                    />
-                    <button
-                        @click="handleGoToPage"
-                        class="px-3 py-1 bg-[var(--color-main)] text-white rounded-lg hover:bg-[var(--color-hover)] disabled:opacity-50 text-sm font-medium transition-all"
-                        :disabled="!isValidPageNumber || !canNavigate()"
-                    >
-                        {{ $t('dashboard.go') }}
-                    </button>
-                </div>
-            </div>
-        </div>
-
-                    <Teleport to="body">
-                        <div v-if="showColumnSelectionModal"
-                            class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
-                            @click="closeColumnSelection">
-                            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden animate-in fade-in zoom-in duration-200"
-                                @click.stop>
-                                <div
-                                    class="bg-[var(--color-main)] px-6 py-4 flex items-center justify-between text-white">
-                                    <h5 class="text-lg font-bold">{{ $t("common.select_columns_to_export") }}</h5>
-                                    <button @click="closeColumnSelection"
-                                        class="hover:bg-white/20 p-1 rounded-full transition-colors text-xl">✕</button>
-                                </div>
-                                <div class="p-6">
-                                    <div class="flex gap-3 mb-6">
-                                        <button @click="selectAllExportColumns"
-                                            class="px-4 py-2 border border-[var(--color-main)] text-[var(--color-main)] rounded-lg hover:bg-[var(--color-main)] hover:text-white transition-all text-sm font-medium">
-                                            {{ $t("common.select_all") }}
-                                        </button>
-                                        <button @click="deselectAllExportColumns"
-                                            class="px-4 py-2 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50 transition-all text-sm font-medium">
-                                            {{ $t("common.deselect_all") }}
-                                        </button>
-                                    </div>
-                                    <div
-                                        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
-                                        <div v-for="(column, index) in exportableColumns" :key="index"
-                                            class="flex items-center gap-3 p-3 bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] hover:border-[var(--color-main)] transition-all cursor-pointer group"
-                                            @click="selectedExportColumns.includes(column.data) ? selectedExportColumns = selectedExportColumns.filter(c => c !== column.data) : selectedExportColumns.push(column.data)">
-                                            <div class="relative flex items-center">
-                                                <input type="checkbox" v-model="selectedExportColumns"
-                                                    :value="column.data"
-                                                    class="w-5 h-5 rounded border-[var(--color-border)] text-[var(--color-main)] focus:ring-[var(--color-main)] cursor-pointer" />
-                                            </div>
-                                            <span
-                                                class="text-sm font-medium text-gray-700 group-hover:text-[var(--color-main)] transition-colors">{{
-                                                column.title }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="flex justify-end gap-3 mt-8 pt-6 border-t border-[var(--color-border)]">
-                                        <button @click="closeColumnSelection"
-                                            class="px-6 py-2 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50 transition-all font-medium">
-                                            {{ $t("common.cancel") }}
-                                        </button>
-                                        <button @click="exportSelectedColumns"
-                                            class="px-6 py-2 bg-[var(--color-main)] text-white rounded-lg hover:bg-[var(--color-hover)] disabled:opacity-50 transition-all font-medium shadow-lg"
-                                            :disabled="selectedExportColumns.length === 0 || isExporting">
-                                            {{ isExporting ? "Exporting..." : `Export Selected
-                                            (${selectedExportColumns.length})` }}
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </Teleport>
-
-                    <!-- Import Modal -->
-                    <Teleport to="body">
-                        <div v-if="showModal"
-                            class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
-                            <div
-                                class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
-                                <div
-                                    class="bg-[var(--color-main)] px-6 py-4 flex items-center justify-between text-white shadow-lg">
-                                    <h3 class="text-xl font-bold flex items-center gap-2">
-                                        <v-icon color="white">mdi-file-import</v-icon>
-                                        {{ $t("common.ImportData") }}
-                                    </h3>
-                                    <button @click="toggleModal"
-                                        class="hover:bg-white/20 p-2 rounded-full transition-colors text-xl">✕</button>
-                                </div>
-
-                                <div class="p-8">
-                                    <div class="space-y-6">
-                                        <div class="space-y-2">
-                                            <label for="file" class="text-sm font-semibold text-gray-700 block">{{
-                                                $t("common.UploadFile") }}</label>
-                                            <div class="relative group">
-                                                <input type="file" id="file" ref="file" class="block w-full text-sm text-gray-500
-                      file:mr-4 file:py-2 file:px-4
-                      file:rounded-lg file:border-0
-                      file:text-sm file:font-semibold
-                      file:bg-[var(--color-bg-selected)] file:text-[var(--color-main)]
-                      hover:file:bg-[var(--color-main)] hover:file:text-white
-                      file:transition-all file:cursor-pointer
-                      border border-[var(--color-border)] rounded-xl p-2
-                      focus:ring-2 focus:ring-[var(--color-main)] outline-none
-                    " required @change="handleFileUpload" />
-                                            </div>
-                                        </div>
-
-                                        <button type="button"
-                                            class="w-full py-3 bg-[var(--color-main)] text-white rounded-xl font-bold hover:bg-[var(--color-hover)] shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 group"
-                                            @click="handleImport">
-                                            <v-icon color="white"
-                                                class="group-hover:translate-x-1 transition-transform">mdi-upload</v-icon>
-                                            {{ $t("common.Import") }}
-                                        </button>
-                                    </div>
-
-                                    <div v-if="file_columns.length"
-                                        class="mt-10 pt-10 border-t border-[var(--color-border)] animate-in slide-in-from-top duration-300">
-                                        <h3 class="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
-                                            <v-icon color="primary">mdi-format-list-bulleted</v-icon>
-                                            {{ $t("common.MatchData") }}
-                                        </h3>
-
-                                        <div class="space-y-4 max-h-[40vh] overflow-y-auto pr-2 custom-scrollbar">
-                                            <div v-for="file_column in file_columns" :key="file_column"
-                                                class="grid grid-cols-2 gap-4 items-center p-4 bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] hover:border-[var(--color-main)] transition-colors">
-                                                <div class="space-y-1">
-                                                    <label
-                                                        class="text-xs font-bold text-gray-500 uppercase tracking-wider">{{
-                                                        $t("common.FileColumn") }}</label>
-                                                    <div class="font-medium text-gray-700">{{ file_column }}</div>
-                                                </div>
-
-                                                <div class="space-y-1">
-                                                    <label
-                                                        class="text-xs font-bold text-gray-500 uppercase tracking-wider">{{
-                                                        $t("common.DatabaseColumn") }}</label>
-                                                    <select v-model="fields[file_column]"
-                                                        class="w-full px-3 py-2 bg-white border border-[var(--color-border)] rounded-lg outline-none focus:ring-2 focus:ring-[var(--color-main)] text-sm transition-all">
-                                                        <option value="">{{ $t("common.SelectColumn") }}</option>
-                                                        <option v-for="database_column in database_columns"
-                                                            :key="database_column" :value="database_column">
-                                                            {{ database_column }}
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="grid grid-cols-2 gap-4 mt-8">
-                                            <button type="button"
-                                                class="py-3 bg-gray-100 text-gray-600 rounded-xl font-bold hover:bg-gray-200 transition-all shadow-sm"
-                                                @click="toggleModal">
-                                                {{ $t("common.Close") }}
-                                            </button>
-                                            <button type="button"
-                                                class="py-3 bg-[var(--color-main)] text-white rounded-xl font-bold hover:bg-[var(--color-hover)] transition-all shadow-lg hover:shadow-xl"
-                                                @click="saveImportedData">
-                                                {{ $t("common.Save") }}
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </Teleport>
-                    <Teleport to="body">
-                        <!-- Content Modal for Full Text Display -->
-                        <div v-if="showContentModal" class="content-modal-overlay" @click="closeContentModal">
-                            <div class="content-modal-container" @click.stop>
-                                <div class="content-modal-header">
-                                    <h4 class="content-modal-title">{{ modalContent.title }}</h4>
-                                    <button @click="closeContentModal" class="content-modal-close-btn" title="Close">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                            <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div class="content-modal-body">
-                                    <div class="content-modal-text">{{ modalContent.content }}</div>
-                                </div>
-                                <!-- <div class="content-modal-footer">
-            <button @click="closeContentModal" class="content-modal-ok-btn">
-              OK
-            </button>
-          </div> -->
-                            </div>
-                        </div>
-                    </Teleport>
+    <!-- Filters Section -->
+    <div v-if="showFilter"
+      class="bg-[var(--color-bg)] mb-6 p-4 border border-[var(--color-border)] rounded-xl shadow-sm">
+      <slot name="filters"></slot>
     </div>
-    <!-- Filter Component - Teleported to body -->
+
+    <!-- Toolbar -->
+    <div class="mb-4">
+      <div class="flex flex-wrap gap-3 justify-between items-center bg-[#F2F4F8] px-4 py-3 border border-[#D0D5DD] rounded-2xl shadow-sm">
+
+        <!-- Search -->
+        <div class="flex-1 max-w-[260px] relative">
+          <input
+            v-model="searchQuery"
+            @input="debouncedFetchData"
+            type="text"
+            class="w-full pl-4 pr-10 py-2 bg-white border border-[#D0D5DD] rounded-full focus:ring-1 focus:ring-[#29457E] outline-none transition-all text-sm h-[40px] text-[#475467] placeholder:text-[#98A2B3]"
+            :placeholder="$t ? $t('Search') : 'Search..'"
+          />
+          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[#98A2B3] pointer-events-none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </span>
+        </div>
+
+        <!-- Columns + Filter Buttons -->
+        <div class="flex items-center gap-2">
+          <!-- Columns Button -->
+          <button
+              style="border: 1px solid #2F4FA2; color: #2F4FA2;"
+            class="flex items-center gap-2 px-4 py-2 text-[#29457E] rounded-lg hover:bg-blue-50 transition-all font-medium text-sm h-[40px]"
+            @click="toggleDropdown($event)">
+         <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0.75 0.75H11.75H0.75ZM0.75 5.75H11.75H0.75ZM0.75 10.75H11.75H0.75Z" fill="#2F4FA2"/>
+<path d="M0.75 0.75H11.75M0.75 5.75H11.75M0.75 10.75H11.75" stroke="#2F4FA2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+            <span>Columns</span>
+          </button>
+
+          <!-- Filter Button -->
+          <button
+              style="border: 1px solid #2F4FA2; color: #2F4FA2;"
+            class="flex items-center gap-2 px-4 py-2 text-[#29457E] rounded-lg hover:bg-blue-50 transition-all font-medium text-sm h-[40px]"
+            @click="openFilterModal"
+            :disabled="!filters || filters.length === 0"
+            :class="{ 'opacity-50 cursor-not-allowed': !filters || filters.length === 0 }">
+         <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0.75 0.75H14.75H0.75ZM3.25 5.75H12.25H3.25ZM6.25 10.75H9.25H6.25Z" fill="#2F4FA2"/>
+<path d="M0.75 0.75H14.75M3.25 5.75H12.25M6.25 10.75H9.25" stroke="#2F4FA2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+            <span>Filter</span>
+            <span v-if="activeFilters && activeFilters.length"
+              class="bg-[#29457E] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold">
+              {{ activeFilters.length }}
+            </span>
+          </button>
+        </div>
+
+        <!-- Right Action Buttons -->
+        <div class="flex items-center gap-2 flex-1 justify-end">
+
+          <!-- Edit Button -->
+          <button
+            style="border: 1px solid #E68F1D; color: #E68F1D;"
+            class="w-[40px] h-[40px] rounded-lg hover:bg-yellow-50 flex items-center justify-center transition-all">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M8.04545 0.200743C8.16485 0.150748 8.29301 0.125 8.42246 0.125C8.55191 0.125 8.68007 0.150748 8.79948 0.200743C8.91819 0.250448 9.02589 0.323133 9.11639 0.414608L11.8354 3.1336C11.9269 3.2241 11.9995 3.33181 12.0493 3.45052C12.0993 3.56993 12.125 3.69808 12.125 3.82754C12.125 3.95699 12.0993 4.08515 12.0493 4.20455C11.9996 4.32326 11.9269 4.43095 11.8354 4.52145L4.37482 11.982C4.28328 12.0736 4.15914 12.125 4.02969 12.125H1.10117C0.842276 12.125 0.593983 12.0222 0.410914 11.8391C0.227846 11.656 0.125 11.4077 0.125 11.1488V8.07735M8.04545 0.200743C7.92672 0.250456 7.819 0.323156 7.72849 0.414652L8.04545 0.200743ZM1.10117 8.42248V11.1488H3.82752L11.1488 3.82753L11.1462 3.82491L8.42245 1.10118L8.41984 1.10383L1.10117 8.42248Z" fill="#E68F1D"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M3.5416 11.6369C3.5416 11.3674 3.76013 11.1488 4.02969 11.1488H11.351C11.6205 11.1488 11.8391 11.3674 11.8391 11.6369C11.8391 11.9065 11.6205 12.125 11.351 12.125L4.02969 12.125C3.76013 12.125 3.5416 11.9065 3.5416 11.6369Z" fill="#E68F1D"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.15123 2.08447C6.34184 1.89386 6.62464 1.82754 6.81525 2.01815L10.2318 5.43475C10.4225 5.62536 10.4225 5.9344 10.2318 6.12501C10.0412 6.31562 9.7322 6.31562 9.54159 6.12501L6.12499 2.70841C5.93438 2.5178 5.96062 2.27508 6.15123 2.08447Z" fill="#E68F1D"/>
+<path d="M8.04545 0.200743C8.16485 0.150748 8.29301 0.125 8.42246 0.125C8.55191 0.125 8.68007 0.150748 8.79948 0.200743C8.91819 0.250448 9.02589 0.323133 9.11639 0.414608L11.8354 3.1336C11.9269 3.2241 11.9996 3.33181 12.0493 3.45052C12.0993 3.56993 12.125 3.69808 12.125 3.82754C12.125 3.95699 12.0993 4.08515 12.0493 4.20455C11.9996 4.32326 11.9269 4.43095 11.8354 4.52145L4.37482 11.982C4.28328 12.0736 4.15914 12.125 4.02969 12.125M8.04545 0.200743L0.125 8.07735V11.1488C0.125 11.4077 0.227846 11.656 0.410914 11.8391C0.593983 12.0222 0.842276 12.125 1.10117 12.125H4.02969M8.04545 0.200743C7.92672 0.250456 7.819 0.323156 7.72849 0.414652L8.04545 0.200743ZM4.02969 12.125L11.351 12.125C11.6205 12.125 11.8391 11.9065 11.8391 11.6369C11.8391 11.3674 11.6205 11.1488 11.351 11.1488H4.02969C3.76013 11.1488 3.5416 11.3674 3.5416 11.6369C3.5416 11.9065 3.76013 12.125 4.02969 12.125ZM1.10117 11.1488V8.42248L8.41984 1.10383L8.42245 1.10118L11.1462 3.82491L11.1488 3.82753L3.82752 11.1488H1.10117ZM6.81525 2.01815C6.62464 1.82754 6.34184 1.89386 6.15123 2.08447C5.96062 2.27508 5.93438 2.5178 6.12499 2.70841L9.54159 6.12501C9.7322 6.31562 10.0412 6.31562 10.2318 6.12501C10.4225 5.9344 10.4225 5.62536 10.2318 5.43475L6.81525 2.01815Z" stroke="#E68F1D" stroke-width="0.25" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+          </button>
+
+          <!-- Delete Button -->
+          <button
+            style="border: 1px solid #C62828; color: #C62828;"
+            class="w-[40px] h-[40px] rounded-lg hover:bg-red-50 flex items-center justify-center transition-all">
+         <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0.25 2.55769C0.25 2.30279 0.455203 2.09615 0.708333 2.09615H10.7917C11.0448 2.09615 11.25 2.30279 11.25 2.55769C11.25 2.81259 11.0448 3.01923 10.7917 3.01923H0.708333C0.455203 3.01923 0.25 2.81259 0.25 2.55769Z" fill="#C62828"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4.375 4.86538C4.62813 4.86538 4.83333 5.07202 4.83333 5.32692V9.01923C4.83333 9.27413 4.62813 9.48077 4.375 9.48077C4.12187 9.48077 3.91667 9.27413 3.91667 9.01923V5.32692C3.91667 5.07202 4.12187 4.86538 4.375 4.86538Z" fill="#C62828"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M7.125 4.86538C7.37813 4.86538 7.58333 5.07202 7.58333 5.32692V9.01923C7.58333 9.27413 7.37813 9.48077 7.125 9.48077C6.87187 9.48077 6.66667 9.27413 6.66667 9.01923V5.32692C6.66667 5.07202 6.87187 4.86538 7.125 4.86538Z" fill="#C62828"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.625 2.09615C1.87813 2.09615 2.08333 2.30279 2.08333 2.55769V11.3269H9.41667V2.55769C9.41667 2.30279 9.62187 2.09615 9.875 2.09615C10.1281 2.09615 10.3333 2.30279 10.3333 2.55769V11.3269C10.3333 11.5717 10.2368 11.8065 10.0648 11.9796C9.89294 12.1527 9.65978 12.25 9.41667 12.25H2.08333C1.84022 12.25 1.60706 12.1527 1.43515 11.9796C1.26324 11.8065 1.16667 11.5717 1.16667 11.3269V2.55769C1.16667 2.30279 1.37187 2.09615 1.625 2.09615Z" fill="#C62828"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M3.40273 0.655544C3.66059 0.395879 4.01033 0.25 4.375 0.25H7.125C7.48967 0.25 7.83941 0.395879 8.09727 0.655544C8.35513 0.91521 8.5 1.26739 8.5 1.63462V2.55769C8.5 2.81259 8.2948 3.01923 8.04167 3.01923C7.78854 3.01923 7.58333 2.81259 7.58333 2.55769V1.63462C7.58333 1.51221 7.53504 1.39481 7.44909 1.30826C7.36314 1.2217 7.24656 1.17308 7.125 1.17308H4.375C4.25344 1.17308 4.13686 1.2217 4.05091 1.30826C3.96496 1.39481 3.91667 1.51221 3.91667 1.63462V2.55769C3.91667 2.81259 3.71146 3.01923 3.45833 3.01923C3.2052 3.01923 3 2.81259 3 2.55769V1.63462C3 1.26739 3.14487 0.91521 3.40273 0.655544Z" fill="#C62828"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0.25 2.55769C0.25 2.30279 0.455203 2.09615 0.708333 2.09615H10.7917C11.0448 2.09615 11.25 2.30279 11.25 2.55769C11.25 2.81259 11.0448 3.01923 10.7917 3.01923H0.708333C0.455203 3.01923 0.25 2.81259 0.25 2.55769Z" stroke="#C62828" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4.375 4.86538C4.62813 4.86538 4.83333 5.07202 4.83333 5.32692V9.01923C4.83333 9.27413 4.62813 9.48077 4.375 9.48077C4.12187 9.48077 3.91667 9.27413 3.91667 9.01923V5.32692C3.91667 5.07202 4.12187 4.86538 4.375 4.86538Z" stroke="#C62828" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M7.125 4.86538C7.37813 4.86538 7.58333 5.07202 7.58333 5.32692V9.01923C7.58333 9.27413 7.37813 9.48077 7.125 9.48077C6.87187 9.48077 6.66667 9.27413 6.66667 9.01923V5.32692C6.66667 5.07202 6.87187 4.86538 7.125 4.86538Z" stroke="#C62828" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.625 2.09615C1.87813 2.09615 2.08333 2.30279 2.08333 2.55769V11.3269H9.41667V2.55769C9.41667 2.30279 9.62187 2.09615 9.875 2.09615C10.1281 2.09615 10.3333 2.30279 10.3333 2.55769V11.3269C10.3333 11.5717 10.2368 11.8065 10.0648 11.9796C9.89294 12.1527 9.65978 12.25 9.41667 12.25H2.08333C1.84022 12.25 1.60706 12.1527 1.43515 11.9796C1.26324 11.8065 1.16667 11.5717 1.16667 11.3269V2.55769C1.16667 2.30279 1.37187 2.09615 1.625 2.09615Z" stroke="#C62828" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M3.40273 0.655544C3.66059 0.395879 4.01033 0.25 4.375 0.25H7.125C7.48967 0.25 7.83941 0.395879 8.09727 0.655544C8.35513 0.91521 8.5 1.26739 8.5 1.63462V2.55769C8.5 2.81259 8.2948 3.01923 8.04167 3.01923C7.78854 3.01923 7.58333 2.81259 7.58333 2.55769V1.63462C7.58333 1.51221 7.53504 1.39481 7.44909 1.30826C7.36314 1.2217 7.24656 1.17308 7.125 1.17308H4.375C4.25344 1.17308 4.13686 1.2217 4.05091 1.30826C3.96496 1.39481 3.91667 1.51221 3.91667 1.63462V2.55769C3.91667 2.81259 3.71146 3.01923 3.45833 3.01923C3.2052 3.01923 3 2.81259 3 2.55769V1.63462C3 1.26739 3.14487 0.91521 3.40273 0.655544Z" stroke="#C62828" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+          </button>
+
+          <!-- Export Button -->
+          <div class="relative w-[40px] h-[40px]" v-if="!hideAddExportButton">
+            <button
+             style="border: 1px solid #2F4FA2; color: #2F4FA2;"
+              class="w-[40px] h-[40px] rounded-lg hover:bg-blue-50 flex items-center justify-center transition-all"
+              @click="toggleExportDropdown($event)">
+             <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.9397 5.67407C12.0682 5.67407 12.1915 5.7249 12.2825 5.81567C12.3734 5.90645 12.425 6.02994 12.425 6.15845C12.4251 7.63661 12.4821 9.14476 12.425 10.6331C12.4186 10.8798 12.3622 11.1227 12.261 11.3479C12.1595 11.5736 12.0142 11.7775 11.8333 11.9465C11.6524 12.1155 11.4395 12.2471 11.2073 12.3333C10.977 12.4187 10.7321 12.4566 10.4866 12.4475V12.4485L1.97778 12.4504H1.97388V12.4495C1.72266 12.4424 1.47493 12.3858 1.24634 12.2815C1.01785 12.1772 0.812534 12.028 0.642822 11.843C0.473078 11.658 0.342093 11.4408 0.258057 11.2043C0.174008 10.9679 0.138536 10.7166 0.153564 10.4661C0.145618 9.02998 0.153563 7.59286 0.153564 6.15845C0.153564 6.02993 0.205173 5.90646 0.296143 5.81567C0.387092 5.72497 0.510461 5.67407 0.638916 5.67407C0.767274 5.67418 0.890825 5.725 0.981689 5.81567C1.07247 5.90643 1.12329 6.03007 1.12329 6.15845C1.12329 7.63188 1.10188 9.09856 1.12329 10.5676C1.12812 10.8956 1.25168 11.1163 1.43579 11.259C1.62526 11.4057 1.89473 11.4817 2.20435 11.4817H10.5559C10.7361 11.4857 10.9132 11.4349 11.0637 11.3362C11.2131 11.2382 11.3279 11.0967 11.3958 10.9319C11.4529 10.7224 11.4737 10.5048 11.4553 10.2883L11.4543 10.2756H11.4553V6.15845C11.4553 6.03001 11.5061 5.90644 11.5969 5.81567C11.6878 5.72494 11.8113 5.67411 11.9397 5.67407ZM6.28638 0.149658C6.41481 0.149713 6.53824 0.201514 6.62915 0.292236C6.71985 0.382933 6.77069 0.505757 6.77075 0.634033V7.45239L8.40063 5.82642L8.40259 5.82446C8.49404 5.73643 8.61647 5.68762 8.74341 5.68872C8.87044 5.68983 8.99235 5.74059 9.08228 5.83032C9.1722 5.92007 9.22277 6.04214 9.22388 6.16919C9.22491 6.29614 9.17643 6.41878 9.08813 6.51001L9.08618 6.51196L9.08521 6.51099L6.62915 8.96216C6.55195 9.0409 6.44952 9.08787 6.34009 9.09692C6.31571 9.10281 6.29435 9.10491 6.27661 9.10376C6.26734 9.10314 6.25877 9.10179 6.25317 9.10083C6.24831 9.09999 6.24331 9.09905 6.24243 9.09888H6.24536C6.13126 9.09291 6.02298 9.04554 5.94263 8.96411L3.4856 6.51099L3.48364 6.51001C3.39534 6.41878 3.34687 6.29614 3.3479 6.16919C3.34901 6.04213 3.39956 5.92007 3.4895 5.83032C3.57943 5.7406 3.70135 5.68982 3.82837 5.68872C3.9553 5.68764 4.07775 5.73641 4.16919 5.82446L4.17114 5.82642L5.80103 7.45239V0.634033C5.80108 0.50566 5.85277 0.382953 5.9436 0.292236C6.03456 0.201465 6.15788 0.149658 6.28638 0.149658Z" fill="#2F4FA2" stroke="#2F4FA2" stroke-width="0.3"/>
+</svg>
+
+            </button>
+            <div v-if="showExportDropdown"
+              class="absolute right-0 mt-2 w-48 bg-white border border-[var(--color-border)] rounded-lg shadow-lg z-50 overflow-hidden"
+              @click.stop>
+              <div class="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 cursor-pointer transition-colors text-sm font-medium text-[#374151]"
+                @click="handleExportAll">Export All Data</div>
+              <div class="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 cursor-pointer transition-colors text-sm font-medium text-[#374151]"
+                @click="handleExportCurrent">Export Current Page</div>
+              <div class="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 cursor-pointer transition-colors border-t border-[#E5E7EB] text-sm font-medium text-[#374151]"
+                @click="openColumnSelection">Select Columns</div>
+            </div>
+          </div>
+
+          <!-- Import Button -->
+          <div class="flex-shrink-0" v-if="!hideAddImportButton">
+            <button
+             style="border: 1px solid #2F4FA2; color: #2F4FA2;"
+              class="w-[40px] h-[40px] rounded-lg hover:bg-blue-50 flex items-center justify-center transition-all"
+              @click="toggleModal()">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.9397 5.66919C12.0682 5.66919 12.1915 5.71998 12.2825 5.81079C12.3734 5.90163 12.425 6.02502 12.425 6.15356C12.4251 7.63303 12.4821 9.14249 12.425 10.6321C12.4185 10.8789 12.3622 11.1217 12.261 11.3469C12.1595 11.5728 12.0142 11.7764 11.8333 11.9456C11.6523 12.1148 11.4396 12.247 11.2073 12.3333C10.977 12.4187 10.7321 12.4566 10.4866 12.4475V12.4485L1.97778 12.4504H1.97388V12.4495C1.72264 12.4424 1.47494 12.3858 1.24634 12.2815C1.01781 12.1771 0.812548 12.0271 0.642822 11.842C0.473194 11.657 0.342045 11.4399 0.258057 11.2034C0.174054 10.9668 0.138576 10.7156 0.153564 10.4651C0.145614 9.0277 0.153564 7.58928 0.153564 6.15356C0.153564 6.02502 0.205186 5.90163 0.296143 5.81079C0.387078 5.72006 0.510452 5.66919 0.638916 5.66919C0.76731 5.6693 0.890834 5.72005 0.981689 5.81079C1.07249 5.90161 1.12329 6.02513 1.12329 6.15356C1.12329 7.62809 1.10188 9.09552 1.12329 10.5657C1.12805 10.8943 1.25144 11.1162 1.43579 11.259C1.62526 11.4058 1.89475 11.4807 2.20435 11.4807H10.5559C10.7361 11.4847 10.9132 11.4341 11.0637 11.3352C11.2131 11.2371 11.3279 11.0959 11.3958 10.9309C11.453 10.7211 11.4737 10.5031 11.4553 10.2864L11.4543 10.2737H11.4553V6.15356C11.4553 6.02507 11.506 5.90162 11.5969 5.81079C11.6878 5.72 11.8112 5.66923 11.9397 5.66919ZM6.3147 0.156494H6.32056C6.43732 0.161135 6.54834 0.209734 6.63013 0.293213L6.62915 0.294189L9.08716 2.74634L9.08813 2.74829C9.17641 2.83957 9.22587 2.96214 9.22485 3.08911C9.22375 3.2162 9.1722 3.33817 9.08228 3.42798C8.99246 3.51755 8.87123 3.56839 8.74438 3.56958C8.61731 3.57068 8.49405 3.52206 8.40259 3.43384L8.40161 3.43188L6.77075 1.80396V8.62817C6.77075 8.75669 6.72006 8.88012 6.62915 8.97095C6.53825 9.06173 6.41484 9.11249 6.28638 9.11255C6.1579 9.11255 6.03454 9.0617 5.9436 8.97095C5.85265 8.88011 5.80103 8.75672 5.80103 8.62817V1.80396L4.17114 3.43188L4.16919 3.43384C4.07775 3.52199 3.95537 3.57066 3.82837 3.56958C3.70129 3.56848 3.57942 3.51778 3.4895 3.42798C3.3996 3.33817 3.34901 3.21618 3.3479 3.08911C3.34688 2.96214 3.39537 2.83957 3.48364 2.74829L3.4856 2.74634L5.94263 0.292236C6.01601 0.217824 6.11296 0.173483 6.21606 0.161377C6.21916 0.160211 6.22231 0.15855 6.22583 0.157471C6.24492 0.151668 6.26584 0.149044 6.28735 0.150635C6.29743 0.151383 6.30638 0.154524 6.3147 0.156494Z" fill="#2F4FA2" stroke="#2F4FA2" stroke-width="0.3"/>
+</svg>
+
+            </button>
+          </div>
+
+          <!-- Add New Button -->
+          <div class="flex-shrink-0" v-if="!hideAddNewButton">
+            <button
+              class="px-4 py-2 bg-[#29457E] text-white rounded-lg hover:bg-[#1E366A] transition-all flex items-center justify-center gap-2 shadow-sm font-semibold h-[40px] text-sm"
+              @click="openForm">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+              </svg>
+              <span>{{ addNewButtonTitle || 'Add' }}</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Table Container -->
+    <div class="overflow-x-auto bg-white border border-[#D0D5DD] rounded-2xl shadow-sm">
+      <table :id="id" class="w-full text-sm text-left">
+        <!-- Table Head -->
+        <thead class="bg-[#F8F9FA] text-[#1E293B]">
+          <tr class="border-b border-[#D0D5DD]">
+            <th class="px-5 py-4 w-12">
+              <input type="checkbox" class="w-4 h-4 rounded border-[#D0D5DD] text-[#29457E] cursor-pointer outline-none" />
+            </th>
+            <th class="px-5 py-4 text-sm font-semibold text-[#1E293B] whitespace-nowrap w-12">#</th>
+            <th v-for="(col, idx) in columns" :key="idx"
+              class="px-5 py-4 text-sm font-semibold text-[#1E293B] whitespace-nowrap"
+              :class="col.align === 'center' ? 'text-center' : 'text-left'">
+              <span v-if="col.sortable !== false && col.data" @click="sortBy(col.data)"
+                class="cursor-pointer select-none inline-flex items-center gap-1 hover:text-[#29457E] transition-colors">
+                {{ col.title }}
+                <span v-if="currentSort === col.data" class="text-[#29457E]">
+                  {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                </span>
+              </span>
+              <span v-else>{{ col.title }}</span>
+            </th>
+            <th class="px-5 py-4 text-sm font-semibold text-[#1E293B] text-center whitespace-nowrap">Actions</th>
+          </tr>
+        </thead>
+
+        <!-- Loading -->
+        <tbody v-if="load">
+          <tr>
+            <td :colspan="columns.length + 3" class="text-center py-12">
+              <div class="flex flex-col items-center gap-3">
+                <div class="loader"></div>
+                <span class="text-sm text-[#98A2B3]">Loading...</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+
+        <!-- Empty State -->
+        <tbody v-else-if="!load && paginatedData.length === 0">
+          <tr>
+            <td :colspan="columns.length + 3" class="text-center py-12 text-[#98A2B3] text-sm">
+              No data available
+            </td>
+          </tr>
+        </tbody>
+
+        <!-- Data Rows -->
+        <tbody v-else class="divide-y divide-[#F2F4F7]">
+          <tr v-for="(row, index) in paginatedData" :key="row.id || index"
+            class="hover:bg-[#F8F9FA] transition-colors group">
+
+            <!-- Checkbox -->
+            <td class="px-5 py-4 w-12">
+              <input type="checkbox" :value="row.id" v-model="selected"
+                class="w-4 h-4 rounded border-[#D0D5DD] text-[#29457E] cursor-pointer outline-none" />
+            </td>
+
+            <!-- Row Number -->
+            <td class="px-5 py-4 text-[#475467] font-medium text-sm w-12">
+              {{ (currentPage - 1) * perPage + index + 1 }}
+            </td>
+
+            <!-- Data Cells -->
+            <template v-for="(col, colIdx) in columns" :key="colIdx">
+              <td class="px-5 py-4 text-[#475467] text-sm"
+                :class="col.align === 'center' ? 'text-center' : 'text-left'">
+                <slot :name="col.id || col.title" :item="row" :rowIndex="colIdx">
+                  <!-- Badge style for specific columns -->
+                  <template v-if="col.badge">
+                    <span class="inline-flex items-center px-3 py-1 rounded-md bg-[#EEF0F6] text-[#475467] text-xs font-medium">
+                      {{ getCellValue(row, col) }}
+                    </span>
+                  </template>
+                  <template v-else>
+                    <div class="flex items-center gap-2">
+                      <template v-if="shouldTruncate(getCellValue(row, col))">
+                        <span class="truncate max-w-[180px]">{{ getTruncatedText(getCellValue(row, col)) }}</span>
+                        <button
+                          class="text-xs font-semibold text-[#29457E] hover:underline whitespace-nowrap"
+                          @click="showFullContent(col.title, getCellValue(row, col))">
+                          see more
+                        </button>
+                      </template>
+                      <template v-else>
+                        <span>{{ stripHtmlTags(getCellValue(row, col)) }}</span>
+                      </template>
+                    </div>
+                  </template>
+                </slot>
+              </td>
+            </template>
+
+            <!-- Actions Column -->
+            <td class="px-5 py-4 text-center">
+              <div class="relative inline-block">
+                <button
+                  @click="toggleRowMenu(row.id || index)"
+                  class="p-2 hover:bg-[#F2F4F7] rounded-lg transition-colors flex items-center justify-center">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="5" r="1.8" fill="#475467" />
+                    <circle cx="12" cy="12" r="1.8" fill="#475467" />
+                    <circle cx="12" cy="19" r="1.8" fill="#475467" />
+                  </svg>
+                </button>
+                <!-- Row Actions Dropdown -->
+                <div v-if="openMenuId === (row.id || index)"
+                  class="absolute right-0 mt-1 w-44 bg-white border border-[#E5E7EB] rounded-xl shadow-lg z-50 overflow-hidden py-1"
+                  @click.stop>
+                  <slot name="addAction" :item="row"></slot>
+                  <slot name="AddStatus" :item="row"></slot>
+                  <slot name="view" :item="row"></slot>
+                  <slot name="taskComment" :item="row"></slot>
+                  <slot name="edit" :item="row">
+                    <button
+                      @click="editItem(row); openMenuId = null"
+                      class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-[#374151] hover:bg-[#F5F5F5] transition-colors font-medium">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                        <path d="M16.474 5.408l2.118 2.117m-.756-3.98a2.5 2.5 0 0 1 3.536 0 2.5 2.5 0 0 1 0 3.536L5.854 22.599a1.5 1.5 0 0 1-.722.398l-3.66.903a.5.5 0 0 1-.607-.607l.903-3.66a1.5 1.5 0 0 1 .398-.722L17.836 3.545z"
+                          stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                      Edit
+                    </button>
+                  </slot>
+                  <slot name="delete" :item="row">
+                    <button
+                      @click="deleteItem(row); openMenuId = null"
+                      class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-[#D92D20] hover:bg-[#FFF5F5] transition-colors font-medium">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                        <path d="M4 7h16M10 11v6m4-6v6M5 7l1 14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-14M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"
+                          stroke="#D92D20" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                      Delete
+                    </button>
+                  </slot>
+                </div>
+              </div>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex flex-wrap items-center justify-between gap-4 mt-5 py-2">
+      <!-- Groups selector + count -->
+      <div class="flex items-center gap-3">
+        <span class="text-sm font-medium text-[#475467]">Groups:</span>
+        <div class="relative">
+          <select
+            v-model="perPage"
+            class="appearance-none bg-white border border-[#D0D5DD] rounded-lg pl-3 pr-7 py-1.5 outline-none focus:ring-1 focus:ring-[#29457E] text-[#475467] text-sm h-[34px] min-w-[58px] cursor-pointer">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+          <span class="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-[#98A2B3]">
+            <svg width="10" height="10" viewBox="0 0 10 6" fill="none">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+        <span class="text-sm font-medium text-[#475467]">
+          {{ startRecord }} Of {{ totalRecords }} Items
+        </span>
+      </div>
+
+      <!-- Page Navigation -->
+      <nav class="flex items-center gap-1">
+        <!-- Prev -->
+        <button
+          @click="currentPage > 1 ? goToPage(currentPage - 1) : null"
+          :disabled="currentPage <= 1 || !canNavigate()"
+          class="w-8 h-8 flex items-center justify-center rounded-lg bg-[#6B80A6] text-white hover:bg-[#4A5F8A] disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+        <!-- Page Numbers -->
+        <div class="flex items-center gap-0.5 mx-1">
+          <button
+            v-for="page in paginationPages"
+            :key="page"
+            @click="goToPage(page)"
+            class="min-w-[30px] h-8 px-1.5 rounded-md text-sm font-medium transition-all"
+            :class="currentPage === page
+              ? 'text-[#29457E] font-bold text-base'
+              : 'text-[#8F9BB3] hover:bg-[#EEF0F6]'">
+            {{ page }}
+          </button>
+        </div>
+
+        <!-- Next -->
+        <button
+          @click="currentPage < totalPages ? goToPage(currentPage + 1) : null"
+          :disabled="currentPage >= totalPages || !canNavigate()"
+          class="w-8 h-8 flex items-center justify-center rounded-lg bg-[#6B80A6] text-white hover:bg-[#4A5F8A] disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </nav>
+    </div>
+
+    <!-- Content Full Text Modal -->
     <Teleport to="body">
-        <Filter :is-open="isFilterOpen" :filters="filters" @close="closeFilterModal"
-            @filter-applied="onFilterApplied" @filter-removed="onFilterRemoved" @filters-cleared="onFiltersCleared"
-            @operators-changed="onOperatorsChanged" @filters-saved="onFiltersSaved" ref="filterComponent" />
+      <div v-if="showContentModal"
+        class="fixed inset-0 bg-black/50 z-[10000] flex items-center justify-center p-4"
+        @click="closeContentModal">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden"
+          @click.stop>
+          <div class="flex items-center justify-between px-6 py-4 bg-[#F8F9FA] border-b border-[#E5E7EB]">
+            <h4 class="text-base font-semibold text-[#1E293B]">{{ modalContent.title }}</h4>
+            <button @click="closeContentModal"
+              class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#E5E7EB] transition-colors text-[#6B7280]">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+          <div class="p-6">
+            <p class="text-sm text-[#374151] leading-relaxed whitespace-pre-wrap">{{ modalContent.content }}</p>
+          </div>
+        </div>
+      </div>
     </Teleport>
+
+    <!-- Import Modal -->
+    <Teleport to="body">
+      <div v-if="showModal"
+        class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden">
+          <div class="bg-[#29457E] px-6 py-4 flex items-center justify-between text-white">
+            <h3 class="text-lg font-bold flex items-center gap-2">Import Data</h3>
+            <button @click="toggleModal"
+              class="w-8 h-8 hover:bg-white/20 rounded-full transition-colors flex items-center justify-center text-xl">✕</button>
+          </div>
+          <div class="p-8">
+            <div class="space-y-6">
+              <div class="space-y-2">
+                <label class="text-sm font-semibold text-gray-700 block">Upload File</label>
+                <input type="file" ref="file"
+                  class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-[#29457E] hover:file:bg-[#29457E] hover:file:text-white file:transition-all file:cursor-pointer border border-gray-200 rounded-xl p-2 outline-none"
+                  required @change="handleFileUpload" />
+              </div>
+              <button type="button"
+                class="w-full py-3 bg-[#29457E] text-white rounded-xl font-bold hover:bg-[#1E366A] shadow-lg transition-all"
+                @click="handleImport">
+                Import
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Teleport>
+
+    <!-- Export Column Selection Modal -->
+    <Teleport to="body">
+      <div v-if="showColumnSelectionModal"
+        class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
+        @click="closeColumnSelection">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden" @click.stop>
+          <div class="bg-[#29457E] px-6 py-4 flex items-center justify-between text-white">
+            <h5 class="text-lg font-bold">Select Columns to Export</h5>
+            <button @click="closeColumnSelection"
+              class="hover:bg-white/20 p-1 rounded-full transition-colors text-xl">✕</button>
+          </div>
+          <div class="p-6">
+            <div class="flex gap-3 mb-6">
+              <button @click="selectAllExportColumns"
+                class="px-4 py-2 border border-[#29457E] text-[#29457E] rounded-lg hover:bg-[#29457E] hover:text-white transition-all text-sm font-medium">
+                Select All
+              </button>
+              <button @click="deselectAllExportColumns"
+                class="px-4 py-2 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50 transition-all text-sm font-medium">
+                Deselect All
+              </button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[60vh] overflow-y-auto pr-2">
+              <div v-for="(column, index) in exportableColumns" :key="index"
+                class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200 hover:border-[#29457E] transition-all cursor-pointer"
+                @click="selectedExportColumns.includes(column.data)
+                  ? selectedExportColumns = selectedExportColumns.filter(c => c !== column.data)
+                  : selectedExportColumns.push(column.data)">
+                <input type="checkbox" v-model="selectedExportColumns" :value="column.data"
+                  class="w-4 h-4 rounded text-[#29457E] cursor-pointer" />
+                <span class="text-sm font-medium text-gray-700">{{ column.title }}</span>
+              </div>
+            </div>
+            <div class="flex justify-end gap-3 mt-8 pt-6 border-t border-gray-200">
+              <button @click="closeColumnSelection"
+                class="px-6 py-2 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50 transition-all font-medium">
+                Cancel
+              </button>
+              <button @click="exportSelectedColumns"
+                class="px-6 py-2 bg-[#29457E] text-white rounded-lg hover:bg-[#1E366A] disabled:opacity-50 transition-all font-medium"
+                :disabled="selectedExportColumns.length === 0 || isExporting">
+                {{ isExporting ? 'Exporting...' : `Export Selected (${selectedExportColumns.length})` }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Teleport>
+
+  </div>
 </template>
 
 <script>
 import * as XLSX from "xlsx";
-
-// import autoTable from "jspdf-autotable";
 import Filter from "./Filter.vue";
 
 export default {
-    name: "DataTable",
-    components: {
-        Filter,
+  name: "DataTable",
+  components: { Filter },
+  emits: ["add-new", "edit-item", "flip-page"],
+  props: {
+    id: { type: String, required: true },
+    columns: { type: Array, required: true },
+    api: { type: Object, required: true },
+    apiParams: { type: Object, default: () => ({}) },
+    hideActions: {
+      type: Function,
+      default: () => (row) => ({ edit: false, delete: false }),
     },
-    emits: ["add-new", "edit-item", "flip-page"],
-    props: {
-        id: { type: String, required: true },
-        columns: { type: Array, required: true },
-        api: { type: Object, required: true },
-        apiParams: { type: Object, default: () => ({}) },
-        hideActions: {
-            type: Function,
-            default: () => (row) => ({
-                edit: false,
-                delete: false,
-            }),
-        },
-        editItem: Function,
-        openForm: Function,
-        Statistics: Function,
-        Configurations: Function,
-        linkRequirement: Function,
-        action: { type: Boolean, default: true },
-        tableClass: {
-            type: String,
-            default: "table",
-        },
-        hideAddNewButton: {
-            type: Boolean,
-            default: false,
-        },
-        hideStatisticsButton: {
-            type: Boolean,
-            default: true,
-        },
-
-        hideAddExportButton: {
-            type: Boolean,
-            default: false,
-        },
-        hideAddImportButton: {
-            type: Boolean,
-            default: false,
-        },
-
-        hideConfigurationsButton: {
-            type: Boolean,
-            default: true,
-        },
-        hideLinkRequirementButton: {
-            type: Boolean,
-            default: true,
-        },
-        addNewButtonTitle: {
-            type: String,
-            default: "add_new",
-        },
-        addNewButtonIcon: {
-            type: String,
-            default: "mdi-plus",
-        },
-        filters: {
-            type: Array,
-            default: () => [],
-        },
-        truncateLimit: {
-            type: Number,
-            default: 30,
-            validator: (value) => value > 0,
-        },
+    editItem: Function,
+    openForm: Function,
+    Statistics: Function,
+    Configurations: Function,
+    linkRequirement: Function,
+    action: { type: Boolean, default: true },
+    tableClass: { type: String, default: "table" },
+    hideAddNewButton: { type: Boolean, default: false },
+    hideStatisticsButton: { type: Boolean, default: true },
+    hideAddExportButton: { type: Boolean, default: false },
+    hideAddImportButton: { type: Boolean, default: false },
+    hideConfigurationsButton: { type: Boolean, default: true },
+    hideLinkRequirementButton: { type: Boolean, default: true },
+    addNewButtonTitle: { type: String, default: "Add" },
+    addNewButtonIcon: { type: String, default: "mdi-plus" },
+    filters: { type: Array, default: () => [] },
+    truncateLimit: { type: Number, default: 30, validator: (v) => v > 0 },
+  },
+  data() {
+    return {
+      isRtl: false,
+      selected: [],
+      data: [],
+      load: false,
+      apiParamsLocal: {},
+      searchQuery: "",
+      currentPage: 1,
+      perPage: 10,
+      goToPageInput: "",
+      currentSort: null,
+      sortDirection: "asc",
+      sortable: true,
+      totalRecords: 0,
+      filteredRecords: 0,
+      visibleColumns: [],
+      showDropdown: false,
+      showColumnModal: false,
+      showModal: false,
+      isFileColumnDisabled: true,
+      file: {},
+      file_columns: [],
+      database_columns: [],
+      fields: [],
+      page: 0,
+      showFilter: false,
+      fetchTimeout: null,
+      isFilterOpen: false,
+      activeFilters: [],
+      filterOperators: [],
+      draggingIndex: null,
+      dragOverIndex: null,
+      columnOrder: [],
+      showContentModal: false,
+      modalContent: { title: "", content: "" },
+      cellContentCache: new Map(),
+      showExportDropdown: false,
+      showPdfDropdown: false,
+      showColumnSelectionModal: false,
+      exportableColumns: [],
+      selectedExportColumns: [],
+      isExporting: false,
+      // UI-only: track open row menu
+      openMenuId: null,
+    };
+  },
+  computed: {
+    isArabic() {
+      return this.$i18n?.locale === "ar";
     },
-    data() {
-        return {
-            isRtl: false,
-            selected: [],
-            data: [],
-            load: false,
-            apiParamsLocal: {},
-
-            // Custom table functionality
-            searchQuery: "",
-            currentPage: 1,
-            perPage: 10,
-            goToPageInput: "", // Go to page input value
-            currentSort: null,
-            sortDirection: "asc",
-            sortable: true,
-
-            // Server-side pagination data
-            totalRecords: 0,
-            filteredRecords: 0,
-
-            // Column visibility
-            visibleColumns: [],
-            showDropdown: false,
-            showColumnModal: false,
-
-            // Import modal
-            showModal: false,
-            isFileColumnDisabled: true,
-            file: {},
-            file_columns: [],
-            database_columns: [],
-            fields: [],
-            page: 0,
-            showFilter: false,
-            // Prevent multiple API calls
-            fetchTimeout: null,
-
-            // Filter-related properties
-            isFilterOpen: false,
-            activeFilters: [], // Changed from {} to [] to support multiple selections
-            filterOperators: [], // Array to store operators between filters
-
-            // Drag and drop properties
-            draggingIndex: null,
-            dragOverIndex: null,
-            columnOrder: [], // Array to store custom column order
-
-            // Truncate functionality
-            showContentModal: false,
-            modalContent: {
-                title: "",
-                content: "",
-            },
-
-            // Performance optimization: cache for cell content processing
-            cellContentCache: new Map(),
-            showExportDropdown: false,
-            showPdfDropdown: false,
-            showColumnSelectionModal: false,
-            exportableColumns: [],
-            selectedExportColumns: [],
-            isExporting: false,
-        };
+    processedColumns() {
+      const baseColumns = [
+        { title: "", data: null, defaultContent: "N/A" },
+        { title: "#", data: null, defaultContent: "N/A", sort: false },
+        ...this.columns,
+      ];
+      if (!this.hideActionsColumn) {
+        baseColumns.push({
+          title: this.$t ? this.$t("common.actions") : "Actions",
+          data: null,
+        });
+      }
+      return baseColumns;
     },
-    computed: {
-        isArabic() {
-            return this.$i18n.locale === "ar";
-        },
-        processedColumns() {
-            // Reset internal columns when columns prop changes
-            const baseColumns = [
-                { title: "", data: null, defaultContent: "N/A" },
-                { title: "#", data: null, defaultContent: "N/A", sort: false },
-                ...this.columns,
-            ];
-
-            // Add actions column if not hidden
-            if (!this.hideActionsColumn) {
-                baseColumns.push({
-                    title: this.$t ? this.$t("common.actions") : "Actions",
-                    data: null,
-                });
-            }
-
-            return baseColumns;
-        },
-
-        paginatedData() {
-            return this.data;
-        },
-
-        totalPages() {
-            return Math.ceil(this.totalRecords / this.perPage);
-        },
-
-        startRecord() {
-            if (this.data.length === 0) return 0;
-            return (this.currentPage - 1) * this.perPage + 1;
-        },
-
-        endRecord() {
-            if (this.data.length === 0) return 0;
-            const start = (this.currentPage - 1) * this.perPage;
-            return Math.min(
-                start + this.data.length,
-                this.currentPage * this.perPage
-            );
-        },
-
-        paginationPages() {
-            const pages = [];
-            const maxPages = 5;
-            let startPage = Math.max(1, this.currentPage - Math.floor(maxPages / 2));
-            let endPage = Math.min(this.totalPages, startPage + maxPages - 1);
-
-            if (endPage - startPage + 1 < maxPages) {
-                startPage = Math.max(1, endPage - maxPages + 1);
-            }
-
-            for (let i = startPage; i <= endPage; i++) {
-                pages.push(i);
-            }
-
-            return pages;
-        },
-
-        visibleColumnCount() {
-            if (this.visibleColumns.length === 0) {
-                return this.processedColumns.length;
-            }
-            return this.visibleColumns.filter((visible) => visible !== false).length;
-        },
-
-        // Validate go to page input
-        isValidPageNumber() {
-            return (
-                this.goToPageInput &&
-                Number.isInteger(this.goToPageInput) &&
-                this.goToPageInput >= 1 &&
-                this.goToPageInput <= this.totalPages
-            );
-        },
-
-        orderedColumnIndexes() {
-            if (this.columnOrder.length === 0) {
-                // Return default order if no custom order is set
-                return Array.from(
-                    { length: this.processedColumns.length },
-                    (_, i) => i
-                );
-            }
-            return this.columnOrder;
-        },
-
-        hideActionsColumn() {
-            // Show actions column by default, hide only if action prop is explicitly set to false
-            return this.action === false;
-        },
+    paginatedData() { return this.data; },
+    totalPages() { return Math.ceil(this.totalRecords / this.perPage); },
+    startRecord() {
+      if (this.data.length === 0) return 0;
+      return (this.currentPage - 1) * this.perPage + 1;
     },
-    watch: {
-        columns: {
-            deep: true,
-            handler() {
-                this.$nextTick(() => {
-                    this.initializeVisibleColumns();
-                });
-            },
-        },
-
-        processedColumns: {
-            handler(newColumns) {
-                if (newColumns.length > 0) {
-                    // Initialize visibility columns
-                    if (this.visibleColumns.length !== newColumns.length) {
-                        this.visibleColumns = newColumns.map(() => true);
-                        console.log(
-                            "ProcessedColumns watcher - initialized visibleColumns:",
-                            this.visibleColumns
-                        );
-                    }
-
-                    // Load or initialize column order
-                    this.loadColumnOrder();
-                }
-            },
-            immediate: true,
-        },
-
-        // Watch for column order changes and save to localStorage
-        columnOrder: {
-            handler(newOrder) {
-                if (newOrder.length > 0) {
-                    this.saveColumnOrder();
-                }
-            },
-            deep: true,
-        },
-
-        apiParams: {
-            deep: true,
-            handler() {
-                this.currentPage = 1;
-                this.debouncedFetchData();
-            },
-        },
-
-        searchQuery() {
-            this.currentPage = 1;
-            this.debouncedFetchData();
-        },
-
-        perPage() {
-            this.currentPage = 1;
-            this.fetchData();
-        },
-
-        currentPage() {
-            this.fetchData();
-        },
-
-        currentSort() {
-            this.currentPage = 1;
-            this.fetchData();
-        },
-
-        sortDirection() {
-            this.fetchData();
-        },
+    endRecord() {
+      if (this.data.length === 0) return 0;
+      const start = (this.currentPage - 1) * this.perPage;
+      return Math.min(start + this.data.length, this.currentPage * this.perPage);
     },
-
-    created() {
-        this.initializeVisibleColumns();
-        this.loadExportableColumns();
+    paginationPages() {
+      const pages = [];
+      const maxPages = 5;
+      let startPage = Math.max(1, this.currentPage - Math.floor(maxPages / 2));
+      let endPage = Math.min(this.totalPages, startPage + maxPages - 1);
+      if (endPage - startPage + 1 < maxPages) {
+        startPage = Math.max(1, endPage - maxPages + 1);
+      }
+      for (let i = startPage; i <= endPage; i++) { pages.push(i); }
+      return pages;
     },
-
-    mounted() {
-        this.isRtl = this.$i18n.locale === "ar";
-        this.initializeVisibleColumns();
-        this.fetchData();
-
-        // Add click outside handler for dropdown
-        document.addEventListener("click", this.handleClickOutside);
+    visibleColumnCount() {
+      if (this.visibleColumns.length === 0) return this.processedColumns.length;
+      return this.visibleColumns.filter((v) => v !== false).length;
     },
-
-    beforeUnmount() {
-        if (this.fetchTimeout) {
-            clearTimeout(this.fetchTimeout);
+    isValidPageNumber() {
+      return this.goToPageInput && Number.isInteger(this.goToPageInput) &&
+        this.goToPageInput >= 1 && this.goToPageInput <= this.totalPages;
+    },
+    orderedColumnIndexes() {
+      if (this.columnOrder.length === 0) {
+        return Array.from({ length: this.processedColumns.length }, (_, i) => i);
+      }
+      return this.columnOrder;
+    },
+    hideActionsColumn() { return this.action === false; },
+  },
+  watch: {
+    columns: { deep: true, handler() { this.$nextTick(() => { this.initializeVisibleColumns(); }); } },
+    processedColumns: {
+      handler(newColumns) {
+        if (newColumns.length > 0) {
+          if (this.visibleColumns.length !== newColumns.length) {
+            this.visibleColumns = newColumns.map(() => true);
+          }
+          this.loadColumnOrder();
         }
-        // Remove click outside handler
-        document.removeEventListener("click", this.handleClickOutside);
-
-        // Clean up modal state and restore body scroll
-        if (this.showContentModal) {
-            document.body.style.overflow = "";
-            document.removeEventListener("keydown", this.handleEscapeKey);
+      },
+      immediate: true,
+    },
+    columnOrder: { handler(newOrder) { if (newOrder.length > 0) this.saveColumnOrder(); }, deep: true },
+    apiParams: { deep: true, handler() { this.currentPage = 1; this.debouncedFetchData(); } },
+    searchQuery() { this.currentPage = 1; this.debouncedFetchData(); },
+    perPage() { this.currentPage = 1; this.fetchData(); },
+    currentPage() { this.fetchData(); },
+    currentSort() { this.currentPage = 1; this.fetchData(); },
+    sortDirection() { this.fetchData(); },
+  },
+  created() {
+    this.initializeVisibleColumns();
+    this.loadExportableColumns();
+  },
+  mounted() {
+    this.isRtl = this.$i18n?.locale === "ar";
+    this.initializeVisibleColumns();
+    this.fetchData();
+    document.addEventListener("click", this.handleClickOutside);
+  },
+  beforeUnmount() {
+    if (this.fetchTimeout) clearTimeout(this.fetchTimeout);
+    document.removeEventListener("click", this.handleClickOutside);
+    if (this.showContentModal) {
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", this.handleEscapeKey);
+    }
+    this.clearCellContentCache();
+  },
+  methods: {
+    toggleRowMenu(id) {
+      this.openMenuId = this.openMenuId === id ? null : id;
+    },
+    canNavigate() { return this.data.length > 0 && this.totalRecords > 0 && !this.load; },
+    goToPage(page) {
+      if (!this.canNavigate()) return;
+      if (page < 1 || page > this.totalPages) return;
+      this.currentPage = page;
+    },
+    handleGoToPage() {
+      if (this.isValidPageNumber) { this.goToPage(this.goToPageInput); this.goToPageInput = ""; }
+    },
+    exportToExcel() {
+      const ws = XLSX.utils.json_to_sheet(this.filteredData || this.tableData || []);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Data");
+      XLSX.writeFile(wb, "data_export.xlsx");
+    },
+    toggleExportDropdown(event) {
+      event.stopPropagation();
+      this.showExportDropdown = !this.showExportDropdown;
+      this.showPdfDropdown = false;
+    },
+    togglePdfDropdown(event) {
+      event.stopPropagation();
+      this.showPdfDropdown = !this.showPdfDropdown;
+      this.showExportDropdown = false;
+    },
+    visibleExportableColumns() {
+      return this.processedColumns.filter((col, index) => {
+        if (index <= 1) return false;
+        if (col.title === "Actions" || col.title === this.$t?.("common.actions")) return false;
+        const columnKey = col.data || col.id;
+        return columnKey && (this.visibleColumns.length === 0 || this.visibleColumns[index] !== false);
+      }).map((col) => ({ title: col.title, data: col.data || col.id, id: col.id }));
+    },
+    async loadExportableColumns() {
+      try {
+        this.exportableColumns = this.columns.filter((col) => col.data || col.id)
+          .map((col) => ({ title: col.title, data: col.data || col.id, id: col.id, originalData: col.data }));
+      } catch (error) { this.exportableColumns = []; }
+    },
+    async handleExportAll() {
+      this.showExportDropdown = false; this.isExporting = true;
+      try {
+        const visibleColumns = this.visibleExportableColumns();
+        const columnKeys = visibleColumns.map((col) => col.data || col.id);
+        const exportParams = this.buildApiParams();
+        delete exportParams.page; delete exportParams.perPage;
+        if (this.api.exportToExcel) {
+          await this.api.exportToExcel({ exportAll: true, columns: columnKeys, filters: exportParams, async: true });
         }
-
-        // Clear cache to prevent memory leaks
+      } catch (error) { console.error("Export failed:", error); } finally { this.isExporting = false; }
+    },
+    async handleExportCurrent() {
+      this.showExportDropdown = false; this.isExporting = true;
+      const visibleColumns = this.visibleExportableColumns();
+      const columnKeys = visibleColumns.map((col) => col.data || col.id);
+      try {
+        const exportParams = this.buildApiParams();
+        await this.api.exportToExcel({ exportAll: false, columns: columnKeys, filters: exportParams, async: true });
+      } catch (error) { console.error("Export failed:", error); } finally { this.isExporting = false; }
+    },
+    openColumnSelection() {
+      this.showExportDropdown = false; this.showColumnSelectionModal = true;
+      const visibleColumns = this.visibleExportableColumns();
+      this.selectedExportColumns = visibleColumns.map((col) => col.data || col.id);
+    },
+    closeColumnSelection() { this.showColumnSelectionModal = false; this.selectedExportColumns = []; },
+    selectAllExportColumns() { this.selectedExportColumns = this.exportableColumns.map((col) => col.data); },
+    deselectAllExportColumns() { this.selectedExportColumns = []; },
+    async exportSelectedColumns() {
+      if (this.selectedExportColumns.length === 0) return;
+      this.isExporting = true;
+      try {
+        const exportParams = this.buildApiParams();
+        delete exportParams.page; delete exportParams.perPage;
+        await this.api.exportToExcel({ exportAll: true, columns: this.selectedExportColumns, filters: exportParams, async: true });
+        this.closeColumnSelection();
+      } catch (error) { console.error("Export failed:", error); } finally { this.isExporting = false; }
+    },
+    toggleModal() { this.file_columns = []; this.database_columns = []; this.fields = []; this.showModal = !this.showModal; },
+    handleFileUpload(event) { this.file = event.target.files[0]; },
+    async handleImport() {
+      const formData = new FormData(); formData.append("file", this.file);
+      try {
+        const response = await this.api.fetchFileData(formData, {}, false);
+        this.file_columns = response.data.file_columns;
+        this.database_columns = response.data.database_columns;
+      } catch (error) { console.error("Error importing file:", error); }
+    },
+    async saveImportedData() {
+      try {
+        await this.api.importFileData(this.fields, {}, false);
+        this.file_columns = []; this.database_columns = []; this.fields = [];
+        this.toggleModal(); this.fetchData();
+      } catch (error) { console.error("Error importing file:", error); }
+    },
+    initializeVisibleColumns() {
+      this.$nextTick(() => {
+        if (this.processedColumns.length > 0) {
+          this.visibleColumns = this.processedColumns.map(() => true);
+        }
+      });
+    },
+    debouncedFetchData() {
+      if (this.fetchTimeout) clearTimeout(this.fetchTimeout);
+      this.fetchTimeout = setTimeout(() => { this.fetchData(); }, 300);
+    },
+    async fetchData() {
+      this.load = true;
+      try {
+        const params = this.buildApiParams();
+        const response = await this.api.getAll(params);
+        if (response.data && Array.isArray(response.data)) {
+          this.data = response.data;
+          this.totalRecords = response.recordsTotal || response.total || response.data.length;
+          this.filteredRecords = response.recordsFiltered || response.filtered || response.data.length;
+        } else if (Array.isArray(response)) {
+          this.data = response; this.totalRecords = response.length; this.filteredRecords = response.length;
+        } else {
+          this.data = []; this.totalRecords = 0; this.filteredRecords = 0;
+        }
         this.clearCellContentCache();
+      } catch (error) {
+        this.data = []; this.totalRecords = 0; this.filteredRecords = 0;
+      } finally { this.load = false; }
     },
-
-    methods: {
-        // Method جديدة للتحقق من إمكانية التنقل
-        canNavigate() {
-            return this.data.length > 0 && this.totalRecords > 0 && !this.load;
-        },
-
-        // تحديث method الـ goToPage
-        goToPage(page) {
-            if (!this.canNavigate()) return;
-
-            if (page < 1 || page > this.totalPages) return;
-            this.currentPage = page;
-        },
-
-        // تحديث method الـ handleGoToPage
-        handleGoToPage() {
-            if (!this.canNavigate()) return;
-
-            if (this.isValidPageNumber) {
-                this.goToPage(this.goToPageInput);
-                this.goToPageInput = "";
+    buildApiParams() {
+      const params = { perPage: this.perPage, page: this.currentPage, search: this.searchQuery };
+      if (this.currentSort) params.sort = `${this.currentSort}|${this.sortDirection}`;
+      if (this.activeFilters && this.activeFilters.length > 0) {
+        const standardFilters = [];
+        const specialFilters = {};
+        this.activeFilters.forEach((filter) => {
+          const filterType = filter.filterType || "filter";
+          if (filterType === "filter" || filterType === "filterOr") {
+            standardFilters.push(filter);
+          } else {
+            if (!specialFilters[filterType]) specialFilters[filterType] = [];
+            specialFilters[filterType].push(filter);
+          }
+        });
+        if (standardFilters.length > 0) {
+          const completeFilterArray = [];
+          standardFilters.forEach((filter) => {
+            let filterValue; let filterOperator = "=";
+            if (filter.type === "integer" || filter.type === "boolean") {
+              filterValue = `${filter.value}-${filter.type}`;
+            } else if (filter.type === "null") {
+              filterValue = `-${filter.type}`; filterOperator = "!=";
+            } else { filterValue = filter.value; }
+            completeFilterArray.push(`${filter.key}|${filterValue}|${filterOperator}`);
+          });
+          let completeFilterString = "";
+          if (completeFilterArray.length === 1) {
+            completeFilterString = completeFilterArray[0];
+          } else {
+            completeFilterString = completeFilterArray[0];
+            for (let i = 1; i < completeFilterArray.length; i++) {
+              const operator = this.filterOperators[i - 1] || "&&";
+              completeFilterString += operator + completeFilterArray[i];
             }
-        },
-        exportToExcel() {
-            const ws = XLSX.utils.json_to_sheet(
-                this.filteredData || this.tableData || []
-            );
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Data");
-            XLSX.writeFile(wb, "data_export.xlsx");
-        },
-        importFromExcel(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, { type: "array" });
-                const sheetName = workbook.SheetNames[0];
-                const sheet = workbook.Sheets[sheetName];
-                const jsonData = XLSX.utils.sheet_to_json(sheet);
-
-                // ✅ تأكيد أن tableData موجودة ومصفوفة
-                if (!Array.isArray(this.tableData)) {
-                    this.tableData = [];
-                }
-
-                // ✅ دمج البيانات بدون خطأ
-                this.tableData = [...jsonData, ...this.tableData];
-            };
-            reader.readAsArrayBuffer(file);
-            event.target.value = "";
-        },
-        goToPage(page) {
-            this.currentPage = page;
-        },
-
-        // Methods الخاصة بالـ Export
-        toggleExportDropdown(event) {
-            event.stopPropagation();
-            this.showExportDropdown = !this.showExportDropdown;
-            this.showPdfDropdown = false;
-        },
-
-        togglePdfDropdown(event) {
-            event.stopPropagation();
-            this.showPdfDropdown = !this.showPdfDropdown;
-            this.showExportDropdown = false;
-        },
-
-        visibleExportableColumns() {
-            return this.processedColumns
-                .filter((col, index) => {
-                    if (index <= 1) return false;
-                    if (
-                        col.title === "Actions" ||
-                        col.title === this.$t?.("common.actions")
-                    )
-                        return false;
-                    const columnKey = col.data || col.id;
-                    return (
-                        columnKey &&
-                        (this.visibleColumns.length === 0 ||
-                            this.visibleColumns[index] !== false)
-                    );
-                })
-                .map((col) => ({
-                    title: col.title,
-                    data: col.data || col.id,
-                    id: col.id,
-                }));
-        },
-
-        async loadExportableColumns() {
-            try {
-                this.exportableColumns = this.columns
-                    .filter((col) => col.data || col.id)
-                    .map((col) => ({
-                        title: col.title,
-                        data: col.data || col.id,
-                        id: col.id,
-                        originalData: col.data,
-                    }));
-            } catch (error) {
-                console.error("Error loading exportable columns:", error);
-                this.exportableColumns = [];
-            }
-        },
-
-        async handleExportAll() {
-            this.showExportDropdown = false;
-            this.isExporting = true;
-            try {
-                const visibleColumns = this.visibleExportableColumns();
-                const columnKeys = visibleColumns.map((col) => col.data || col.id);
-
-                const exportParams = this.buildApiParams();
-                delete exportParams.page;
-                delete exportParams.perPage;
-
-                if (this.api.exportToExcel) {
-                    await this.api.exportToExcel({
-                        exportAll: true,
-                        columns: columnKeys,
-                        filters: exportParams,
-                        async: true,
-                    });
-                } else {
-                    console.warn("Export API method not available");
-                }
-            } catch (error) {
-                console.error("Export failed:", error);
-            } finally {
-                this.isExporting = false;
-            }
-        },
-
-        async handleExportCurrent() {
-            this.showExportDropdown = false;
-            this.isExporting = true;
-
-            const visibleColumns = this.visibleExportableColumns();
-            const columnKeys = visibleColumns.map((col) => col.data || col.id);
-
-            try {
-                const exportParams = this.buildApiParams();
-
-                await this.api.exportToExcel({
-                    exportAll: false,
-                    columns: columnKeys,
-                    filters: exportParams,
-                    async: true,
-                });
-            } catch (error) {
-                console.error("Export failed:", error);
-            } finally {
-                this.isExporting = false;
-            }
-        },
-
-        // لدوال PDF
-        async handlePdfExportAll() {
-            this.showPdfDropdown = false;
-            this.isExporting = true;
-            try {
-                const visibleColumns = this.visibleExportableColumns();
-                const columnKeys = visibleColumns.map((col) => col.data || col.id);
-
-                const exportParams = this.buildApiParams();
-                delete exportParams.page;
-                delete exportParams.perPage;
-
-                if (this.api.exportToPdf) {
-                    await this.api.exportToPdf({
-                        exportAll: true,
-                        columns: columnKeys,
-                        filters: exportParams,
-                        async: true,
-                    });
-                } else {
-                    console.warn("PDF Export API method not available");
-                }
-            } catch (error) {
-                console.error("PDF Export failed:", error);
-            } finally {
-                this.isExporting = false;
-            }
-        },
-
-        async handlePdfExportCurrent() {
-            this.showPdfDropdown = false;
-            this.isExporting = true;
-            try {
-                const visibleColumns = this.visibleExportableColumns();
-                const columnKeys = visibleColumns.map((col) => col.data || col.id);
-                const exportParams = this.buildApiParams();
-
-                if (this.api.exportToPdf) {
-                    await this.api.exportToPdf({
-                        exportAll: false,
-                        columns: columnKeys,
-                        filters: exportParams,
-                        async: true,
-                    });
-                } else {
-                    console.warn("PDF Export API method not available");
-                }
-            } catch (error) {
-                console.error("PDF Export failed:", error);
-            } finally {
-                this.isExporting = false;
-            }
-        },
-
-        // لدوال Column Selection
-        openColumnSelection() {
-            this.showExportDropdown = false;
-            this.showColumnSelectionModal = true;
-
-            const visibleColumns = this.visibleExportableColumns();
-            const columnKeys = visibleColumns.map((col) => col.data || col.id);
-            this.selectedExportColumns = columnKeys;
-        },
-
-        closeColumnSelection() {
-            this.showColumnSelectionModal = false;
-            this.selectedExportColumns = [];
-        },
-
-        selectAllExportColumns() {
-            this.selectedExportColumns = this.exportableColumns.map(
-                (col) => col.data
-            );
-        },
-
-        deselectAllExportColumns() {
-            this.selectedExportColumns = [];
-        },
-
-        async exportSelectedColumns() {
-            if (this.selectedExportColumns.length === 0) return;
-
-            this.isExporting = true;
-            try {
-                const exportParams = this.buildApiParams();
-                delete exportParams.page;
-                delete exportParams.perPage;
-
-                await this.api.exportToExcel({
-                    exportAll: true,
-                    columns: this.selectedExportColumns,
-                    filters: exportParams,
-                    async: true,
-                });
-                this.closeColumnSelection();
-            } catch (error) {
-                console.error("Export failed:", error);
-            } finally {
-                this.isExporting = false;
-            }
-        },
-        // Methods الخاصة بالـ Import
-        toggleModal() {
-            this.file_columns = [];
-            this.database_columns = [];
-            this.fields = [];
-            this.showModal = !this.showModal;
-        },
-
-        handleFileUpload(event) {
-            this.file = event.target.files[0];
-        },
-
-        async handleImport() {
-            const formData = new FormData();
-            formData.append("file", this.file);
-            try {
-                const response = await this.api.fetchFileData(formData, {}, false);
-                this.file_columns = response.data.file_columns;
-                this.database_columns = response.data.database_columns;
-            } catch (error) {
-                console.error("Error importing file:", error);
-            }
-        },
-
-        async saveImportedData() {
-            try {
-                await this.api.importFileData(this.fields, {}, false);
-                this.file_columns = [];
-                this.database_columns = [];
-                this.fields = [];
-                this.toggleModal();
-                this.fetchData();
-            } catch (error) {
-                console.error("Error importing file:", error);
-            }
-        },
-
-        importFromExcel(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, { type: "array" });
-                const sheetName = workbook.SheetNames[0];
-                const sheet = workbook.Sheets[sheetName];
-                const jsonData = XLSX.utils.sheet_to_json(sheet);
-
-                if (!Array.isArray(this.tableData)) {
-                    this.tableData = [];
-                }
-
-                this.tableData = [...jsonData, ...this.tableData];
-            };
-            reader.readAsArrayBuffer(file);
-            event.target.value = "";
-        },
-
-        // Handle go to page input functionality
-        handleGoToPage() {
-            if (this.isValidPageNumber) {
-                this.goToPage(this.goToPageInput);
-                this.goToPageInput = ""; // Clear input after navigation
-            }
-        },
-
-        initializeVisibleColumns() {
-            // Initialize visible columns after processedColumns is updated
-            this.$nextTick(() => {
-                if (this.processedColumns.length > 0) {
-                    this.visibleColumns = this.processedColumns.map(() => true);
-                }
-            });
-        },
-
-        debouncedFetchData() {
-            if (this.fetchTimeout) {
-                clearTimeout(this.fetchTimeout);
-            }
-            this.fetchTimeout = setTimeout(() => {
-                this.fetchData();
-            }, 300);
-        },
-
-        async fetchData() {
-            this.load = true;
-            try {
-                const params = this.buildApiParams();
-                const response = await this.api.getAll(params);
-
-                if (response.data && Array.isArray(response.data)) {
-                    this.data = response.data;
-                    this.totalRecords =
-                        response.recordsTotal || response.total || response.data.length;
-                    this.filteredRecords =
-                        response.recordsFiltered ||
-                        response.filtered ||
-                        response.data.length;
-                } else if (Array.isArray(response)) {
-                    this.data = response;
-                    this.totalRecords = response.length;
-                    this.filteredRecords = response.length;
-                } else {
-                    console.error("Unexpected response format:", response);
-                    this.data = [];
-                    this.totalRecords = 0;
-                    this.filteredRecords = 0;
-                }
-
-                // Clear cache when data changes for performance
-                this.clearCellContentCache();
-            } catch (error) {
-                console.error("Error fetching data:", error);
-                this.data = [];
-                this.totalRecords = 0;
-                this.filteredRecords = 0;
-            } finally {
-                this.load = false;
-            }
-        },
-
-        buildApiParams() {
-            const params = {
-                perPage: this.perPage,
-                page: this.currentPage,
-                search: this.searchQuery,
-            };
-
-            if (this.currentSort) {
-                params.sort = `${this.currentSort}|${this.sortDirection}`;
-            }
-
-            // Add active filters to API parameters
-            if (this.activeFilters && this.activeFilters.length > 0) {
-                // Separate filters by filterType
-                const standardFilters = []; // filters with filterType "filter" or "filterOr"
-                const specialFilters = {}; // filters with other filterTypes (filterWhereRelation, filterIn, etc.)
-
-                this.activeFilters.forEach((filter) => {
-                    const filterType = filter.filterType || "filter";
-
-                    if (filterType === "filter" || filterType === "filterOr") {
-                        // Standard filters that participate in AND/OR logic
-                        standardFilters.push(filter);
-                    } else {
-                        // Special filters that are always AND and sent to specific API parameters
-                        if (!specialFilters[filterType]) {
-                            specialFilters[filterType] = [];
-                        }
-                        specialFilters[filterType].push(filter);
-                    }
-                });
-
-                // Handle standard filters (filter/filterOr) with AND/OR logic
-                if (standardFilters.length > 0) {
-                    const completeFilterArray = [];
-                    standardFilters.forEach((filter) => {
-                        // Build filter value with type information
-                        let filterValue;
-                        let filterOperator = "="; // Default operator
-
-                        if (filter.type === "integer" || filter.type === "boolean") {
-                            filterValue = `${filter.value}-${filter.type}`;
-                        } else if (filter.type === "null") {
-                            filterValue = `-${filter.type}`;
-                            filterOperator = "!="; // Use != for null type
-                        } else {
-                            // For string and other types, keep original format
-                            filterValue = filter.value;
-                        }
-
-                        completeFilterArray.push(
-                            `${filter.key}|${filterValue}|${filterOperator}`
-                        );
-                    });
-
-                    // Build the complete filter string with operators
-                    let completeFilterString = "";
-                    if (completeFilterArray.length === 1) {
-                        completeFilterString = completeFilterArray[0];
-                    } else {
-                        completeFilterString = completeFilterArray[0];
-                        for (let i = 1; i < completeFilterArray.length; i++) {
-                            const operator = this.filterOperators[i - 1] || "&&";
-                            completeFilterString += operator + completeFilterArray[i];
-                        }
-                    }
-
-                    // Determine which parameter to use based on the dominant filterType
-                    const hasFilterOr = standardFilters.some(
-                        (f) => f.filterType === "filterOr"
-                    );
-                    const parameterName = hasFilterOr ? "filterOr" : "filter";
-                    params[parameterName] = completeFilterString;
-                }
-
-                // Handle special filters (always AND, sent to their specific API parameters)
-                Object.keys(specialFilters).forEach((filterType) => {
-                    const filtersForType = specialFilters[filterType];
-                    const filterArray = [];
-
-                    filtersForType.forEach((filter) => {
-                        // Build filter value with type information
-                        let filterValue;
-                        let filterOperator = "="; // Default operator
-
-                        if (filter.type === "integer" || filter.type === "boolean") {
-                            filterValue = `${filter.value}-${filter.type}`;
-                        } else if (filter.type === "null") {
-                            filterValue = `-${filter.type}`;
-                            filterOperator = "!="; // Use != for null type
-                        } else {
-                            // For string and other types, keep original format
-                            filterValue = filter.value;
-                        }
-
-                        filterArray.push(`${filter.key}|${filterValue}|${filterOperator}`);
-                    });
-
-                    // Special filters are always combined with AND
-                    if (filterArray.length === 1) {
-                        params[filterType] = filterArray[0];
-                    } else {
-                        let filterString = filterArray[0];
-                        for (let i = 1; i < filterArray.length; i++) {
-                            filterString += "&&" + filterArray[i];
-                        }
-                        params[filterType] = filterString;
-                    }
-                });
-            }
-
-            // Merge with apiParams, but handle filter parameters specially
-            const finalParams = { ...this.apiParams, ...params };
-
-            // If there's a base filter from apiParams and user filters with the same key, combine them
-            // Loop through all possible filter types (filter, status_filter, etc.)
-            Object.keys(this.apiParams).forEach((key) => {
-                // Check if this is a filter parameter (ends with 'filter' or is named 'filter')
-                if (key.includes("filter") && this.apiParams[key] && params[key]) {
-                    // Combine base filter with user filter using AND operator
-                    finalParams[key] = this.apiParams[key] + "&&" + params[key];
-                }
-            });
-
-            return finalParams;
-        },
-
-        sortBy(column) {
-            if (this.currentSort === column) {
-                // Toggle sort direction if same column
-                this.sortDirection = this.sortDirection === "asc" ? "desc" : "asc";
-            } else {
-                // Set new sort column with ascending direction
-                this.currentSort = column;
-                this.sortDirection = "asc";
-            }
-        },
-
-        // Enhanced dropdown methods
-        showAllColumns() {
-            const newVisibleColumns = [...this.visibleColumns];
-            for (let i = 2; i < newVisibleColumns.length; i++) {
-                newVisibleColumns[i] = true;
-            }
-            this.visibleColumns = newVisibleColumns;
-        },
-
-        hideAllColumns() {
-            const newVisibleColumns = [...this.visibleColumns];
-            for (let i = 2; i < newVisibleColumns.length; i++) {
-                newVisibleColumns[i] = false;
-            }
-            this.visibleColumns = newVisibleColumns;
-        },
-
-        toggleDropdown(event) {
-            console.log(
-                "toggleDropdown called, current showDropdown:",
-                this.showDropdown
-            );
-            this.showDropdown = !this.showDropdown;
-            console.log(
-                "toggleDropdown after toggle, showDropdown:",
-                this.showDropdown
-            );
-
-            if (this.showDropdown) {
-                this.$nextTick(() => {
-                    const dropdown = this.$refs.dropdownMenu;
-                    console.log("Dropdown menu element:", dropdown);
-                    if (dropdown) {
-                        console.log(
-                            "Dropdown computed styles:",
-                            window.getComputedStyle(dropdown)
-                        );
-                    }
-                });
-            }
-        },
-
-        handleClickOutside(event) {
-            const dropdown = this.$refs.dropdownMenu?.parentElement; // Get the dropdown container
-            if (dropdown && !dropdown.contains(event.target)) {
-                this.showDropdown = false;
-            }
-        },
-        toggleFilter() {
-            this.showFilter = !this.showFilter;
-        },
-        toggleColumn(index) {
-            // Don't allow toggling the first two columns (checkbox and row number)
-            if (index <= 1) {
-                return;
-            }
-            // Toggle visibility for the column at the given index using array spread for reactivity
-            const newVisibleColumns = [...this.visibleColumns];
-            newVisibleColumns[index] = !newVisibleColumns[index];
-            this.visibleColumns = newVisibleColumns;
-        },
-
-        openForm() {
-            this.$emit("add-new");
-            this.$emit("flip-page"); // Emit flip event to trigger page rotation
-            if (this.openForm) {
-                this.openForm({});
-            }
-        },
-
-        editItem(item) {
-            this.$emit("edit-item", item);
-            if (this.editItem) {
-                this.editItem(item);
-            }
-        },
-
-        toggleModal() {
-            this.file_columns = [];
-            this.database_columns = [];
-            this.fields = [];
-            this.showModal = !this.showModal;
-        },
-
-        handleFileUpload(event) {
-            this.file = event.target.files[0];
-        },
-
-        async handleImport() {
-            const formData = new FormData();
-            formData.append("file", this.file);
-            try {
-                const response = await this.api.fetchFileData(formData, {}, false);
-                this.file_columns = response.data.file_columns;
-                this.database_columns = response.data.database_columns;
-            } catch (error) {
-                console.error("Error importing file:", error);
-            }
-        },
-
-        // async saveImportedData() {
-        //   try {
-        //     await this.api.importFileData(this.fields, {}, false);
-        //     this.file_columns = [];
-        //     this.database_columns = [];
-        //     this.fields = [];
-        //     this.toggleModal();
-        //     this.fetchData();
-        //   } catch (error) {
-        //     console.error("Error importing file:", error);
-        //   }
-        // },
-
-        async deleteItem(data) {
-            try {
-                await this.api.delete(0, [data.id].map(String));
-                this.fetchData();
-            } catch (error) {
-                console.error("Error deleting item:", error);
-            }
-        },
-
-        async multiDelete() {
-            if (this.selected.length === 0) {
-                alert("Please select items to delete");
-                return;
-            }
-            try {
-                await this.api.delete(0, this.selected.map(String));
-                this.selected = [];
-                this.fetchData();
-            } catch (error) {
-                console.error("Error deleting items:", error);
-            }
-        },
-
-        refreshTable() {
-            this.fetchData();
-        },
-
-        // Filter-related methods
-        openFilterModal() {
-            // Check if filters are available
-            if (!this.filters || this.filters.length === 0) {
-                // Show a notification or do nothing
-                console.warn("No filters available for this module");
-                // Optional: Show a toast notification
-                // this.$notify({
-                //   type: "warning",
-                //   text: "No filters are configured for this module"
-                // });
-                return;
-            }
-            this.isFilterOpen = true;
-        },
-
-        closeFilterModal() {
-            this.isFilterOpen = false;
-        },
-
-        onFilterApplied(filterData) {
-            // Legacy method - now works with array format
-            const existingIndex = this.activeFilters.findIndex(
-                (f) => f.key === filterData.key
-            );
-            if (existingIndex >= 0) {
-                this.activeFilters[existingIndex] = filterData;
-            } else {
-                this.activeFilters.push(filterData);
-            }
-
-            // If we're already on page 1, we need to manually fetch data
-            if (this.currentPage === 1) {
-                this.fetchData();
-            } else {
-                this.currentPage = 1; // This will trigger fetchData via watcher
-            }
-        },
-
-        onFilterRemoved(filterData) {
-            // Legacy method - now works with array format
-            this.activeFilters = this.activeFilters.filter(
-                (f) => !(f.key === filterData.key && f.value === filterData.value)
-            );
-
-            // If we're already on page 1, we need to manually fetch data
-            if (this.currentPage === 1) {
-                this.fetchData();
-            } else {
-                this.currentPage = 1; // This will trigger fetchData via watcher
-            }
-        },
-
-        onFiltersCleared() {
-            this.activeFilters = [];
-            this.filterOperators = []; // Reset operators array
-            // If we're already on page 1, we need to manually fetch data
-            if (this.currentPage === 1) {
-                this.fetchData();
-            } else {
-                this.currentPage = 1; // This will trigger fetchData via watcher
-            }
-        },
-
-        onOperatorsChanged(operators) {
-            this.filterOperators = operators;
-            // If we're already on page 1, we need to manually fetch data
-            if (this.currentPage === 1) {
-                this.fetchData();
-            } else {
-                this.currentPage = 1; // This will trigger fetchData via watcher
-            }
-        },
-
-        onFiltersSaved(filtersData) {
-            // Store active filters as array (supporting multiple selections of same type)
-            this.activeFilters = filtersData.filters || [];
-            this.filterOperators = filtersData.operators || [];
-
-            // If we're already on page 1, we need to manually fetch data
-            // If we're not on page 1, setting currentPage will trigger the watcher
-            if (this.currentPage === 1) {
-                this.fetchData();
-            } else {
-                this.currentPage = 1; // This will trigger fetchData via watcher
-            }
-
-            // Optional: Show success message
-            console.log("Filters saved and applied:", filtersData);
-        },
-
-        // Keep for backward compatibility
-        onOperatorChanged(operator) {
-            // Convert single operator to array format
-            this.filterOperators = [operator];
-            // If we're already on page 1, we need to manually fetch data
-            if (this.currentPage === 1) {
-                this.fetchData();
-            } else {
-                this.currentPage = 1; // This will trigger fetchData via watcher
-            }
-        },
-
-        // Drag and Drop Methods
-        onDragStart(event, orderIndex, columnIndex) {
-            this.draggingIndex = orderIndex;
-            event.dataTransfer.effectAllowed = "move";
-            event.dataTransfer.setData("text/plain", orderIndex.toString());
-
-            // Add visual feedback
-            event.target.style.opacity = "0.5";
-        },
-
-        onDragOver(event, targetIndex) {
-            this.dragOverIndex = targetIndex;
-        },
-
-        onDrop(event, targetIndex) {
-            event.preventDefault();
-            const sourceIndex = parseInt(event.dataTransfer.getData("text/plain"));
-
-            if (sourceIndex !== targetIndex && sourceIndex !== null) {
-                this.reorderColumns(sourceIndex, targetIndex);
-            }
-
-            // Reset drag state
-            this.draggingIndex = null;
-            this.dragOverIndex = null;
-
-            // Reset visual feedback
-            const draggedElement = event.target.closest(".column-item");
-            if (draggedElement) {
-                draggedElement.style.opacity = "1";
-            }
-        },
-
-        onDragEnd(event) {
-            // Reset visual feedback
-            event.target.style.opacity = "1";
-            this.draggingIndex = null;
-            this.dragOverIndex = null;
-        },
-
-        reorderColumns(fromIndex, toIndex) {
-            const newOrder = [...this.orderedColumnIndexes];
-            const [movedItem] = newOrder.splice(fromIndex, 1);
-            newOrder.splice(toIndex, 0, movedItem);
-
-            this.columnOrder = newOrder;
-        },
-
-        // Column Order Persistence Methods
-        getStorageKey() {
-            // Create a unique key based on the table ID and column structure
-            const columnTitles = this.processedColumns
-                .map((col) => col.title)
-                .join("|");
-            return `datatable_column_order_${this.id}_${btoa(columnTitles).slice(
-                0,
-                10
-            )}`;
-        },
-
-        saveColumnOrder() {
-            try {
-                const storageKey = this.getStorageKey();
-                localStorage.setItem(storageKey, JSON.stringify(this.columnOrder));
-            } catch (error) {
-                console.warn("Failed to save column order to localStorage:", error);
-            }
-        },
-
-        loadColumnOrder() {
-            try {
-                const storageKey = this.getStorageKey();
-                const savedOrder = localStorage.getItem(storageKey);
-
-                if (savedOrder) {
-                    const parsedOrder = JSON.parse(savedOrder);
-
-                    // Validate that the saved order matches current column structure
-                    if (
-                        parsedOrder.length === this.processedColumns.length &&
-                        parsedOrder.every((index) => index < this.processedColumns.length)
-                    ) {
-                        this.columnOrder = parsedOrder;
-                        return;
-                    }
-                }
-            } catch (error) {
-                console.warn("Failed to load column order from localStorage:", error);
-            }
-
-            // Initialize with default order if loading fails or no saved order exists
-            this.columnOrder = Array.from(
-                { length: this.processedColumns.length },
-                (_, i) => i
-            );
-        },
-
-        resetColumnOrder() {
-            // Reset to default order
-            this.columnOrder = Array.from(
-                { length: this.processedColumns.length },
-                (_, i) => i
-            );
-
-            // Clear from localStorage
-            try {
-                const storageKey = this.getStorageKey();
-                localStorage.removeItem(storageKey);
-            } catch (error) {
-                console.warn("Failed to remove column order from localStorage:", error);
-            }
-        },
-
-        // Truncate functionality methods with performance optimization
-        getCellValue(row, column) {
-            if (!column?.data) return "";
-            return row[column.data] ?? "";
-        },
-
-        // Strip HTML tags and decode entities for display
-        stripHtmlTags(content) {
-            if (!content) return "";
-
-            const stringContent =
-                typeof content === "string" ? content : String(content);
-
-            // Remove HTML tags and decode common entities
-            return stringContent
-                .replace(/<[^>]*>/g, "") // Remove HTML tags
-                .replace(/&nbsp;/g, " ") // Replace &nbsp; with space
-                .replace(/&amp;/g, "&") // Replace &amp; with &
-                .replace(/&lt;/g, "<") // Replace &lt; with <
-                .replace(/&gt;/g, ">") // Replace &gt; with >
-                .replace(/&quot;/g, '"') // Replace &quot; with "
-                .replace(/&#39;/g, "'") // Replace &#39; with '
-                .replace(/\s+/g, " ") // Replace multiple spaces with single space
-                .trim(); // Remove leading/trailing spaces
-        },
-
-        shouldTruncate(content) {
-            // Fast return for empty values
-            if (!content && content !== 0) return false;
-
-            // Strip HTML for length calculation
-            const cleanContent = this.stripHtmlTags(content);
-            return cleanContent.length > this.truncateLimit;
-        },
-
-        getTruncatedText(content) {
-            if (!content && content !== 0) return "";
-
-            // Strip HTML tags first for display
-            const cleanContent = this.stripHtmlTags(content);
-
-            // Create cache key for performance
-            const cacheKey = `${cleanContent}_${this.truncateLimit}`;
-            if (this.cellContentCache.has(cacheKey)) {
-                return this.cellContentCache.get(cacheKey);
-            }
-
-            const result =
-                cleanContent.length > this.truncateLimit
-                    ? cleanContent.substring(0, this.truncateLimit).trim()
-                    : cleanContent;
-
-            // Cache the result for better performance
-            this.cellContentCache.set(cacheKey, result);
-
-            return result;
-        },
-
-        showFullContent(title, content) {
-            this.modalContent.title = title || "Content Details";
-            // Show cleaned content in modal for better readability
-            this.modalContent.content = this.stripHtmlTags(content) || "";
-            this.showContentModal = true;
-
-            // Prevent body scroll when modal is open
-            document.body.style.overflow = "hidden";
-
-            // Add escape key listener
-            document.addEventListener("keydown", this.handleEscapeKey);
-        },
-
-        closeContentModal() {
-            this.showContentModal = false;
-            this.modalContent.title = "";
-            this.modalContent.content = "";
-
-            // Restore body scroll
-            document.body.style.overflow = "";
-
-            // Remove escape key listener
-            document.removeEventListener("keydown", this.handleEscapeKey);
-        },
-
-        handleEscapeKey(event) {
-            if (event.key === "Escape" && this.showContentModal) {
-                this.closeContentModal();
-            }
-        },
-
-        // Clear cache when data changes to prevent memory leaks
-        clearCellContentCache() {
-            this.cellContentCache.clear();
-        },
+          }
+          const hasFilterOr = standardFilters.some((f) => f.filterType === "filterOr");
+          params[hasFilterOr ? "filterOr" : "filter"] = completeFilterString;
+        }
+        Object.keys(specialFilters).forEach((filterType) => {
+          const filtersForType = specialFilters[filterType];
+          const filterArray = [];
+          filtersForType.forEach((filter) => {
+            let filterValue; let filterOperator = "=";
+            if (filter.type === "integer" || filter.type === "boolean") {
+              filterValue = `${filter.value}-${filter.type}`;
+            } else if (filter.type === "null") {
+              filterValue = `-${filter.type}`; filterOperator = "!=";
+            } else { filterValue = filter.value; }
+            filterArray.push(`${filter.key}|${filterValue}|${filterOperator}`);
+          });
+          if (filterArray.length === 1) {
+            params[filterType] = filterArray[0];
+          } else {
+            let filterString = filterArray[0];
+            for (let i = 1; i < filterArray.length; i++) filterString += "&&" + filterArray[i];
+            params[filterType] = filterString;
+          }
+        });
+      }
+      const finalParams = { ...this.apiParams, ...params };
+      Object.keys(this.apiParams).forEach((key) => {
+        if (key.includes("filter") && this.apiParams[key] && params[key]) {
+          finalParams[key] = this.apiParams[key] + "&&" + params[key];
+        }
+      });
+      return finalParams;
     },
+    sortBy(column) {
+      if (this.currentSort === column) {
+        this.sortDirection = this.sortDirection === "asc" ? "desc" : "asc";
+      } else { this.currentSort = column; this.sortDirection = "asc"; }
+    },
+    showAllColumns() {
+      const newVisibleColumns = [...this.visibleColumns];
+      for (let i = 2; i < newVisibleColumns.length; i++) newVisibleColumns[i] = true;
+      this.visibleColumns = newVisibleColumns;
+    },
+    hideAllColumns() {
+      const newVisibleColumns = [...this.visibleColumns];
+      for (let i = 2; i < newVisibleColumns.length; i++) newVisibleColumns[i] = false;
+      this.visibleColumns = newVisibleColumns;
+    },
+    toggleDropdown(event) { this.showDropdown = !this.showDropdown; },
+    handleClickOutside(event) {
+      this.openMenuId = null;
+      this.showExportDropdown = false;
+      this.showDropdown = false;
+    },
+    toggleFilter() { this.showFilter = !this.showFilter; },
+    toggleColumn(index) {
+      if (index <= 1) return;
+      const newVisibleColumns = [...this.visibleColumns];
+      newVisibleColumns[index] = !newVisibleColumns[index];
+      this.visibleColumns = newVisibleColumns;
+    },
+    openFilterModal() {
+      if (!this.filters || this.filters.length === 0) return;
+      this.isFilterOpen = true;
+    },
+    closeFilterModal() { this.isFilterOpen = false; },
+    onFilterApplied(filterData) {
+      const existingIndex = this.activeFilters.findIndex((f) => f.key === filterData.key);
+      if (existingIndex >= 0) { this.activeFilters[existingIndex] = filterData; } else { this.activeFilters.push(filterData); }
+      if (this.currentPage === 1) { this.fetchData(); } else { this.currentPage = 1; }
+    },
+    onFilterRemoved(filterData) {
+      this.activeFilters = this.activeFilters.filter((f) => !(f.key === filterData.key && f.value === filterData.value));
+      if (this.currentPage === 1) { this.fetchData(); } else { this.currentPage = 1; }
+    },
+    onFiltersCleared() {
+      this.activeFilters = []; this.filterOperators = [];
+      if (this.currentPage === 1) { this.fetchData(); } else { this.currentPage = 1; }
+    },
+    onOperatorsChanged(operators) {
+      this.filterOperators = operators;
+      if (this.currentPage === 1) { this.fetchData(); } else { this.currentPage = 1; }
+    },
+    onFiltersSaved(filtersData) {
+      this.activeFilters = filtersData.filters || []; this.filterOperators = filtersData.operators || [];
+      if (this.currentPage === 1) { this.fetchData(); } else { this.currentPage = 1; }
+    },
+    onOperatorChanged(operator) {
+      this.filterOperators = [operator];
+      if (this.currentPage === 1) { this.fetchData(); } else { this.currentPage = 1; }
+    },
+    getStorageKey() {
+      const columnTitles = this.processedColumns.map((col) => col.title).join("|");
+      return `datatable_column_order_${this.id}_${btoa(columnTitles).slice(0, 10)}`;
+    },
+    saveColumnOrder() {
+      try { localStorage.setItem(this.getStorageKey(), JSON.stringify(this.columnOrder)); } catch (error) {}
+    },
+    loadColumnOrder() {
+      try {
+        const savedOrder = localStorage.getItem(this.getStorageKey());
+        if (savedOrder) {
+          const parsedOrder = JSON.parse(savedOrder);
+          if (parsedOrder.length === this.processedColumns.length &&
+            parsedOrder.every((index) => index < this.processedColumns.length)) {
+            this.columnOrder = parsedOrder; return;
+          }
+        }
+      } catch (error) {}
+      this.columnOrder = Array.from({ length: this.processedColumns.length }, (_, i) => i);
+    },
+    resetColumnOrder() {
+      this.columnOrder = Array.from({ length: this.processedColumns.length }, (_, i) => i);
+      try { localStorage.removeItem(this.getStorageKey()); } catch (error) {}
+    },
+    getCellValue(row, column) { if (!column?.data) return ""; return row[column.data] ?? ""; },
+    stripHtmlTags(content) {
+      if (!content) return "";
+      return String(content)
+        .replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&")
+        .replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'").replace(/\s+/g, " ").trim();
+    },
+    shouldTruncate(content) {
+      if (!content && content !== 0) return false;
+      return this.stripHtmlTags(content).length > this.truncateLimit;
+    },
+    getTruncatedText(content) {
+      if (!content && content !== 0) return "";
+      const cleanContent = this.stripHtmlTags(content);
+      const cacheKey = `${cleanContent}_${this.truncateLimit}`;
+      if (this.cellContentCache.has(cacheKey)) return this.cellContentCache.get(cacheKey);
+      const result = cleanContent.length > this.truncateLimit
+        ? cleanContent.substring(0, this.truncateLimit).trim() : cleanContent;
+      this.cellContentCache.set(cacheKey, result);
+      return result;
+    },
+    showFullContent(title, content) {
+      this.modalContent.title = title || "Content Details";
+      this.modalContent.content = this.stripHtmlTags(content) || "";
+      this.showContentModal = true;
+      document.body.style.overflow = "hidden";
+      document.addEventListener("keydown", this.handleEscapeKey);
+    },
+    closeContentModal() {
+      this.showContentModal = false; this.modalContent.title = ""; this.modalContent.content = "";
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", this.handleEscapeKey);
+    },
+    handleEscapeKey(event) { if (event.key === "Escape" && this.showContentModal) this.closeContentModal(); },
+    clearCellContentCache() { this.cellContentCache.clear(); },
+    async deleteItem(data) {
+      try { await this.api.delete(0, [data.id].map(String)); this.fetchData(); } catch (error) {}
+    },
+    async multiDelete() {
+      if (this.selected.length === 0) { alert("Please select items to delete"); return; }
+      try { await this.api.delete(0, this.selected.map(String)); this.selected = []; this.fetchData(); } catch (error) {}
+    },
+    refreshTable() { this.fetchData(); },
+    reorderColumns(fromIndex, toIndex) {
+      const newOrder = [...this.orderedColumnIndexes];
+      const [movedItem] = newOrder.splice(fromIndex, 1);
+      newOrder.splice(toIndex, 0, movedItem);
+      this.columnOrder = newOrder;
+    },
+    onDragStart(event, orderIndex) {
+      this.draggingIndex = orderIndex; event.dataTransfer.effectAllowed = "move";
+      event.dataTransfer.setData("text/plain", orderIndex.toString());
+      event.target.style.opacity = "0.5";
+    },
+    onDragOver(event, targetIndex) { this.dragOverIndex = targetIndex; },
+    onDrop(event, targetIndex) {
+      event.preventDefault();
+      const sourceIndex = parseInt(event.dataTransfer.getData("text/plain"));
+      if (sourceIndex !== targetIndex && sourceIndex !== null) this.reorderColumns(sourceIndex, targetIndex);
+      this.draggingIndex = null; this.dragOverIndex = null;
+      const draggedElement = event.target.closest(".column-item");
+      if (draggedElement) draggedElement.style.opacity = "1";
+    },
+    onDragEnd(event) { event.target.style.opacity = "1"; this.draggingIndex = null; this.dragOverIndex = null; },
+  },
 };
 </script>
 
 <style scoped>
-/* Table cell styling to fit content width */
-.table-cell-content {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-    display: block;
-}
-
-.main-btn {
-    background-color: #6e3894;
-    color: #ffffff;
-    border-radius: 10px;
-    padding: 5px 10px;
-    font-size: 14px;
-    text-transform: capitalize !important;
-    border: 1px solid #6e3894;
-    height: 30px;
-    font-weight: 500;
-}
-
-.secondary-btn {
-    color: #43235c;
-    border-radius: 10px;
-    padding: 5px 10px;
-    font-size: 14px;
-    text-transform: capitalize !important;
-    border: 1px solid #6e3894;
-    height: 30px;
-    font-weight: 500;
-}
-
-/* Pagination info styling */
-.pagination-info {
-    display: flex;
-    align-items: center;
-    padding-left: 0.5rem;
-}
-
-.pagination-info span {
-    color: #6c757d;
-    font-size: 0.875rem;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-}
-
-.icon-add {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 18px;
-    height: 18px;
-}
-
-.search-section {
-    margin-bottom: 2rem;
-    background: #f5f5f5;
-    padding: 8px;
-    border-radius: 10px;
-}
-
-.search-wrapper {
-    position: relative;
-    width: 100%;
-}
-
-.search-field {
-    width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    font-size: 14px;
-    height: 38px;
-    background: var(--white) !important;
-}
-
-.icon-right {
-    position: absolute;
-    right: 18px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-}
-
-.filter-btn {
-    background-color: #6e3894;
-    color: #ffffff;
-    border-radius: 10px;
-    padding: 5px 10px;
-    font-size: 12px;
-    font-weight: 500;
-    text-transform: capitalize !important;
-    border: 1px solid #6e3894;
-    height: 25px;
-    transition: all 0.2s ease;
-}
-
-.filter-btn:hover {
-    background-color: #5a2d76;
-    transform: translateY(-1px);
-}
-
-.filter-btn-disabled {
-    background-color: #6e3894 !important;
-    border-color: #9ca3af !important;
-    cursor: not-allowed !important;
-    opacity: 0.7;
-    display: none !important;
-}
-
-.filter-btn-disabled:hover {
-    background-color: #6e3894 !important;
-    transform: none !important;
-}
-
-.no-filters-indicator {
-    color: #fbbf24;
-    font-size: 10px;
-}
-
-.input-actions .d-flex {
-    align-items: center;
-    height: 35px;
-    background: #f8f9fa;
-    padding: 0 8px;
-    border-radius: 6px;
-    border: 1px solid #dee2e6;
-}
-
-.custom-select {
-    background: transparent;
-    font-size: 14px;
-    font-weight: 500 !important;
-    padding: 4px;
-    color: #43235c !important;
-    border-radius: 5px !important;
-    cursor: pointer;
-    width: auto;
-    border: 1px solid #6e3894 !important;
-}
-
-.form-select:focus {
-    border-color: #86b7fe;
-    outline: 0;
-    box-shadow: 0 0 0 0 transparent;
-}
-
-.page-link:focus {
-    z-index: 3;
-    color: var(--bs-pagination-focus-color);
-    background-color: var(--bs-pagination-focus-bg);
-    outline: 0;
-    box-shadow: var(--bs-pagination-focus-box-shadow);
-}
-
-.page-link {
-    border: 1px solid transparent !important;
-}
-
-.page-link:focus {
-    box-shadow: unset !important;
-}
-
-.pagination-button.prev {
-    border: 1px solid #eff1f4 !important;
-}
-
-.pagination-button.next {
-    border: 1px solid #eff1f4 !important;
-}
-
-.table-bordered> :not(caption)>* {
-    border-width: 1px !important;
-}
-
-.table-bordered> :not(caption)>*>* {
-    border-width: 0px !important;
-}
-
-.table> :not(caption)>*>* {
-    color: #121212 !important;
-    font-weight: 500;
-}
-
-/* Custom Table Styles */
-.container-table {
-    border-radius: 10px;
-    border: 1px solid #d9d9d9;
-}
-
-.custom-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #fff;
-    border-radius: 12px;
-    overflow: hidden;
-    border: none;
-    margin-bottom: 0px;
-}
-
-.custom-table thead {
-    padding: 0px 16px;
-    position: relative;
-}
-
-.custom-table thead th {
-    background: #fafbfb;
-    padding: 8px;
-    width: auto;
-    columns: #000000;
-    text-align: start;
-    vertical-align: middle;
-    border: none;
-    font-weight: 700;
-    font-size: 0.9rem;
-    letter-spacing: 0.8px;
-    text-transform: capitalize;
-    user-select: none;
-    position: relative;
-    transition: all 0.3s ease;
-    border: none;
-}
-
-.custom-table tbody tr:first-child {
-    border-top: 0px !important;
-}
-
-.custom-table tbody tr {
-    border-top: 1px solid #00000033 !important;
-}
-
-.custom-table tbody td {
-    padding-bottom: 0px;
-    text-align: start;
-    vertical-align: middle;
-    transition: all 0.3s ease;
-    background: #fff;
-    border-left: none;
-    border-right: none;
-    border-top: none;
-}
-
-.custom-table tbody tr:hover {
-    background: linear-gradient(135deg,
-            rgba(68, 34, 92, 0.08) 0%,
-            rgba(90, 45, 115, 0.08) 100%);
-    box-shadow: 0 2px 8px rgba(68, 34, 92, 0.15);
-    transition: background 0.2s ease, box-shadow 0.2s ease;
-    position: relative;
-    z-index: 1;
-}
-
-.custom-table tbody tr:hover td {
-    position: relative;
-    z-index: 1;
-}
-
-/* Ensure visibility styles are not overridden by hover effects */
-.custom-table tbody tr:hover td[style*="display: none"] {
-    display: none !important;
-}
-
-.custom-table tbody tr:hover th[style*="display: none"] {
-    display: none !important;
-}
-
-/* Table Controls */
-.table-controls {
-    padding-bottom: 1rem;
-}
-
-/* Pagination */
-.pagination {
-    margin-bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.pagination .page-link {
-    background: #fff;
-    color: #919191;
-    padding: 0.5rem;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    min-width: 44px;
-    justify-content: center;
-}
-
-.pagination .pagination-button {
-    display: flex;
-    background: #6e3894;
-    width: 35px;
-    height: 35%;
-    border-radius: 50%;
-    color: #fff;
-}
-
-.pagination .page-link:hover {
-    transform: translateY(-2px);
-    background: #eff1f4;
-    font-weight: 700;
-}
-
-.pagination .page-item.active .page-link {
-    font-weight: 700;
-    color: #43235c;
-    border-color: #6e3894;
-    transform: translateY(-1px);
-}
-
-.pagination .page-item.disabled .page-link {
-    background: #f8f9fa;
-    border-color: #dee2e6;
-    color: #adb5bd;
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
 .loader {
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    box-sizing: border-box;
-    border-top: 4px solid #444;
-    border-left: 4px solid #444;
-    border-right: 4px solid transparent;
-    animation: loader 0.7s infinite linear;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  box-sizing: border-box;
+  border-top: 3px solid #29457E;
+  border-left: 3px solid #29457E;
+  border-right: 3px solid transparent;
+  animation: loader 0.7s infinite linear;
 }
-
 @keyframes loader {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.text-primary {
-    color: #44225c !important;
-}
-
-/* Action Dropdown */
-.table-actions .dropdown-toggle {
-    font-size: 1.2rem;
-    padding: 0.5rem;
-    cursor: pointer;
-}
-
-.table-actions .dropdown-toggle::after {
-    display: none;
-}
-
-.table-actions .dropdown-menu {
-    min-width: 150px;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
-    border: 1px solid #dee2e6;
-    border-radius: 0.375rem;
-    z-index: 1000 !important;
-}
-
-.table-actions .dropdown-item {
-    padding: 0.5rem 1rem;
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: #212529;
-    border-top: 1px solid #efefef;
-}
-
-.table-actions .dropdown-item:first-child {
-    border-top: none;
-}
-
-.table-actions .dropdown-item:hover {
-    background-color: #f8f9fa;
-}
-
-.table-actions .dropdown-item i {
-    margin-right: 0.5rem;
-    width: 1rem;
-    text-align: center;
-}
-
-/* Modal Styles */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal-container {
-    background: #fff;
-    padding: 2rem;
-    border-radius: 8px;
-    min-width: 500px;
-    max-width: 90vw;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #dee2e6;
-}
-
-.modal-header h5 {
-    margin: 0;
-    color: #44225c;
-    font-weight: 600;
-}
-
-.modal-body .form-group {
-    margin-bottom: 1rem;
-}
-
-.modal-body .form-check {
-    margin-bottom: 0.5rem;
-}
-
-.modal-body .btn-primary {
-    background-color: #44225c;
-    border-color: #44225c;
-}
-
-.modal-body .btn-primary:hover {
-    background-color: #331845;
-    border-color: #331845;
-}
-
-/* Enhanced Column Visibility Dropdown Styles */
-.column-visibility-dropdown {
-    position: relative;
-    display: inline-block;
-    z-index: 999;
-}
-
-.visibility-toggle-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: #6e3894 !important;
-    border-radius: 10px;
-    padding: 8px 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-size: 14px;
-    font-weight: 500;
-    color: #374151;
-    height: 25px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.visibility-toggle-btn:focus {
-    outline: none;
-    border-color: #44225c;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-}
-
-.btn-text {
-    font-weight: 500;
-    color: inherit;
-}
-
-.dropdown-arrow {
-    transition: transform 0.2s ease;
-    color: #9ca3af;
-}
-
-.dropdown-arrow.rotated {
-    transform: rotate(180deg);
-}
-
-.column-visibility-dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.visibility-dropdown-menu {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    z-index: 999999;
-    min-width: 260px;
-    max-width: 90vw;
-    margin: 10px;
-    background: #f5f5f5;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-        0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    animation: dropdownSlideIn 0.15s ease-out;
-    backdrop-filter: blur(8px);
-}
-
-@keyframes dropdownSlideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px) scale(0.95);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-.dropdown-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 14px;
-    background: #f5f5f5;
-    border-radius: 12px 12px 0 0;
-}
-
-.dropdown-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: #000000;
-    margin: 0;
-}
-
-.header-actions {
-    display: flex;
-    gap: 6px;
-}
-
-.action-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    color: #6b7280;
-}
-
-.action-btn:hover {
-    background: #6366f1;
-    border-color: #6366f1;
-    color: #ffffff;
-    transform: scale(1.05);
-}
-
-.close-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    color: #6b7280;
-}
-
-.close-btn:hover {
-    background: #f87171;
-    border-color: #f87171;
-    color: #ffffff;
-    transform: scale(1.05);
-}
-
-.dropdown-content {
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.dropdown-content::-webkit-scrollbar {
-    width: 6px;
-}
-
-.dropdown-content::-webkit-scrollbar-track {
-    background: #f3f4f6;
-    border-radius: 3px;
-}
-
-.dropdown-content::-webkit-scrollbar-thumb {
-    background: #d1d5db;
-    border-radius: 3px;
-}
-
-.dropdown-content::-webkit-scrollbar-thumb:hover {
-    background: #9ca3af;
-}
-
-.column-list {
-    padding: 0 8px;
-}
-
-.column-item {
-    margin-bottom: 4px;
-}
-
-.column-checkbox {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
-    cursor: pointer;
-    border-radius: 10px;
-    transition: all 0.15s ease;
-    position: relative;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-    background-color: #ffffff;
-}
-
-.column-checkbox:hover {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    transform: translateX(2px);
-}
-
-.checkbox-input {
-    display: none;
-}
-
-.checkbox-custom {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 18px;
-    height: 18px;
-    background: #ffffff;
-    border: 2px solid #d1d5db;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-}
-
-.checkbox-input:checked+.checkbox-custom {
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-    border-color: #6366f1;
-    transform: scale(1.05);
-}
-
-.check-icon {
-    opacity: 0;
-    transform: scale(0.5);
-    transition: all 0.15s ease;
-}
-
-.checkbox-input:checked+.checkbox-custom .check-icon {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.column-name {
-    flex: 1;
-    font-size: 14px;
-    font-weight: 500;
-    color: #374151;
-    line-height: 1.4;
-}
-
-.column-badge {
-    background: #fee2e2;
-    color: #dc2626;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.dropdown-footer {
-    padding: 8px 4px;
-    background: #f5f5f5;
-    border-radius: 10px;
-}
-
-.footer-actions {
-    margin-bottom: 6px;
-}
-
-.action-buttons {
-    display: flex;
-    gap: 5px;
-    justify-content: center;
-    flex-wrap: nowrap;
-}
-
-.footer-action-btn {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    padding: 6px 6px;
-    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    font-size: 11px;
-    font-weight: 600;
-    color: #475569;
-    min-width: 100px;
-    justify-content: flex-start;
-    position: relative;
-    overflow: hidden;
-}
-
-.footer-action-btn::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg,
-            transparent,
-            rgba(255, 255, 255, 0.4),
-            transparent);
-    transition: left 0.5s;
-}
-
-.footer-action-btn:hover::before {
-    left: 100%;
-}
-
-.footer-action-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    border-color: transparent;
-}
-
-.reset-order {
-    width: 120px;
-}
-
-.btn-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    border-radius: 6px;
-    background: rgba(99, 102, 241, 0.1);
-    transition: all 0.3s ease;
-}
-
-.btn-icon svg {
-    width: 12px;
-    height: 12px;
-    flex-shrink: 0;
-    transition: transform 0.3s ease;
-}
-
-.footer-action-btn:hover .btn-icon svg {
-    transform: scale(1.1);
-}
-
-.btn-text {
-    font-weight: 600;
-    letter-spacing: 0.025em;
-}
-
-.footer-info {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.info-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 16px;
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    border-radius: 20px;
-    border: 1px solid #e2e8f0;
-}
-
-.info-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-    border-radius: 50%;
-    color: #ffffff;
-    flex-shrink: 0;
-}
-
-.info-icon svg {
-    width: 12px;
-    height: 12px;
-    stroke: currentColor;
-}
-
-.visible-count {
-    font-size: 13px;
-    font-weight: 500;
-    color: #475569;
-    letter-spacing: 0.025em;
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-    .visibility-toggle-btn {
-        background: #1f2937;
-        border-color: #374151;
-        color: #f9fafb;
-    }
-
-    .visibility-toggle-btn:hover {
-        background: #374151;
-        border-color: #6366f1;
-    }
-
-    .dropdown-header {
-        background: #f5f5f5;
-    }
-
-    .action-btn {
-        background: #374151;
-        border-color: #4b5563;
-        color: #9ca3af;
-    }
-
-    .column-name {
-        color: #f9fafb;
-    }
-
-    .checkbox-custom {
-        background: #374151;
-        border-color: #4b5563;
-    }
-
-    .visible-count {
-        background: #374151;
-        border-color: #4b5563;
-        color: #d1d5db;
-    }
-}
-
-/* Animation for checkbox */
-@keyframes checkboxCheck {
-    0% {
-        transform: scale(0.8);
-    }
-
-    50% {
-        transform: scale(1.1);
-    }
-
-    100% {
-        transform: scale(1);
-    }
-}
-
-/* Button hover animations */
-@keyframes buttonPulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
-    }
-
-    70% {
-        box-shadow: 0 0 0 10px rgba(99, 102, 241, 0);
-    }
-
-    100% {
-        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
-    }
-}
-
-.footer-action-btn:active {
-    transform: translateY(-1px) scale(0.98);
-    transition: all 0.1s ease;
-}
-
-.info-icon {
-    animation: glow 2s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
-    from {
-        box-shadow: 0 0 5px rgba(99, 102, 241, 0.5);
-    }
-
-    to {
-        box-shadow: 0 0 10px rgba(99, 102, 241, 0.8),
-            0 0 15px rgba(99, 102, 241, 0.6);
-    }
-}
-
-.checkbox-input:checked+.checkbox-custom {
-    animation: checkboxCheck 0.2s ease;
-}
-
-/* Focus styles for accessibility */
-.checkbox-input:focus+.checkbox-custom {
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-}
-
-.column-checkbox:focus-within {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .column-visibility-dropdown {
-        position: static;
-    }
-
-    .action-buttons {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .footer-action-btn {
-        min-width: 120px;
-        padding: 8px 12px;
-    }
-
-    .btn-text {
-        font-size: 12px;
-    }
-
-    .info-container {
-        padding: 6px 12px;
-    }
-
-    .visible-count {
-        font-size: 12px;
-    }
-
-    .table-controls .btn-group {
-        margin-top: 1rem;
-    }
-
-    .table-controls .btn-group .btn {
-        margin: 0.25rem;
-    }
-
-    .custom-table {
-        font-size: 0.8rem;
-    }
-
-    .custom-table thead th,
-    .custom-table tbody td {
-        padding: 10px 12px;
-    }
-
-    .modal-container {
-        min-width: 90vw;
-        margin: 1rem;
-    }
-
-    .search-wrapper {
-        position: relative;
-    }
-
-    .input-actions {
-        position: static;
-        transform: none;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-
-    .input-actions>div {
-        flex: 1;
-        min-width: 120px;
-    }
-
-    .dropdown-title {
-        font-size: 13px;
-    }
-
-    .column-name {
-        font-size: 13px;
-    }
-}
-
-.text-muted {
-    color: #6c757d;
-}
-
-.text-danger {
-    color: #dc3545;
-}
-
-.visually-hidden {
-    position: absolute !important;
-    width: 1px !important;
-    height: 1px !important;
-    padding: 0 !important;
-    margin: -1px !important;
-    overflow: hidden !important;
-    clip: rect(0, 0, 0, 0) !important;
-    white-space: nowrap !important;
-    border: 0 !important;
-}
-
-/* Table Responsive */
-.table-responsive {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
-.table-responsive .custom-table {
-    min-width: 800px;
-}
-
-.form-select {
-    padding: 1px !important;
-    text-align: center;
-}
-
-.table-striped>tbody>tr:nth-of-type(odd)>* {
-    --bs-table-color-type: transparent;
-    --bs-table-bg-type: transparent;
-}
-
-.column-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 8px;
-    padding: 12px;
-}
-
-.column-item {
-    margin-bottom: 0;
-}
-
-.checkbox-input {
-    display: none;
-}
-
-.checkbox-custom {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 16px;
-    height: 16px;
-    background: #ffffff;
-    border: 2px solid #d1d5db;
-    border-radius: 3px;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-}
-
-.checkbox-input:checked+.checkbox-custom {
-    background: #43235c;
-    border-color: #43235c;
-}
-
-.check-icon {
-    opacity: 0;
-    transform: scale(0.5);
-    transition: all 0.15s ease;
-}
-
-.checkbox-input:checked+.checkbox-custom .check-icon {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.column-name {
-    flex: 1;
-    font-size: 13px;
-    font-weight: 500;
-    color: #2d3748;
-    line-height: 1.3;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.column-badge {
-    background: #fee2e2;
-    color: #dc2626;
-    font-size: 10px;
-    font-weight: 600;
-    padding: 2px 6px;
-    border-radius: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-}
-
-@media (max-width: 768px) {
-    .column-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 6px;
-        padding: 8px;
-    }
-
-    .column-checkbox {
-        padding: 6px 8px;
-    }
-
-    .column-name {
-        font-size: 12px;
-    }
-}
-
-@media (max-width: 480px) {
-    .column-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .visibility-dropdown-menu {
-        width: 90vw;
-        max-width: 300px;
-    }
-}
-
-.search-container {
-    padding: 10px 16px;
-    border-radius: 10px;
-    background: #f8f8f8;
-}
-
-.custom-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-.custom-table tbody tr:nth-child(even) {
-    background-color: rgba(68, 34, 92, 0.02);
-}
-
-.custom-table tbody tr:hover {
-    background: linear-gradient(135deg,
-            rgba(68, 34, 92, 0.08) 0%,
-            rgba(90, 45, 115, 0.08) 100%);
-    box-shadow: 0 2px 8px rgba(68, 34, 92, 0.15);
-    transition: background 0.2s ease, box-shadow 0.2s ease;
-    position: relative;
-    z-index: 1;
-}
-
-.custom-table tbody tr:hover td {
-    position: relative;
-    z-index: 1;
-}
-
-.table-bordered> :not(caption)>* {
-    border-width: 0 !important;
-}
-
-.table-bordered> :not(caption)>*>* {
-    border-width: 0 !important;
-}
-
-.custom-table tbody tr:hover td[style*="display: none"] {
-    display: none !important;
-}
-
-.custom-table tbody tr:hover th[style*="display: none"] {
-    display: none !important;
-}
-
-.form-control {
-    border-radius: 10px !important;
-}
-
-:root {
-    --ck-border-radius: 10px !important;
-}
-
-.custom-table tbody td {
-    text-align: start;
-    vertical-align: middle;
-    min-width: 120px;
-    max-width: 300px;
-}
-
-.custom-table tbody td:first-child {
-    width: 50px;
-    min-width: 50px;
-    max-width: 50px;
-    text-align: start;
-}
-
-.custom-table tbody td:nth-child(2) {
-    width: 60px;
-    min-width: 60px;
-    max-width: 60px;
-    text-align: start;
-    font-weight: 600;
-    color: #6e3894;
-}
-
-.custom-table tbody td:last-child {
-    width: 100px;
-    min-width: 100px;
-    max-width: 100px;
-    text-align: center;
-}
-
-.custom-table tbody td.compact {
-    width: 80px;
-    min-width: 80px;
-    max-width: 80px;
-}
-
-/* Drag and Drop Styles */
-.column-item.draggable {
-    cursor: grab;
-    transition: all 0.2s ease;
-}
-
-.column-item.draggable:active {
-    cursor: grabbing;
-}
-
-.column-item.dragging {
-    opacity: 0.5;
-    transform: rotate(2deg);
-    z-index: 1000;
-}
-
-.column-item.drag-over {
-    border-top: 2px solid #6366f1;
-    margin-top: 2px;
-}
-
-.drag-handle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 16px;
-    height: 16px;
-    cursor: grab;
-    color: #9ca3af;
-    transition: color 0.2s ease;
-    flex-shrink: 0;
-}
-
-.drag-handle:hover {
-    color: #6b7280;
-}
-
-.drag-handle:active {
-    cursor: grabbing;
-}
-
-.column-item.draggable .column-checkbox:hover .drag-handle {
-    color: #374151;
-}
-
-/* Drag feedback animations */
-@keyframes dragPulse {
-
-    0%,
-    100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.02);
-    }
-}
-
-.column-item.drag-over {
-    animation: dragPulse 0.3s ease-in-out;
-}
-
-/* Enhanced action button styles */
-.header-actions {
-    display: flex;
-    gap: 6px;
-}
-
-.action-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    color: #6b7280;
-}
-
-.action-btn:hover {
-    background: #6366f1;
-    border-color: #6366f1;
-    color: #ffffff;
-    transform: scale(1.05);
-}
-
-/* Responsive adjustments for drag handle */
-@media (max-width: 768px) {
-    .drag-handle {
-        width: 14px;
-        height: 14px;
-    }
-
-    .column-checkbox {
-        gap: 6px;
-        padding: 6px 8px;
-    }
-}
-
-/* Enhanced Vuetify Actions Menu Styles */
-.actions-menu-btn {
-    background: none !important;
-    border: none !important;
-    padding: 8px !important;
-    cursor: pointer !important;
-    border-radius: 6px !important;
-    transition: all 0.2s ease !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-}
-
-.actions-menu-btn:hover {
-    background-color: rgba(0, 0, 0, 0.04) !important;
-    transform: scale(1.05);
-}
-
-.actions-menu-btn svg {
-    display: block;
-}
-
-.actions-menu-list {
-    border: 1px solid #e0e0e0 !important;
-    border-radius: 12px !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
-    overflow: hidden !important;
-    background: white !important;
-    padding: 5px 0 0 !important;
-    width: 15px !important;
-}
-
-.action-list-item {
-    padding: 4px 15px !important;
-    transition: all 0.2s ease !important;
-    cursor: pointer !important;
-    border-radius: 0 !important;
-    margin: 5px !important;
-}
-
-.action-list-item:hover {
-    background-color: #f5f5f5 !important;
-    border: 2px solid #6e3894 !important;
-    border-radius: 10px !important;
-}
-
-.action-title {
-    font-size: 14px !important;
-    font-weight: 500 !important;
-    letter-spacing: 0.025em !important;
-}
-
-/* Icon styling within menu items */
-.action-list-item .action-icon {
-    color: #6e3894 !important;
-    margin-right: 12px !important;
-}
-
-.action-list-item.delete-item .action-icon {
-    color: #d32f2f !important;
-}
-
-/* Custom styling to match the image design */
-.v-list-item--density-compact .v-list-item__prepend {
-    margin-inline-end: 5px !important;
-}
-
-/* Ensure proper spacing and alignment */
-.v-list-item__prepend .v-icon {
-    margin-right: 5px !important;
-}
-
-/* Custom divider styling */
-.actions-menu-list .v-divider {
-    margin: 0px 0 !important;
-    border-color: #f0f0f0 !important;
-}
-
-/* Ensure menu appears above other elements */
-.v-overlay__content {
-    z-index: 9999 !important;
-}
-
-/* Truncate Content Styles */
-.table-cell-content {
-    display: inline-flex;
-    align-items: baseline;
-    word-wrap: break-word;
-    word-break: break-word;
-    max-width: 100%;
-    line-height: 1.4;
-}
-
-.see-more-btn {
-    background: none;
-    border: none;
-    color: #6e3894;
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-    margin-left: 1px;
-    padding: 2px 4px;
-    text-decoration: underline;
-    transition: color 0.2s ease;
-    white-space: nowrap;
-    display: inline-block;
-    vertical-align: baseline;
-    text-decoration: none;
-}
-
-.see-more-btn:hover {
-    color: #000000 !important;
-    text-decoration: none;
-    border-radius: 3px;
-}
-
-.see-more-btn:focus {
-    outline: none;
-    border-radius: 2px;
-}
-
-/* Content Modal Styles */
-.content-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
-    padding: 20px;
-}
-
-.content-modal-container {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    max-width: 600px;
-    width: 100%;
-    max-height: 80vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.content-modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px 5px;
-    /* border-bottom: 1px solid #e5e7eb; */
-    background: #f5f5f5;
-}
-
-.content-modal-title {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
-    color: #1f2937;
-}
-
-.content-modal-close-btn {
-    background: none;
-    border: none;
-    color: #6b7280;
-    cursor: pointer;
-    padding: 4px;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.content-modal-close-btn:hover {
-    background-color: #f3f4f6;
-    color: #374151;
-}
-
-.content-modal-body {
-    padding: 15px 24px;
-    overflow-y: auto;
-    flex: 1;
-}
-
-.content-modal-text {
-    line-height: 1.6;
-    color: #374151;
-    font-size: 14px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    word-break: break-word;
-}
-
-.content-modal-footer {
-    padding: 16px 24px;
-    border-top: 1px solid #e5e7eb;
-    background: #f9fafb;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.content-modal-ok-btn {
-    background-color: #6e3894;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.content-modal-ok-btn:hover {
-    background-color: #5a2d76;
-}
-
-.content-modal-ok-btn:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(110, 56, 148, 0.2);
-}
-
-/* Responsive Design for Modal */
-@media (max-width: 768px) {
-    .content-modal-container {
-        max-width: 95%;
-        max-height: 90vh;
-        margin: 10px;
-    }
-
-    .content-modal-header,
-    .content-modal-body,
-    .content-modal-footer {
-        padding: 16px;
-    }
-
-    .content-modal-title {
-        font-size: 16px;
-    }
-}
-
-/* Animation for modal */
-.content-modal-overlay {
-    animation: fadeIn 0.2s ease-out;
-}
-
-.content-modal-container {
-    animation: slideIn 0.2s ease-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px) scale(0.95);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-/* Go to page input styling - Enhanced to match pagination */
-.pagination-label {
-    color: #919191;
-    font-weight: 600;
-    font-size: 0.9rem;
-    margin-right: 0.75rem;
-}
-
-.pagination-go-to-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: #fff;
-    border-radius: 10px;
-    padding: 0.25rem;
-    border: 1px solid #dee2e6;
-    transition: all 0.3s ease;
-}
-
-.pagination-go-to-wrapper:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(110, 56, 148, 0.15);
-    border-color: #6e3894;
-}
-
-.pagination-go-to-input {
-    border: none;
-    outline: none;
-    background: transparent;
-    width: 60px;
-    text-align: center;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #43235c;
-    padding: 0.375rem 0.25rem;
-}
-
-.pagination-go-to-input::placeholder {
-    color: #adb5bd;
-    font-weight: 500;
-}
-
-.pagination-go-to-input:focus {
-    color: #6e3894;
-}
-
-.pagination-go-to-btn {
-    background: #6e3894;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 0.375rem 0.75rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    min-width: 50px;
-}
-
-.pagination-go-to-btn:hover:not(:disabled) {
-    background: #5a2d76;
-    transform: translateY(-1px);
-}
-
-.pagination-go-to-btn:disabled {
-    background: #adb5bd;
-    cursor: not-allowed;
-    opacity: 0.6;
-    transform: none;
-}
-
-.v-list-item__prepend>.v-badge~.v-list-item__spacer,
-.v-list-item__prepend>.v-icon~.v-list-item__spacer,
-.v-list-item__prepend>.v-tooltip~.v-list-item__spacer {
-    width: 7px;
-}
-
-.form-switch .form-check-input:checked {
-    background-color: #255f0b !important;
-    border-color: #255f0b !important;
-}
-
-.m-rtl {
-    margin-left: 4px;
-    margin-right: 0;
-}
-
-[dir="rtl"] .m-rtl {
-    margin-left: 0px;
-    margin-right: 4px;
-}
-
-.m-rtl-md {
-    margin-left: 0px;
-    margin-right: 8px;
-}
-
-[dir="rtl"] .m-rtl-md {
-    margin-left: 8px;
-    margin-right: 0px;
-}
-
-[dir="rtl"] .v-list-item__prepend .v-icon {
-    margin-left: 5px !important;
-    margin-right: 0px !important;
-}
-
-.v-list-item__prepend .v-icon {
-    margin-left: 0px !important;
-    margin-right: 5px !important;
-}
-
-/* RTL Support for Table */
-[dir="rtl"] .custom-table {
-    direction: rtl;
-}
-
-[dir="rtl"] .custom-table thead th,
-[dir="rtl"] .custom-table tbody td {
-    text-align: center;
-}
-
-/* Ensure checkbox column stays on the right in RTL */
-[dir="rtl"] .custom-table tbody td:first-child,
-[dir="rtl"] .custom-table thead th:first-child {
-    text-align: center;
-}
-
-/* Ensure row number stays properly aligned */
-[dir="rtl"] .custom-table tbody td:nth-child(2),
-[dir="rtl"] .custom-table thead th:nth-child(2) {
-    text-align: center;
-}
-
-/* Actions column alignment in RTL */
-[dir="rtl"] .custom-table tbody td:last-child,
-[dir="rtl"] .custom-table thead th:last-child {
-    text-align: center;
-}
-
-/* RTL Support for table container */
-[dir="rtl"] .table-responsive {
-    direction: rtl;
-}
-
-/* Fix icon positions in RTL */
-[dir="rtl"] .icon-right {
-    right: auto;
-    left: 18px;
-}
-
-/* Sort indicator position in RTL */
-[dir="rtl"] .sort-indicator {
-    margin-left: 0;
-    margin-right: 0.25rem;
-}
-
-/* Dropdown menu position in RTL */
-[dir="rtl"] .visibility-dropdown-menu {
-    right: auto;
-    left: 0;
-}
-
-/* Action buttons alignment in RTL */
-[dir="rtl"] .table-controls .row {
-    direction: rtl;
-}
-
-/* Pagination RTL */
-[dir="rtl"] .pagination {
-    direction: rtl;
-}
-
-/* Cell content RTL */
-[dir="rtl"] .table-cell-content {
-    direction: rtl;
-    text-align: center;
-}
-
-/* See more button in RTL */
-[dir="rtl"] .see-more-btn {
-    margin-left: 0;
-    margin-right: 4px;
-}
-
-[dir="rtl"] .search-field {
-    text-align: end;
-}
-
-.justify-rtl {
-    justify-content: end;
-}
-
-[dir="rtl"] .justify-rtl {
-    justify-content: start;
-}
-
-[dir="rtl"] .table-controls .row {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-[dir="rtl"] .table-controls .col-4:nth-child(1) {
-    order: 5;
-    /* Import */
-}
-
-[dir="rtl"] .table-controls .col-4:nth-child(2) {
-    order: 4;
-    /* Export */
-}
-
-[dir="rtl"] .table-controls .col-4:nth-child(3) {
-    order: 3;
-    /* Add */
-}
-
-[dir="rtl"] .table-controls .col-4:nth-child(4) {
-    order: 2;
-    /* Configurations */
-}
-
-[dir="rtl"] .table-controls .col-4:nth-child(5) {
-    order: 1;
-    /* Link Requirement */
-}
-
-[dir="rtl"] .table-controls .col-4:nth-child(6) {
-    order: 6;
-    /* Statistics */
-}
-
-[dir="rtl"] .v-field__input {
-    text-align: end;
-}
-
-[dir="rtl"] .form-select {
-    text-align: end;
-}
-
-/* Export Dropdown Styles */
-.export-dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.export-dropdown-menu {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    margin-top: 4px;
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    min-width: 200px;
-    z-index: 1000;
-    overflow: hidden;
-    animation: slideDown 0.2s ease;
-}
-
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.export-option {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    color: #374151;
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.export-option:hover {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    color: #6e3894;
-}
-
-.export-option svg {
-    width: 16px;
-    height: 16px;
-    flex-shrink: 0;
-}
-
-.export-option:not(:last-child) {
-    border-bottom: 1px solid #f3f4f6;
-}
-
-/* Export Modal Styles */
-.export-modal {
-    max-width: 600px;
-    max-height: 80vh;
-    overflow-y: auto;
-}
-
-.column-selection-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 12px;
-    max-height: 400px;
-    overflow-y: auto;
-    padding: 12px;
-    background: #f9fafb;
-    border-radius: 8px;
-}
-
-.column-selection-grid::-webkit-scrollbar {
-    width: 6px;
-}
-
-.column-selection-grid::-webkit-scrollbar-track {
-    background: #f3f4f6;
-    border-radius: 3px;
-}
-
-.column-selection-grid::-webkit-scrollbar-thumb {
-    background: #d1d5db;
-    border-radius: 3px;
-}
-
-.column-selection-grid::-webkit-scrollbar-thumb:hover {
-    background: #9ca3af;
-}
-
-.export-column-item {
-    background: #ffffff;
-    border-radius: 6px;
-    padding: 8px;
-    transition: all 0.2s ease;
-}
-
-.export-column-item:hover {
-    background: #f3f4f6;
-    transform: translateY(-1px);
-}
-
-.export-column-checkbox {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    user-select: none;
-}
-
-.export-options {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
-}
-
-/* Button Styles for Export Modal */
-.btn {
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    border: none;
-}
-
-.btn-primary {
-    background: #6e3894;
-    color: white;
-    border: 1px solid #6e3894;
-}
-
-.btn-primary:hover:not(:disabled) {
-    background: #5a2d76;
-    transform: translateY(-1px);
-}
-
-.btn-primary:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-}
-
-.btn-secondary {
-    background: #f3f4f6;
-    color: #374151;
-    border: 1px solid #e5e7eb;
-}
-
-.btn-secondary:hover {
-    background: #e5e7eb;
-}
-
-.btn-outline-primary {
-    background: transparent;
-    color: #6e3894;
-    border: 1px solid #6e3894;
-}
-
-.btn-outline-primary:hover {
-    background: #6e3894;
-    color: white;
-}
-
-.btn-outline-secondary {
-    background: transparent;
-    color: #6b7280;
-    border: 1px solid #d1d5db;
-}
-
-.btn-outline-secondary:hover {
-    background: #f3f4f6;
-}
-
-.btn-sm {
-    padding: 6px 12px;
-    font-size: 13px;
-}
-
-.close-btn {
-    background: transparent;
-    border: none;
-    font-size: 24px;
-    color: #6b7280;
-    cursor: pointer;
-    padding: 0;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-}
-
-.close-btn:hover {
-    background: #f3f4f6;
-    color: #111827;
-}
-
-/* Modal Footer Styles */
-.modal-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-}
-
-/* Utility Classes */
-.mr-2 {
-    margin-right: 0.5rem;
-}
-
-.ml-2 {
-    margin-left: 0.5rem;
-}
-
-.mb-3 {
-    margin-bottom: 1rem;
-}
-
-.mt-4 {
-    margin-top: 1.5rem;
-}
-
-/* Export specific responsive styles */
-@media (max-width: 768px) {
-    .column-selection-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 6px;
-        padding: 8px;
-    }
-
-    .export-column-checkbox {
-        padding: 6px 8px;
-    }
-
-    .export-option {
-        padding: 10px 14px;
-        font-size: 13px;
-    }
-
-    .export-dropdown-menu {
-        min-width: 180px;
-    }
-}
-
-@media (max-width: 480px) {
-    .column-selection-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .export-modal {
-        max-width: 95vw;
-    }
-}
-
-/* PDF Dropdown Container */
-.pdf-dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-/* PDF Dropdown Menu */
-.pdf-dropdown-menu {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    margin-top: 4px;
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    min-width: 220px;
-    z-index: 1000;
-    overflow: hidden;
-    animation: slideDown 0.2s ease;
-}
-
-.pdf-option {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    color: #374151;
-    font-size: 14px;
-    font-weight: 500;
-}
-
-/* Hover Effect - Red Theme */
-.pdf-option:hover {
-    background: linear-gradient(135deg, #fff5f5 0%, #ffe5e5 100%);
-    color: #dc2626;
-    /* Red color for PDF */
-}
-
-/* SVG Icon Styling */
-.pdf-option svg {
-    width: 16px;
-    height: 16px;
-    flex-shrink: 0;
-    color: #dc2626;
-    /* Red color for PDF icon */
-}
-
-/* Border between options */
-.pdf-option:not(:last-child) {
-    border-bottom: 1px solid #f3f4f6;
+  to { transform: rotate(360deg); }
+}
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 </style>
