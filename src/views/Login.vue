@@ -1,7 +1,6 @@
 <template>
-  <v-app>
-    <v-main class="bg-gradient-to-br from-primary-700 to-primary-900 min-h-screen flex items-center justify-center">
-      <v-container>
+  <v-main class="bg-gradient-to-br from-primary-700 to-primary-900 min-h-screen flex items-center justify-center">
+    <v-container>
         <v-row justify="center">
           <v-col cols="12" sm="8" md="6" lg="4">
             <!-- Login Card -->
@@ -78,16 +77,10 @@
                 <a href="#" class="text-primary font-semibold hover:underline">تواصل مع الإدارة</a>
               </p>
             </v-card>
-
-            <!-- Copyright -->
-            <p class="text-center text-white text-xs mt-6">
-              Advanced Controls IT Co. © 2024 | GRC V4.0.1
-            </p>
           </v-col>
         </v-row>
       </v-container>
     </v-main>
-  </v-app>
 </template>
 
 <script setup>

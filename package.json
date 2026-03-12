@@ -10,16 +10,23 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^41.4.2",
+    "@ckeditor/ckeditor5-vue": "^7.3.1",
+    "@kyvg/vue3-notification": "^3.4.2",
     "@mdi/font": "^7.4.47",
+    "@vee-validate/rules": "^4.15.1",
     "axios": "^1.6.7",
     "lodash-es": "^4.17.23",
     "luxon": "^3.7.2",
     "pinia": "^2.1.7",
+    "vee-validate": "^4.15.1",
     "vue": "^3.4.21",
+    "vue-i18n": "^11.3.0",
     "vue-multiselect": "^3.0.0-beta.3",
     "vue-router": "^4.3.0",
     "vue-select": "^3.20.4",
-    "vuetify": "^3.5.10"
+    "vuetify": "^3.5.10",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",

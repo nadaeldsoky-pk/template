@@ -22,4 +22,11 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: false,
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        // sass is auto-detected by Vite; no manual implementation needed
+      }
+    }
+  }
 })

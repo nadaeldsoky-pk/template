@@ -2,6 +2,8 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import pinia from './store'
+import i18n from './i18n'
+import permissionPlugin from './directives/permission'
 
 // Vuetify
 import 'vuetify/styles'
@@ -73,5 +75,7 @@ const app = createApp(App)
 app.use(router)
 app.use(pinia)
 app.use(vuetify)
+app.use(i18n)
+app.use(permissionPlugin)
 
 app.mount('#app')

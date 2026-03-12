@@ -1,7 +1,6 @@
 <template>
-  <v-app>
-    <!-- App Bar - مرر حالة rail -->
-    <AppBar :rail="rail" @toggle-sidebar="rail = !rail" />
+  <!-- App Bar - مرر حالة rail -->
+  <AppBar :rail="rail" @toggle-sidebar="rail = !rail" />
 
     <!-- Sidebar -->
     <Sidebar v-model:rail="rail" />
@@ -15,18 +14,13 @@
           </transition>
         </router-view>
       </v-container>
-
-      <!-- Footer -->
-      <Footer />
     </v-main>
-  </v-app>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import AppBar from '../components/layout/AppBar.vue'
 import Sidebar from '../components/layout/Sidebar.vue'
-import Footer from '../components/layout/Footer.vue'
 
 const rail = ref(false)
 </script>

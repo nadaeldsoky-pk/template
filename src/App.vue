@@ -1,10 +1,14 @@
 <template>
-  <router-view />
+  <v-app>
+    <router-view />
+    <GlobalFooter />
+  </v-app>
 </template>
 
 <script setup>
 import { useAuthStore } from './store/modules/auth'
 import { useThemeStore } from './store/modules/theme'
+import GlobalFooter from '@/components/layout/Footer.vue'
 
 // Initialize stores — theme applies automatically via watcher
 const authStore = useAuthStore()

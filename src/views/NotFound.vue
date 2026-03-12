@@ -1,7 +1,6 @@
 <template>
-  <v-app>
-    <v-main class="bg-gray-50 min-h-screen flex items-center justify-center">
-      <v-container>
+  <v-main class="bg-gray-50 min-h-screen flex items-center justify-center">
+    <v-container>
         <v-row justify="center">
           <v-col cols="12" sm="8" md="6" class="text-center">
             <!-- 404 Icon -->
@@ -73,7 +72,6 @@
         </v-row>
       </v-container>
     </v-main>
-  </v-app>
 </template>
 
 <script setup>

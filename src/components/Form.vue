@@ -246,7 +246,6 @@ import { Ckeditor } from "@ckeditor/ckeditor5-vue";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import LazySelectField from "@/components/LazySelectField.vue";
 import TeamSelect from "./TeamSelect.vue";
-import { getI18n } from "../main";
 
 // rules
 defineRule("required", required);
@@ -349,7 +348,7 @@ export default {
     },
 
     mounted() {
-        i18n = getI18n ? getI18n() : this.$i18n || null;
+        i18n = this.$i18n || null;
         // this.configureValidation();
         window.__getTranslatedMessage = (key, params) => {
             return this.$t(key, params);
