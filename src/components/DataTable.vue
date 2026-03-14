@@ -1,26 +1,26 @@
 <template>
-  <div class="text-[var(--color-text-primary)]">
+  <div class="text-[var(--color-text-primary)]" :dir="isArabic ? 'rtl' : 'ltr'">
 
     <!-- Filters Section -->
-    <div v-if="showFilter"
+  <div v-if="showFilter"
       class="bg-[var(--color-bg)] mb-6 p-4 border border-[var(--color-border)] rounded-xl shadow-sm">
       <slot name="filters"></slot>
     </div>
 
     <!-- Toolbar -->
     <div class="mb-4">
-      <div class="flex flex-wrap gap-3 justify-between items-center bg-[#F2F4F8] px-4 py-3 border border-[#D0D5DD] rounded-2xl shadow-sm">
+      <div class="flex gap-3 items-center bg-[#F2F4F8] px-4 py-3 border border-[#C3D0E5] rounded-lg shadow-sm">
 
         <!-- Search -->
-        <div class="flex-1 max-w-[260px] relative">
+        <div class="w-1/3 flex-shrink-0 relative">
           <input
             v-model="searchQuery"
             @input="debouncedFetchData"
             type="text"
-            class="w-full pl-4 pr-10 py-2 bg-white border border-[#D0D5DD] rounded-full focus:ring-1 focus:ring-[#29457E] outline-none transition-all text-sm h-[40px] text-[#475467] placeholder:text-[#98A2B3]"
-            :placeholder="$t ? $t('Search') : 'Search..'"
+            class="w-full ps-4 pe-10 py-2 bg-white border border-[#C3D0E5] rounded-lg focus:ring-1 focus:ring-[#29457E] outline-none transition-all text-sm h-[40px] text-[#475467] placeholder:text-[#98A2B3]"
+            :placeholder="$t ? $t('Search') : 'Search...'"
           />
-          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[#98A2B3] pointer-events-none">
+          <span class="absolute inset-y-0 end-0 flex items-center pe-3 text-[#98A2B3] pointer-events-none">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="11" cy="11" r="8"></circle>
@@ -30,7 +30,7 @@
         </div>
 
         <!-- Columns + Filter Buttons -->
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 flex-1">
           <!-- Columns Button -->
           <button
               style="border: 1px solid #2F4FA2; color: #2F4FA2;"
@@ -46,7 +46,7 @@
 
           <!-- Filter Button -->
           <button
-              style="border: 1px solid #2F4FA2; color: #2F4FA2;"
+              style="border: 1px solid #2F4FA2; color: #27282dff;"
             class="flex items-center gap-2 px-4 py-2 text-[#29457E] rounded-lg hover:bg-blue-50 transition-all font-medium text-sm h-[40px]"
             @click="openFilterModal"
             :disabled="!filters || filters.length === 0"
@@ -69,6 +69,9 @@
 
           <!-- Edit Button -->
           <button
+            @click="selected.length === 1 && editItem(data.find(r => r.id === selected[0]))"
+            :disabled="selected.length !== 1"
+            :class="{ 'opacity-50 cursor-not-allowed': selected.length !== 1 }"
             style="border: 1px solid #E68F1D; color: #E68F1D;"
             class="w-[40px] h-[40px] rounded-lg hover:bg-yellow-50 flex items-center justify-center transition-all">
           <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -82,6 +85,9 @@
 
           <!-- Delete Button -->
           <button
+            @click="multiDelete"
+            :disabled="selected.length === 0"
+            :class="{ 'opacity-50 cursor-not-allowed': selected.length === 0 }"
             style="border: 1px solid #C62828; color: #C62828;"
             class="w-[40px] h-[40px] rounded-lg hover:bg-red-50 flex items-center justify-center transition-all">
          <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -111,7 +117,7 @@
 
             </button>
             <div v-if="showExportDropdown"
-              class="absolute right-0 mt-2 w-48 bg-white border border-[var(--color-border)] rounded-lg shadow-lg z-50 overflow-hidden"
+              class="absolute end-0 mt-2 w-48 bg-white border border-[var(--color-border)] rounded-lg shadow-lg z-50 overflow-hidden"
               @click.stop>
               <div class="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 cursor-pointer transition-colors text-sm font-medium text-[#374151]"
                 @click="handleExportAll">Export All Data</div>
@@ -150,10 +156,9 @@
         </div>
       </div>
     </div>
-
     <!-- Table Container -->
     <div class="overflow-x-auto bg-white border border-[#D0D5DD] rounded-2xl shadow-sm">
-      <table :id="id" class="w-full text-sm text-left">
+      <table :id="id" class="w-full text-sm text-start">
         <!-- Table Head -->
         <thead class="bg-[#F8F9FA] text-[#1E293B]">
           <tr class="border-b border-[#D0D5DD]">
@@ -163,7 +168,7 @@
             <th class="px-5 py-4 text-sm font-semibold text-[#1E293B] whitespace-nowrap w-12">#</th>
             <th v-for="(col, idx) in columns" :key="idx"
               class="px-5 py-4 text-sm font-semibold text-[#1E293B] whitespace-nowrap"
-              :class="col.align === 'center' ? 'text-center' : 'text-left'">
+              :class="col.align === 'center' ? 'text-center' : (col.align === 'right' ? 'text-end' : 'text-start')">
               <span v-if="col.sortable !== false && col.data" @click="sortBy(col.data)"
                 class="cursor-pointer select-none inline-flex items-center gap-1 hover:text-[#29457E] transition-colors">
                 {{ col.title }}
@@ -217,7 +222,7 @@
             <!-- Data Cells -->
             <template v-for="(col, colIdx) in columns" :key="colIdx">
               <td class="px-5 py-4 text-[#475467] text-sm"
-                :class="col.align === 'center' ? 'text-center' : 'text-left'">
+                :class="col.align === 'center' ? 'text-center' : (col.align === 'right' ? 'text-end' : 'text-start')">
                 <slot :name="col.id || col.title" :item="row" :rowIndex="colIdx">
                   <!-- Badge style for specific columns -->
                   <template v-if="col.badge">
@@ -248,7 +253,7 @@
             <td class="px-5 py-4 text-center">
               <div class="relative inline-block">
                 <button
-                  @click="toggleRowMenu(row.id || index)"
+                  @click.stop="toggleRowMenu(row.id || index)"
                   class="p-2 hover:bg-[#F2F4F7] rounded-lg transition-colors flex items-center justify-center">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="12" cy="5" r="1.8" fill="#475467" />
@@ -258,7 +263,7 @@
                 </button>
                 <!-- Row Actions Dropdown -->
                 <div v-if="openMenuId === (row.id || index)"
-                  class="absolute right-0 mt-1 w-44 bg-white border border-[#E5E7EB] rounded-xl shadow-lg z-50 overflow-hidden py-1"
+                  class="absolute end-0 mt-1 w-44 bg-white border border-[#E5E7EB] rounded-xl shadow-lg z-50 overflow-hidden py-1"
                   @click.stop>
                   <slot name="addAction" :item="row"></slot>
                   <slot name="AddStatus" :item="row"></slot>
@@ -303,14 +308,14 @@
         <div class="relative">
           <select
             v-model="perPage"
-            class="appearance-none bg-white border border-[#D0D5DD] rounded-lg pl-3 pr-7 py-1.5 outline-none focus:ring-1 focus:ring-[#29457E] text-[#475467] text-sm h-[34px] min-w-[58px] cursor-pointer">
+            class="appearance-none bg-white border border-[#D0D5DD] rounded-lg ps-3 pe-7 py-1.5 outline-none focus:ring-1 focus:ring-[#29457E] text-[#475467] text-sm h-[34px] min-w-[58px] cursor-pointer">
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="25">25</option>
             <option value="50">50</option>
             <option value="100">100</option>
           </select>
-          <span class="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-[#98A2B3]">
+          <span class="pointer-events-none absolute end-2 top-1/2 -translate-y-1/2 text-[#98A2B3]">
             <svg width="10" height="10" viewBox="0 0 10 6" fill="none">
               <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -328,7 +333,7 @@
           @click="currentPage > 1 ? goToPage(currentPage - 1) : null"
           :disabled="currentPage <= 1 || !canNavigate()"
           class="w-8 h-8 flex items-center justify-center rounded-lg bg-[#6B80A6] text-white hover:bg-[#4A5F8A] disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" :class="{ 'rotate-180': isArabic }">
             <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
@@ -352,7 +357,7 @@
           @click="currentPage < totalPages ? goToPage(currentPage + 1) : null"
           :disabled="currentPage >= totalPages || !canNavigate()"
           class="w-8 h-8 flex items-center justify-center rounded-lg bg-[#6B80A6] text-white hover:bg-[#4A5F8A] disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" :class="{ 'rotate-180': isArabic }">
             <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
@@ -361,7 +366,7 @@
 
     <!-- Content Full Text Modal -->
     <Teleport to="body">
-      <div v-if="showContentModal"
+      <div v-if="showContentModal" :dir="isArabic ? 'rtl' : 'ltr'"
         class="fixed inset-0 bg-black/50 z-[10000] flex items-center justify-center p-4"
         @click="closeContentModal">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden"
@@ -384,7 +389,7 @@
 
     <!-- Import Modal -->
     <Teleport to="body">
-      <div v-if="showModal"
+      <div v-if="showModal" :dir="isArabic ? 'rtl' : 'ltr'"
         class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden">
           <div class="bg-[#29457E] px-6 py-4 flex items-center justify-between text-white">
@@ -413,7 +418,7 @@
 
     <!-- Export Column Selection Modal -->
     <Teleport to="body">
-      <div v-if="showColumnSelectionModal"
+      <div v-if="showColumnSelectionModal" :dir="isArabic ? 'rtl' : 'ltr'"
         class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
         @click="closeColumnSelection">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden" @click.stop>
@@ -433,7 +438,7 @@
                 Deselect All
               </button>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[60vh] overflow-y-auto pr-2">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[60vh] overflow-y-auto pe-2">
               <div v-for="(column, index) in exportableColumns" :key="index"
                 class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200 hover:border-[#29457E] transition-all cursor-pointer"
                 @click="selectedExportColumns.includes(column.data)
