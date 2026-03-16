@@ -57,6 +57,36 @@ class Department {
     return { data: { file_columns: [], database_columns: [] } };
   }
   
+  async from(item, isUpdate, isFormData) {
+    console.log('Fake Department API: from', { item, isUpdate, isFormData });
+    
+    // In a real API, this would be a POST or PUT request
+    // For mock purposes, we update the local data array
+    if (isUpdate) {
+      const index = this.data.findIndex(d => d.id === item.id);
+      if (index !== -1) {
+        this.data[index] = { ...this.data[index], ...item };
+      }
+    } else {
+      const newId = this.data.length > 0 ? Math.max(...this.data.map(d => d.id)) + 1 : 1;
+      const newItem = {
+        ...item,
+        id: newId,
+        created_at: new Date().toISOString(),
+        users: [],
+        children: []
+      };
+      this.data.push(newItem);
+    }
+
+    return {
+      data: {
+        message: 'Success',
+        item: item // In real API, this might return the saved object
+      }
+    };
+  }
+
   async importFileData(fields) {
     return true;
   }
