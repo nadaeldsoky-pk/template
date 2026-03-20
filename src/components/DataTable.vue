@@ -31,18 +31,38 @@
 
         <!-- Columns + Filter Buttons -->
         <div class="flex items-center gap-2 flex-1">
-          <!-- Columns Button -->
-          <button
-              style="border: 1px solid #2F4FA2; color: #2F4FA2;"
-            class="flex items-center gap-2 px-4 py-2 text-[#29457E] rounded-lg hover:bg-blue-50 transition-all font-medium text-sm h-[40px]"
-            @click="toggleDropdown($event)">
-         <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M0.75 0.75H11.75H0.75ZM0.75 5.75H11.75H0.75ZM0.75 10.75H11.75H0.75Z" fill="#2F4FA2"/>
-<path d="M0.75 0.75H11.75M0.75 5.75H11.75M0.75 10.75H11.75" stroke="#2F4FA2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-
-            <span>Columns</span>
-          </button>
+          <!-- Columns Button & Dropdown Container -->
+          <div class="relative">
+            <!-- Columns Button -->
+            <button
+                style="border: 1px solid #2F4FA2; color: #2F4FA2;"
+              class="flex items-center gap-2 px-4 py-2 text-[#29457E] rounded-lg hover:bg-blue-50 transition-all font-medium text-sm h-[40px]"
+              @click.stop="toggleDropdown($event)">
+              <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.75 0.75H11.75H0.75ZM0.75 5.75H11.75H0.75ZM0.75 10.75H11.75H0.75Z" fill="#2F4FA2"/>
+                <path d="M0.75 0.75H11.75M0.75 5.75H11.75M0.75 10.75H11.75" stroke="#2F4FA2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>Columns</span>
+            </button>
+            
+            <!-- Columns Dropdown -->
+            <div v-if="showDropdown" class="absolute top-full left-0 mt-1 z-[9999] bg-white border border-[#D0D5DD] rounded-xl shadow-lg w-56 py-3 overflow-hidden" @click.stop>
+              <div class="px-4 pb-3 mb-2 border-b border-[#F2F4F7] flex justify-between gap-2">
+                <button @click="showAllColumns" class="text-xs text-[#29457E] font-semibold hover:underline flex-1 text-center py-1">Show All</button>
+                <div class="w-px bg-[#F2F4F7]"></div>
+                <button @click="hideAllColumns" class="text-xs text-[#6B7280] font-semibold hover:underline flex-1 text-center py-1">Hide All</button>
+              </div>
+              <div class="max-h-64 overflow-y-auto px-2 space-y-0.5">
+                <label v-for="(col, index) in processedColumns" :key="index"
+                  v-show="index > 1 && col.title !== 'Actions' && col.title !== $t?.('common.actions')"
+                  class="flex items-center gap-3 px-3 py-2 hover:bg-[#F8F9FA] rounded-lg cursor-pointer transition-colors">
+                  <input type="checkbox" :checked="visibleColumns.length > 0 ? visibleColumns[index] : true" @change="toggleColumn(index)"
+                    class="w-4 h-4 text-[#29457E] border-[#D0D5DD] rounded focus:ring-[#29457E] transition-colors cursor-pointer">
+                  <span class="text-sm font-medium text-[#344054] truncate select-none">{{ col.title }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
 
           <!-- Filter Button -->
           <button
@@ -167,16 +187,17 @@
             </th>
             <th class="px-5 py-4 text-sm font-semibold text-[#1E293B] whitespace-nowrap w-12">#</th>
             <th v-for="(col, idx) in columns" :key="idx"
+              v-show="visibleColumns.length === 0 || visibleColumns[idx + 2] !== false"
               class="px-5 py-4 text-sm font-semibold text-[#1E293B] whitespace-nowrap"
               :class="col.align === 'center' ? 'text-center' : (col.align === 'right' ? 'text-end' : 'text-start')">
-              <span v-if="col.sortable !== false && col.data" @click="sortBy(col.data)"
+              <span v-if="col.sortable !== false && col.data && (visibleColumns.length === 0 || visibleColumns[idx] !== false)" @click="sortBy(col.data)"
                 class="cursor-pointer select-none inline-flex items-center gap-1 hover:text-[#29457E] transition-colors">
                 {{ col.title }}
                 <span v-if="currentSort === col.data" class="text-[#29457E]">
                   {{ sortDirection === 'asc' ? '↑' : '↓' }}
                 </span>
               </span>
-              <span v-else>{{ col.title }}</span>
+              <span v-else-if="visibleColumns.length === 0 || visibleColumns[idx] !== false">{{ col.title }}</span>
             </th>
             <th class="px-5 py-4 text-sm font-semibold text-[#1E293B] text-center whitespace-nowrap">Actions</th>
           </tr>
@@ -221,7 +242,7 @@
 
             <!-- Data Cells -->
             <template v-for="(col, colIdx) in columns" :key="colIdx">
-              <td class="px-5 py-4 text-[#475467] text-sm"
+              <td v-show="visibleColumns.length === 0 || visibleColumns[colIdx + 2] !== false" class="px-5 py-4 text-[#475467] text-sm"
                 :class="col.align === 'center' ? 'text-center' : (col.align === 'right' ? 'text-end' : 'text-start')">
                 <slot :name="col.id || col.title" :item="row" :rowIndex="colIdx">
                   <!-- Badge style for specific columns -->
@@ -465,6 +486,18 @@
       </div>
     </Teleport>
 
+    <!-- Filter Modal component -->
+    <Filter 
+      v-if="filters && filters.length > 0"
+      :isOpen="isFilterOpen" 
+      :filters="filters"
+      @close="closeFilterModal" 
+      @filter-applied="onFilterApplied" 
+      @filter-removed="onFilterRemoved" 
+      @filters-cleared="onFiltersCleared" 
+      @operators-changed="onOperatorsChanged" 
+      @filters-saved="onFiltersSaved" 
+    />
   </div>
 </template>
 
