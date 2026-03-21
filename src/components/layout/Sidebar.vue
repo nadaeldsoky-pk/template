@@ -141,6 +141,10 @@ const handleLogout = () => {
 
 .logout-btn-rail {
   color: var(--color-sidebar-text) !important;
+  border: 1px solid var(--color-sidebar-text) !important;
+  border-radius: 8px !important;
+  width: 40px !important;
+  height: 40px !important;
 }
 
 .logout-text {
