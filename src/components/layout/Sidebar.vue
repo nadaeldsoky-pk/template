@@ -25,7 +25,7 @@
       <div class="pb-6 pt-2" :class="{ 'text-center': rail }">
         <v-btn v-if="!rail" block variant="text" class="logout-btn  px-0" @click="handleLogout">
           <div class="d-flex align-center justify-end w-100 gap-1">
-            <span class="logout-text">خروج</span>
+            <span class="logout-text">تسجيل الخروج </span>
             <v-icon class="logout-icon">mdi-logout</v-icon>
           </div>
         </v-btn>
@@ -129,6 +129,9 @@ const handleLogout = () => {
   color: var(--color-sidebar-text) !important;
   font-family: var(--font-family-base) !important;
   justify-content: flex-end !important;
+  border-radius: 8px !important;
+  border: 1px  solid var(--color-sidebar-text) !important;
+  padding: 8px 12px !important;
 
 }
 

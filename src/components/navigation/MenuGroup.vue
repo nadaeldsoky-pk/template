@@ -131,7 +131,11 @@ defineProps({
 }
 
 .menu-item:hover {
-  background-color: var(--color-sidebar-hover-item) !important;
+  background-color: transparent !important;
+}
+
+.menu-item:hover :deep(.v-list-item__overlay) {
+  opacity: 0 !important;
 }
 
 .active-item {
@@ -147,7 +151,7 @@ defineProps({
 }
 
 .active-parent-item {
-  background-color: var(--color-sidebar-hover-item) !important;
+  //background-color: var(--color-sidebar-hover-item) !important;
   color: var(--color-sidebar-text) !important;
 }
 
@@ -186,15 +190,25 @@ defineProps({
   margin-bottom: 2px;
 }
 
-.sub-menu-item:hover {
-  color: var(--color-sidebar-text) !important;
-  background-color: var(--color-sidebar-hover-item) !important;
+
+
+.sub-menu-item:hover :deep(.v-list-item__overlay) {
+  opacity: 0 !important;
 }
 
 .active-sub-item {
-  color: var(--color-sidebar-text) !important;
-  background-color: var(--color-sidebar-hover-item) !important;
+  background-color: #ffffff !important;
+  border-radius: 6px !important;
   font-weight: 500;
+}
+
+.active-sub-item .sub-menu-title {
+  color: #1e3a8a !important;
+  font-weight: 600;
+}
+
+.active-sub-item :deep(.v-icon) {
+  color: #1e3a8a !important;
 }
 
 .sub-menu-title {
@@ -225,9 +239,14 @@ defineProps({
   margin-bottom: 2px;
 }
 
+/*
 .grand-sub-item:hover {
-  color: var(--color-sidebar-text) !important;
-  background-color: var(--color-sidebar-hover-item) !important;
+  background-color: transparent !important;
+}
+*/
+
+.grand-sub-item:hover :deep(.v-list-item__overlay) {
+  opacity: 0 !important;
 }
 
 .active-grand-item {
@@ -240,8 +259,10 @@ defineProps({
   color: #1e3a8a !important;
 }
 
-.active-grand-item .bullet-dot {
+.active-grand-item .bullet-dot,
+.active-grand-item .grand-sub-title {
   color: #1e3a8a !important;
+  font-weight: 600;
 }
 
 /* Bullet dot */
