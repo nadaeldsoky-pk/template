@@ -15,7 +15,7 @@ class Department {
         objectives: 'Objectives test',
         responsibilities: 'Responsibilities test',
         created_at: new Date().toISOString(),
-        users: [{ id: 1, full_name: 'أحمد محمد' }],
+        users: [{ id: 1, full_name: 'Ahmed Mohamed' }],
         children: []
       },
       { 
@@ -27,7 +27,7 @@ class Department {
         manager_id: 2,
         number_of_employees: 5,
         created_at: new Date().toISOString(),
-        users: [{ id: 2, full_name: 'سارة علي' }],
+        users: [{ id: 2, full_name: 'Sara Ali' }],
         children: []
       }
     ];
