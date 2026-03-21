@@ -1,15 +1,21 @@
 <template>
-  <div class="menu-group-container" :class="{ 'rtl-menu': isRtl }">
+  <div class="menu-group-container">
     <!-- Menu item without children -->
-    <v-list-item v-if="!item.children || item.children.length === 0" :to="item.path" class="menu-item mb-1 rounded-lg"
-      :class="{ 'rail-mode-item': rail }" active-class="active-item">
-      <template v-slot:prepend>
-        <v-icon class="menu-icon" size="20">{{ item.icon }}</v-icon>
+    <v-list-item
+      v-if="!item.children || item.children.length === 0"
+      :to="item.path"
+      class="menu-item mb-1 rounded-lg"
+      :class="{ 'rail-mode-item': rail }"
+      active-class="active-item"
+    >
+      <template v-slot:append>
+        <div v-if="!rail" class="d-flex align-center gap-2">
+          <span class="menu-title">{{ item.title }}</span>
+          <v-icon class="menu-icon" size="20">{{ item.icon }}</v-icon>
+        </div>
+        <v-icon v-else class="menu-icon" size="20">{{ item.icon }}</v-icon>
       </template>
-      <v-list-item-title v-if="!rail" class="menu-title">{{ item.title }}</v-list-item-title>
-
-      <!-- Tooltip for Rail Mode -->
-      <v-tooltip v-if="rail" activator="parent" :location="isRtl ? 'start' : 'end'">
+      <v-tooltip v-if="rail" activator="parent" location="end">
         {{ item.title }}
       </v-tooltip>
     </v-list-item>
@@ -17,58 +23,79 @@
     <!-- Menu item with children -->
     <v-list-group v-else :value="item.id">
       <template v-slot:activator="{ props: activatorProps, isOpen }">
-        <v-list-item v-bind="activatorProps" :title="rail ? '' : item.title" class="menu-item mb-1 rounded-lg"
-          :class="{ 'rail-mode-item': rail, 'active-parent-item': isOpen }">
-          <template v-slot:prepend>
-            <v-icon class="menu-icon" size="20">{{ item.icon }}</v-icon>
-
-            <!-- Tooltip for Rail Mode (Parent) -->
-            <v-tooltip v-if="rail" activator="parent" :location="isRtl ? 'start' : 'end'">
-              {{ item.title }}
-            </v-tooltip>
-          </template>
-          <!-- Absolute hide for arrow in rail mode -->
-          <template v-if="!rail" v-slot:append>
+        <v-list-item
+          v-bind="activatorProps"
+          class="menu-item mb-1 rounded-lg"
+          :class="{ 'rail-mode-item': rail, 'active-parent-item': isOpen }"
+        >
+          <template v-if="!rail" v-slot:prepend>
             <v-icon size="small" :class="{ 'rotate-180': isOpen }">mdi-chevron-down</v-icon>
+          </template>
+          <template v-slot:append>
+            <div v-if="!rail" class="d-flex align-center gap-2">
+              <span class="menu-title">{{ item.title }}</span>
+              <v-icon class="menu-icon" size="20">{{ item.icon }}</v-icon>
+            </div>
+            <template v-else>
+              <v-icon class="menu-icon" size="20">{{ item.icon }}</v-icon>
+              <v-tooltip activator="parent" location="end">{{ item.title }}</v-tooltip>
+            </template>
           </template>
         </v-list-item>
       </template>
 
       <template v-if="!rail">
-        <!-- Vertical left-border wrapper for sub-items -->
-        <div class="sub-items-wrapper" :class="isRtl ? 'border-right' : 'border-left'">
+        <!-- Sub-items wrapper — border uses logical property (auto-flips with dir) -->
+        <div class="sub-items-wrapper">
           <template v-for="subItem in item.children" :key="subItem.title">
+
             <!-- Sub-item WITH grandchildren -->
             <v-list-group v-if="subItem.children && subItem.children.length" :value="subItem.title">
               <template v-slot:activator="{ props: subProps, isOpen: subOpen }">
-                <v-list-item v-bind="subProps" :title="subItem.title"
+                <v-list-item
+                  v-bind="subProps"
                   class="sub-menu-item rounded-lg"
-                  active-class="active-sub-item">
-                  <template v-slot:append>
+                  active-class="active-sub-item"
+                >
+                  <template v-slot:prepend>
                     <v-icon size="small" :class="{ 'rotate-180': subOpen }">mdi-chevron-down</v-icon>
+                  </template>
+                  <template v-slot:append>
+                    <span class="sub-menu-title">{{ subItem.title }}</span>
                   </template>
                 </v-list-item>
               </template>
-              <!-- Grandchildren with vertical border + bullet -->
-              <div class="grand-items-wrapper" :class="isRtl ? 'border-right' : 'border-left'">
+
+              <!-- Grandchildren -->
+              <div class="grand-items-wrapper">
                 <v-list-item
                   v-for="grandChild in subItem.children"
                   :key="grandChild.title"
                   :to="grandChild.path"
-                  :title="grandChild.title"
                   class="grand-sub-item rounded-lg"
-                  active-class="active-grand-item">
-                  <template v-slot:prepend>
-                    <span class="bullet-dot">•</span>
+                  active-class="active-grand-item"
+                >
+                  <template v-slot:append>
+                    <div class="d-flex align-center gap-1">
+                      <span class="grand-sub-title">{{ grandChild.title }}</span>
+                      <span class="bullet-dot">•</span>
+                    </div>
                   </template>
                 </v-list-item>
               </div>
             </v-list-group>
 
             <!-- Sub-item WITHOUT grandchildren -->
-            <v-list-item v-else :to="subItem.path" :title="subItem.title"
+            <v-list-item
+              v-else
+              :to="subItem.path"
               class="sub-menu-item rounded-lg"
-              active-class="active-sub-item" />
+              active-class="active-sub-item"
+            >
+              <template v-slot:append>
+                <span class="sub-menu-title">{{ subItem.title }}</span>
+              </template>
+            </v-list-item>
           </template>
         </div>
       </template>
@@ -77,9 +104,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-
-const props = defineProps({
+defineProps({
   item: {
     type: Object,
     required: true
@@ -90,18 +115,18 @@ const props = defineProps({
   },
   isRtl: {
     type: Boolean,
-    default: true
+    default: null
   }
 })
 </script>
 
 <style scoped>
-/* ── Top-level menu item ─────────────────────── */
+/* ── Top-level item ─────────────────────────────── */
 .menu-item {
   color: var(--color-sidebar-text) !important;
   border-radius: 8px !important;
   margin-bottom: 4px;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease;
   min-height: 44px;
 }
 
@@ -116,10 +141,7 @@ const props = defineProps({
   border-radius: 8px !important;
 }
 
-.active-item :deep(.v-list-item-title) {
-  color: #1e3a8a !important;
-}
-
+.active-item :deep(.v-list-item-title),
 .active-item :deep(.v-icon) {
   color: #1e3a8a !important;
 }
@@ -129,13 +151,13 @@ const props = defineProps({
   color: var(--color-sidebar-text) !important;
 }
 
-/* Chevron rotation animation */
+/* Chevron */
 .rotate-180 {
   transform: rotate(180deg);
   transition: transform 0.2s ease;
 }
 
-/* ── Icons & Text ────────────────────────────── */
+/* Icon & title */
 .menu-icon {
   color: var(--color-sidebar-text) !important;
   opacity: 0.9;
@@ -147,21 +169,13 @@ const props = defineProps({
   font-weight: 500;
 }
 
-/* ── Sub-items wrapper with vertical border ──── */
+/* ── Sub-items wrapper ──────────────────────────── */
+/* border-inline-start flips automatically with [dir=rtl] */
 .sub-items-wrapper {
+  margin-inline-end: 20px;
+  padding-inline-end: 4px;
+  border-inline-end: 2px solid rgba(255, 255, 255, 0.25);
   margin-bottom: 4px;
-}
-
-.sub-items-wrapper.border-left {
-  border-left: 2px solid rgba(255, 255, 255, 0.25);
-  margin-left: 20px;
-  padding-left: 4px;
-}
-
-.sub-items-wrapper.border-right {
-  border-right: 2px solid rgba(255, 255, 255, 0.25);
-  margin-right: 20px;
-  padding-right: 4px;
 }
 
 .sub-menu-item {
@@ -183,33 +197,24 @@ const props = defineProps({
   font-weight: 500;
 }
 
-/* ── Grand-children wrapper with vertical border  */
-.grand-items-wrapper {
-  margin-bottom: 2px;
-}
-
-.grand-items-wrapper.border-left {
-  border-left: 2px solid rgba(255, 255, 255, 0.2);
-  margin-left: 16px;
-  padding-left: 4px;
-}
-
-.grand-items-wrapper.border-right {
-  border-right: 2px solid rgba(255, 255, 255, 0.2);
-  margin-right: 16px;
-  padding-right: 4px;
-}
-
-/* Bullet dot */
-.bullet-dot {
+.sub-menu-title {
+  font-family: var(--font-family-base) !important;
+  font-size: 13.5px;
   color: var(--color-sidebar-text-secondary);
-  font-size: 18px;
-  line-height: 1;
-  margin-inline-end: 6px;
-  width: 12px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+}
+
+.grand-sub-title {
+  font-family: var(--font-family-base) !important;
+  font-size: 13px;
+  color: var(--color-sidebar-text-secondary);
+}
+
+/* ── Grand-children wrapper ─────────────────────── */
+.grand-items-wrapper {
+  margin-inline-end: 16px;
+  padding-inline-end: 4px;
+  border-inline-end: 2px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 2px;
 }
 
 .grand-sub-item {
@@ -225,7 +230,6 @@ const props = defineProps({
   background-color: var(--color-sidebar-hover-item) !important;
 }
 
-/* Active grand-child = white background */
 .active-grand-item {
   background-color: #ffffff !important;
   border-radius: 6px !important;
@@ -240,7 +244,19 @@ const props = defineProps({
   color: #1e3a8a !important;
 }
 
-/* ── Vuetify overrides ───────────────────────── */
+/* Bullet dot */
+.bullet-dot {
+  color: var(--color-sidebar-text-secondary);
+  font-size: 18px;
+  line-height: 1;
+  margin-inline-end: 6px;
+  width: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Vuetify overrides ──────────────────────────── */
 :deep(.v-list-item__overlay) {
   opacity: 0 !important;
 }
@@ -275,7 +291,7 @@ const props = defineProps({
   margin: 0 !important;
 }
 
-/* Spacing between icon and text */
+/* Icon-text gap */
 :deep(.v-list-item__spacer) {
   width: 4px !important;
 }
@@ -284,7 +300,7 @@ const props = defineProps({
   margin-inline-end: 4px !important;
 }
 
-/* Remove default Vuetify padding-start from sub/grand items */
+/* Remove Vuetify default padding on nested items */
 :deep(.v-list-group__items .v-list-item) {
   padding-inline-start: 8px !important;
   padding-inline-end: 8px !important;
