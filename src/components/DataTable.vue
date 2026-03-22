@@ -660,6 +660,11 @@ export default {
     currentSort() { this.currentPage = 1; this.fetchData(); },
     sortDirection() { this.fetchData(); },
   },
+  errorCaptured(err, vm, info) {
+    console.error("DataTable Render Error:", err, info);
+    alert("A rendering error occurred in the table: " + err.message + "\nCheck console for details.");
+    return false; // prevent the error from bubbling up and crashing the app
+  },
   created() {
     this.initializeVisibleColumns();
     this.loadExportableColumns();
@@ -805,6 +810,8 @@ export default {
         }
         this.clearCellContentCache();
       } catch (error) {
+        console.error("DataTable fetchData error:", error);
+        alert("Failed to load table data: " + String(error));
         this.data = []; this.totalRecords = 0; this.filteredRecords = 0;
       } finally { this.load = false; }
     },

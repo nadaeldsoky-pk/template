@@ -42,6 +42,47 @@ class User {
       }
     };
   }
+
+  async from(item, isUpdate, isFormData) {
+    console.log('Fake User API: from', { item, isUpdate, isFormData });
+    
+    // In a real API, this would be a POST or PUT request
+    if (isUpdate) {
+      const index = this.data.findIndex(d => d.id === item.id);
+      if (index !== -1) {
+        this.data[index] = { ...this.data[index], ...item };
+      }
+    } else {
+      const newId = this.data.length > 0 ? Math.max(...this.data.map(d => d.id)) + 1 : 1;
+      const newItem = {
+        ...item,
+        id: newId,
+        created_at: new Date().toISOString()
+      };
+      this.data.push(newItem);
+    }
+
+    return {
+      data: {
+        message: 'Success',
+        item: item
+      }
+    };
+  }
+
+  activeDeactive(id) {
+    console.log('Fake User API: activeDeactive', id);
+    return Promise.resolve({
+      status: true,
+      data: { message: 'Status updated successfully' }
+    });
+  }
+
+  poup(response, title) {
+    if (response.message) {
+      console.log(`POUP: ${title} - ${response.message}`);
+    }
+  }
 }
 
 export default User;

@@ -360,7 +360,7 @@ export default {
         type: "checkbox",
         name: "super",
         label: this.$t("user.super"),
-        rules: "required",  // Validation: required selection
+        rules: "",  // Validation: optional
         description: this.$t("user.SelectSuperUser"),
       },
     ];

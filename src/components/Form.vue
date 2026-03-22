@@ -162,16 +162,20 @@
                                                 </div>
 
                                                 <!-- Field Input (for types other than textarea and file) -->
-                                                <Field v-else-if="field.type !== 'textarea'" :id="field.name"
-                                                    :name="field.name" :type="field.type"
-                                                    class="block w-full px-4 py-2 bg-white border border-[var(--color-border)] rounded-lg focus:ring-2 focus:ring-[var(--color-main)] outline-none transition-all placeholder:text-[var(--color-text-disabled)]"
-                                                    v-model="newItem[field.name]" :rules="field.rules"
-                                                    :placeholder="field.placeholder" :disabled="field.disabled" />
+                                                <Field v-else-if="field.type !== 'textarea'" :name="field.name" :type="field.type" :rules="field.rules" v-model="newItem[field.name]" v-slot="{ field: veeField, meta }">
+                                                    <input :id="field.name" :type="field.type"
+                                                        class="block w-full px-4 py-2 bg-white border border-[var(--color-border)] rounded-lg focus:ring-2 focus:ring-[var(--color-main)] outline-none transition-all placeholder:text-[var(--color-text-disabled)]"
+                                                        :class="{ '!border-red-500': meta.touched && !meta.valid }"
+                                                        v-bind="veeField"
+                                                        :placeholder="field.placeholder" :disabled="field.disabled" />
+                                                </Field>
 
                                                 <!-- CKEditor for Textarea Fields -->
-                                                <ckeditor :editor="editor" responseType="document"
-                                                    v-else-if="field.type === 'textarea'" v-model="newItem[field.name]"
-                                                    :config="editorConfig"></ckeditor>
+                                                <Field v-else-if="field.type === 'textarea'" :name="field.name" :rules="field.rules" v-model="newItem[field.name]">
+                                                  <ckeditor :editor="editor" responseType="document"
+                                                      v-model="newItem[field.name]"
+                                                      :config="editorConfig"></ckeditor>
+                                                </Field>
 
                                                 <!-- Field Description -->
                                                 <div class="text-xs text-[var(--color-text-secondary)] mt-1 w-full">
@@ -189,10 +193,11 @@
                                                 <h6 class="text-sm font-bold text-[var(--color-text-primary)] mb-2">{{
                                                     field.label }}</h6>
                                                 <div class="flex items-center">
-                                                    <input type="checkbox" :id="field.name" :name="field.name"
-                                                        v-model="newItem[field.name]" :rules="field.rules"
-                                                        class="w-5 h-5 cursor-pointer rounded border-[var(--color-border)] text-[var(--color-main)] focus:ring-[var(--color-main)]"
-                                                        role="switch" />
+                                                    <Field :name="field.name" :rules="field.rules" type="checkbox" :value="true" v-model="newItem[field.name]" v-slot="{ field: veeField }">
+                                                        <input type="checkbox" :id="field.name" v-bind="veeField"
+                                                            class="w-5 h-5 cursor-pointer rounded border-[var(--color-border)] text-[var(--color-main)] focus:ring-[var(--color-main)]"
+                                                            role="switch" />
+                                                    </Field>
                                                 </div>
                                                 <!-- Checkbox Field Description -->
                                                 <div class="text-xs text-[var(--color-text-secondary)] mt-1 w-full">
@@ -487,11 +492,22 @@ export default {
         },
 
         // Scroll to top of the form
-        scrollToTop() {
+        scrollToTop(ctx) {
+            // Check for internal scrolling containers first
+            const container = document.querySelector('.back') || document.querySelector('.form-container');
+            if (container) {
+                container.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            // Fallback to window
             window.scrollTo({
                 top: 0,
                 behavior: "smooth",
             });
+
+            if (ctx && ctx.errors && Object.keys(ctx.errors).length > 0) {
+              const errorKeys = Object.keys(ctx.errors).join(', ');
+              alert("Validation failed! Please check these fields: " + errorKeys);
+            }
         },
 
         // Submit form after validation
@@ -518,7 +534,8 @@ export default {
                 }
 
                 console.log("Calling api.from...");
-                const ret = await this.api.from(this.newItem, true, this.formData);
+                const isUpdate = this.newItem.id ? true : false;
+                const ret = await this.api.from(this.newItem, isUpdate, this.formData);
                 console.log("API response:", ret);
 
                 if (ret.data.errors) {
@@ -544,6 +561,7 @@ export default {
                     submitButton.removeAttribute("disabled"); // Re-enable on any failure
                 }
                 console.error("API call failed:", error);
+                alert("An error occurred while saving: " + String(error));
                 this.scrollToTop();
             }
         },
