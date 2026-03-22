@@ -171,7 +171,7 @@ export default {
 .flip-container {
   perspective: 1000px;
   width: 100%;
-  height: auto;
+  height: calc(100vh - 160px);
   min-height: 400px;
 }
 
@@ -194,7 +194,9 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  min-height: 400px;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .front {
@@ -210,7 +212,8 @@ export default {
 /* Form container styling */
 .form-container {
   width: 100%;
-  height: 100%;
+  min-height: 100%;
+  height: auto;
   padding: 2rem;
   background: #fff;
   border-radius: 8px;

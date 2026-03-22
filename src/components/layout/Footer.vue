@@ -1,5 +1,5 @@
 <template>
-  <v-footer absolute app color="white" elevation="1" height="56" class="px-6 border-t w-100" style="z-index: 10;">
+  <v-footer app absolute color="white" elevation="1" height="56" class="px-6 border-t">
     <div class="flex items-center justify-between w-full text-xs text-gray-600 ms-8">
       <div class="flex items-center gap-2">
 <svg width="21" height="25" viewBox="0 0 21 25" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
