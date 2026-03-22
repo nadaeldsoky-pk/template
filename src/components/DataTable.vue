@@ -182,13 +182,13 @@
         <!-- Table Head -->
         <thead class="bg-[#F8F9FA] text-[#1E293B]">
           <tr class="border-b border-[#D0D5DD]">
-            <th class="px-5 py-4 w-12">
+            <th class="px-5 py-2 w-12">
               <input type="checkbox" class="w-4 h-4 rounded border-[#D0D5DD] text-[#29457E] cursor-pointer outline-none" />
             </th>
-            <th class="px-5 py-4 text-sm font-semibold text-[#1E293B] whitespace-nowrap w-12">#</th>
+            <th class="px-5 py-2 text-sm font-semibold text-[#1E293B] whitespace-nowrap w-12">#</th>
             <th v-for="(col, idx) in columns" :key="idx"
               v-show="visibleColumns.length === 0 || visibleColumns[idx + 2] !== false"
-              class="px-5 py-4 text-sm font-semibold text-[#1E293B] whitespace-nowrap"
+              class="px-5 py-2 text-sm font-semibold text-[#1E293B] whitespace-nowrap"
               :class="col.align === 'center' ? 'text-center' : (col.align === 'right' ? 'text-end' : 'text-start')">
               <span v-if="col.sortable !== false && col.data && (visibleColumns.length === 0 || visibleColumns[idx] !== false)" @click="sortBy(col.data)"
                 class="cursor-pointer select-none inline-flex items-center gap-1 hover:text-[#29457E] transition-colors">
@@ -199,7 +199,7 @@
               </span>
               <span v-else-if="visibleColumns.length === 0 || visibleColumns[idx] !== false">{{ col.title }}</span>
             </th>
-            <th class="px-5 py-4 text-sm font-semibold text-[#1E293B] text-center whitespace-nowrap">Actions</th>
+            <th class="px-5 py-2 text-sm font-semibold text-[#1E293B] text-center whitespace-nowrap">Actions</th>
           </tr>
         </thead>
 
@@ -1053,7 +1053,7 @@ select {
   -moz-appearance: none;
   appearance: none;
 }
-:deep(tbody tr) {
+:deep(tbody td) {
   border-bottom: 1px solid #E4E7EC;
 }
 </style>

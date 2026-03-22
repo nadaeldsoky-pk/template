@@ -9,10 +9,14 @@
         :columns="tableColumns" :api="api" :apiParams="apiParams" :editItem="editItem" :openForm="openForm"
         :filters="departmentFilters">
         <template #view="{ item }">
-          <a v-permission:show href="javascript:void(0)" @click="openModal(item)" class="view_button dropdown-item">
-            <i class="icofont icofont-eye-alt me-5"></i>
+          <button v-permission:show @click="openModal(item)"
+            class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-[#374151] hover:bg-[#F5F5F5] transition-colors font-medium">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+              <path d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.964-7.178Z" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
             {{ $t("common.view") }}
-          </a>
+          </button>
         </template>
         <!-- Customizing the display of the 'Name' column in the table -->
         <template #created="{ item }">
@@ -48,26 +52,10 @@
         <template #actual_number_of_employees="{ item }">
           <div class="d-flex justify-content-center align-items-center">
             <span v-if="item?.users && item.users.length > 0">
-              <!-- Single user: display with avatar and name -->
-              <div v-if="item.users.length === 1" class="user-info">
-                <div class="user-avatar" @click.prevent="openUserDetailsModal(item.users[0])">
-                 <AvatarGroup :users="item.users.map((u) => ({
+              <AvatarGroup :users="item.users.map((u) => ({
                 ...u,
                 full_name: u.full_name || u.name,
-              }))
-                " :max-visible="2" :spacing="20" :clickable="true" empty-text="No users"
-                @user-click="openUserDetailsModal" />
-                  {{ getUserInitials(item.users[0].full_name || item.users[0].name || "U") }}
-                </div>
-                <span class="user-fullname">{{ item.users[0].full_name || item.users[0].name }}</span>
-              </div>
-
-              <!-- Multiple users: use AvatarGroup -->
-              <AvatarGroup v-else :users="item.users.map((u) => ({
-                ...u,
-                full_name: u.full_name || u.name,
-              }))
-                " :max-visible="2" :spacing="20" :clickable="true" empty-text="No users"
+              }))" :max-visible="2" :spacing="20" :clickable="true" empty-text="No users"
                 @user-click="openUserDetailsModal" />
             </span>
             <!-- Show message if no users -->
