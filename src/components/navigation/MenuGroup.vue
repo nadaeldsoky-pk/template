@@ -78,6 +78,7 @@
                   class="flyout-sub-item rounded-lg mb-1"
                 >
                   <v-list-item-title class="flyout-sub-title">{{ subItem.title }}</v-list-item-title>
+                  <v-tooltip activator="parent" location="top" :text="subItem.title" />
                   <template v-slot:append>
                     <v-icon size="16" :class="{ 'rotate-icon': subOpen }">mdi-chevron-down</v-icon>
                   </template>
@@ -97,6 +98,7 @@
                     <span class="flyout-bullet">•</span>
                   </template>
                   <v-list-item-title class="flyout-grand-title">{{ grandChild.title }}</v-list-item-title>
+                  <v-tooltip activator="parent" location="top" :text="grandChild.title" />
                 </v-list-item>
               </div>
             </v-list-group>
@@ -109,6 +111,7 @@
               active-class="active-flyout-sub"
             >
               <v-list-item-title class="flyout-sub-title">{{ subItem.title }}</v-list-item-title>
+              <v-tooltip activator="parent" location="top" :text="subItem.title" />
             </v-list-item>
 
           </template>
@@ -131,7 +134,7 @@
           </template>
           <template v-slot:append>
             <div class="d-flex align-center gap-2">
-              <span class="menu-title">{{ item.title }}</span>
+            <span class="menu-title" :title="item.title">{{ item.title }}</span>
               <v-icon class="menu-icon" size="20">{{ item.icon }}</v-icon>
             </div>
           </template>
@@ -154,7 +157,7 @@
                   <v-icon size="small" :class="{ 'rotate-180': subOpen }">mdi-chevron-down</v-icon>
                 </template>
                 <template v-slot:append>
-                  <span class="sub-menu-title">{{ subItem.title }}</span>
+         <span class="sub-menu-title" :title="subItem.title">{{ subItem.title }}</span>
                 </template>
               </v-list-item>
             </template>
@@ -170,7 +173,7 @@
               >
                 <template v-slot:append>
                   <div class="d-flex align-center gap-1">
-                    <span class="grand-sub-title">{{ grandChild.title }}</span>
+                <span class="grand-sub-title" :title="grandChild.title">{{ grandChild.title }}</span>
                     <span class="bullet-dot">•</span>
                   </div>
                 </template>
@@ -506,6 +509,10 @@ const isRtl = computed(() =>
   font-size: 13.5px;
   font-weight: 500;
   color: #1e293b !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
 }
 
 /* Active sub */
@@ -537,6 +544,10 @@ const isRtl = computed(() =>
   font-family: var(--font-family-base) !important;
   font-size: 13px;
   color: #334155 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
 }
 
 .flyout-bullet {
@@ -565,5 +576,42 @@ const isRtl = computed(() =>
 .rotate-icon {
   transform: rotate(180deg);
   transition: transform 0.2s ease;
+}
+
+
+.menu-title {
+  font-family: var(--font-family-base) !important;
+  font-size: 15px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 130px;
+  direction: rtl;
+  text-align: right;
+}
+
+.sub-menu-title {
+  font-family: var(--font-family-base) !important;
+  font-size: 13.5px;
+  color: var(--color-sidebar-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 130px;
+  direction: rtl;
+  text-align: right;
+}
+
+.grand-sub-title {
+  font-family: var(--font-family-base) !important;
+  font-size: 13px;
+  color: var(--color-sidebar-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 110px;
+  direction: rtl;
+  text-align: right;
 }
 </style>

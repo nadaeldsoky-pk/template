@@ -1046,4 +1046,7 @@ select {
   -moz-appearance: none;
   appearance: none;
 }
+:deep(tbody tr) {
+  border-bottom: 1px solid #E4E7EC;
+}
 </style>
