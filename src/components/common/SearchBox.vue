@@ -8,7 +8,7 @@
       variant="outlined"
       hide-details
       bg-color="white"
-      rounded="lg"
+      rounded="8px"
       class="custom-search"
       @keyup.enter="performSearch"
       clearable
@@ -17,11 +17,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+
+const emit = defineEmits(['search'])
 
 const router = useRouter()
 const searchQuery = ref('')
+
+watch(searchQuery, (newVal) => {
+  emit('search', newVal || '')
+})
 
 const performSearch = () => {
   if (searchQuery.value.trim()) {

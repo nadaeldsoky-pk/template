@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="drawer" :rail="rail" app permanent location="right" :width="250" :rail-width="68"
+  <v-navigation-drawer v-model="drawer" :rail="rail" app permanent location="right" :width="260" :rail-width="68"
     class="sidebar-container" elevation="0" order="-1">
     <!-- Logo Section (Full Width with White Background) -->
     <Logo :rail="rail" />
@@ -13,12 +13,12 @@
 
       <!-- Search Box (Expanded Only) -->
       <div v-if="!rail" class="mb-2">
-        <SearchBox />
+        <SearchBox @search="handleSearch" />
       </div>
 
       <!-- Navigation Menu -->
       <v-list nav class="flex-grow-1" density="compact" :class="{ 'px-2': rail }">
-        <MenuGroup v-for="item in menuItems" :key="item.id" :item="item" :rail="rail" />
+        <MenuGroup v-for="item in filteredMenuItems" :key="item.id" :item="item" :rail="rail" />
       </v-list>
 
       <!-- Logout Button -->
@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../store/modules/auth'
 import UserProfile from '../common/UserProfile.vue'
@@ -109,6 +109,36 @@ const menuItems = ref([
   }
 ])
 
+const searchQuery = ref('')
+
+const handleSearch = (query) => {
+  searchQuery.value = query
+}
+
+const filteredMenuItems = computed(() => {
+  if (!searchQuery.value) return menuItems.value
+
+  const query = searchQuery.value.toLowerCase()
+
+  const filterItems = (items) => {
+    let result = []
+    for (const item of items) {
+      if (item.title.toLowerCase().includes(query)) {
+        // If parent matches query, return it as is
+        result.push(item)
+      } else if (item.children && item.children.length > 0) {
+        const filteredChildren = filterItems(item.children)
+        if (filteredChildren.length > 0) {
+          result.push({ ...item, children: filteredChildren })
+        }
+      }
+    }
+    return result
+  }
+
+  return filterItems(menuItems.value)
+})
+
 const handleLogout = () => {
   authStore.logout()
   localStorage.removeItem('auth_token')
@@ -119,7 +149,7 @@ const handleLogout = () => {
 
 <style scoped>
 .sidebar-container {
-  background-color: var(--color-sidebar-bg) !important;
+  background-color: var(--color-main) !important;
   color: var(--color-sidebar-text);
   border: none !important;
 }

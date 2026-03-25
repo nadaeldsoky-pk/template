@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
 
-const DEFAULT_THEME = 'purple'
+const DEFAULT_THEME = 'cyberMode'
 
-export const THEMES = ['blue', 'dark', 'purple', 'green']
+export const THEMES = ['cyberMode', 'dark', 'purple', 'green']
 
 export const useThemeStore = defineStore('theme', () => {
   // Priority: Use the DEFAULT_THEME constant for code control.

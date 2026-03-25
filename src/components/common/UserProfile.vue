@@ -1,15 +1,15 @@
 <template>
   <div class="user-profile-container">
     <div
-      class="flex items-center justify-end bg-white/10 rounded-lg px-2 py-1 cursor-pointer hover:bg-white/20 transition-all">
+      class="flex items-center justify-end bg-[#FFFFFF40] rounded-lg px-2 py-1 cursor-pointer hover:bg-white/20 transition-all">
       <div class="flex flex-col items-end me-2">
         <span class="text-white font-semibold text-base">{{ user.name }}</span>
-        <span class="text-white/70 text-sm">{{ user.role }}</span>
+        <span class="text-[--color-border] text-sm">{{ user.role }}</span>
       </div>
       <v-menu>
         <template v-slot:activator="{ props }">
-          <v-avatar color="white" size="31" v-bind="props" class="cursor-pointer">
-            <span class="text-blue-600 font-bold text-lg">{{ user.initials }}</span>
+          <v-avatar color="--color-bg" size="31" v-bind="props" class="cursor-pointer">
+            <span class="text-[#2F4FA2] font-bold text-lg">{{ user.initials }}</span>
           </v-avatar>
         </template>
 
