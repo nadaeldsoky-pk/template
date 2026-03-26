@@ -36,21 +36,7 @@
   --color-text-disabled: #94A3B8;
   --color-info: #2f4fa2;
   --color-bg-info: #e3f2fd;
-
-  --color-sidebar-avatar: #3b82f6;
-  --color-sidebar-active-parent: rgba(90, 62, 112, 0.3);
-  --color-sidebar-active-item: rgba(255, 255, 255, 0.25);
-  --color-sidebar-hover-item: rgba(255, 255, 255, 0.1);
   --color-sidebar-text: #ffffff;
-  --color-sidebar-text-secondary: rgba(255, 255, 255, 0.7);
-  --color-sidebar-text-tertiary: rgba(255, 255, 255, 0.6);
-  --color-sidebar-scrollbar: rgba(255, 255, 255, 0.3);
-  --color-sidebar-scrollbar-hover: rgba(255, 255, 255, 0.5);
-  --color-sidebar-border: rgba(255, 255, 255, 0.15);
-  --color-sidebar-overlay: rgba(0, 0, 0, 0.5);
-  --color-sidebar-logout-hover: rgba(220, 53, 69, 0.1);
-  --color-sidebar-search-text: #1e3a8a;
-  --color-sidebar-search-placeholder: rgba(30, 58, 138, 0.6);
 }
 
 /* ── 🌙 Theme 2: Dark (Modern Dark) ─────────── */

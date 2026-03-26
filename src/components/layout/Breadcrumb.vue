@@ -9,8 +9,8 @@
       <span 
         :class="[
           index === breadcrumbs.length - 1
-            ? 'text-blue-600 font-medium'
-            : 'text-gray-600 cursor-pointer hover:text-blue-600'
+            ? 'text-[var(color-text-primary)] font-bold'
+            : 'text-[var(--color-text-secondary)] cursor-pointer hover:text-[var(color-text-primary)]'
         ]" 
         @click="navigateTo(item)"
       >
