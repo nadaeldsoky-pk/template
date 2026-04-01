@@ -587,8 +587,6 @@ const isRtl = computed(() =>
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 130px;
-  direction: rtl;
-  text-align: right;
 }
 
 .sub-menu-title {
@@ -599,8 +597,6 @@ const isRtl = computed(() =>
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 130px;
-  direction: rtl;
-  text-align: right;
 }
 
 .grand-sub-title {
@@ -611,7 +607,5 @@ const isRtl = computed(() =>
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 110px;
-  direction: rtl;
-  text-align: right;
 }
 </style>

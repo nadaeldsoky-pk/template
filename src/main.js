@@ -15,15 +15,23 @@ import '@mdi/font/css/materialdesignicons.css'
 // Tailwind CSS
 import './assets/styles/main.css'
 
+// ─── Apply saved language BEFORE Vue mounts (no flash) ───────────────────────
+const _savedLang = localStorage.getItem('app-language') || 'Arabic'
+const _isRTL = _savedLang !== 'English'
+document.documentElement.dir = _isRTL ? 'rtl' : 'ltr'
+document.documentElement.lang = _isRTL ? 'ar' : 'en'
+// ─────────────────────────────────────────────────────────────────────────────
+
 
 const vuetify = createVuetify({
   components,
   directives,
-  rtl: true,
   locale: {
+    defaultLocale: _isRTL ? 'ar' : 'en',
     rtl: {
-      ar: true
-    }
+      ar: true,
+      en: false,
+    },
   },
   theme: {
     defaultTheme: 'light',

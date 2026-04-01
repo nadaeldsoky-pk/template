@@ -1,10 +1,10 @@
 <template>
-  <v-navigation-drawer v-model="drawer" :rail="rail" app permanent location="right" :width="260" :rail-width="68"
+  <v-navigation-drawer v-model="drawer" :rail="rail" app permanent :location="sidebarLocation" :width="260" :rail-width="68"
     class="sidebar-container" elevation="0" order="-1">
     <!-- Logo Section (Full Width with White Background) -->
     <Logo :rail="rail" />
 
-    <div class="sidebar-content h-full flex flex-col pt-4" :class="{ 'px-4': !rail, 'px-0': rail }">
+    <div class="sidebar-content h-full flex flex-col pt-4" :class="{ 'px-4': !rail, 'px-0': rail }" :dir="current === 'ar' ? 'ltr' : 'rtl'">
 
       <!-- User Profile (Expanded Only or simplified in Rail) -->
       <div v-if="!rail" class="pb-4">
@@ -41,6 +41,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useLocale } from 'vuetify'
 import { useAuthStore } from '../../store/modules/auth'
 import UserProfile from '../common/UserProfile.vue'
 import Logo from '../common/Logo.vue'
@@ -50,6 +51,9 @@ import MenuGroup from '../navigation/MenuGroup.vue'
 const router = useRouter()
 const authStore = useAuthStore()
 const drawer = ref(true)
+
+const { current } = useLocale()
+const sidebarLocation = computed(() => current.value === 'ar' ? 'right' : 'left')
 
 const props = defineProps({
   rail: {

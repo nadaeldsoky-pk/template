@@ -121,9 +121,12 @@ const messages = {
   },
 }
 
+const savedLang = localStorage.getItem('app-language') || 'Arabic'
+const savedLocale = savedLang === 'English' ? 'en' : 'ar'
+
 const i18n = createI18n({
   legacy: true,
-  locale: 'ar',
+  locale: savedLocale,
   fallbackLocale: 'en',
   messages,
 })
