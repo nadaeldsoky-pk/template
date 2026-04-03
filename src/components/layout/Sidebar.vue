@@ -6,9 +6,9 @@
 
     <div class="sidebar-content h-full flex flex-col pt-4" :class="{ 'px-4': !rail, 'px-0': rail }" :dir="current === 'ar' ? 'ltr' : 'rtl'">
 
-      <!-- User Profile (Expanded Only or simplified in Rail) -->
-      <div v-if="!rail" class="pb-4">
-        <UserProfile />
+      <!-- User Profile -->
+      <div class="pb-4" :class="{ 'flex justify-center': rail }">
+        <UserProfile :rail="rail" />
       </div>
 
       <!-- Search Box (Expanded Only) -->

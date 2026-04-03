@@ -1,15 +1,17 @@
 <template>
   <div class="user-profile-container">
     <div
-      class="flex items-center justify-end bg-[#FFFFFF40] rounded-lg px-2 py-1 cursor-pointer hover:bg-white/20 transition-all">
-      <div class="flex flex-col items-end me-2">
+      class="flex items-center cursor-pointer transition-all"
+      :class="rail ? 'justify-center p-0 hover:bg-white/10 rounded-full' : 'justify-end bg-[#FFFFFF40] rounded-lg px-2 py-1 hover:bg-white/20'"
+    >
+      <div v-if="!rail" class="flex flex-col items-end me-2">
         <span class="text-white font-semibold text-base">{{ user.name }}</span>
         <span class="text-[--color-border] text-sm">{{ user.role }}</span>
       </div>
       <v-menu>
         <template v-slot:activator="{ props }">
-          <v-avatar color="--color-bg" size="31" v-bind="props" class="cursor-pointer">
-            <span class="text-[#2F4FA2] font-bold text-lg">{{ user.initials }}</span>
+          <v-avatar color="--color-bg" :size="rail ? 40 : 31" v-bind="props" class="cursor-pointer">
+            <span class="text-[#2F4FA2] font-bold" :class="rail ? 'text-xl' : 'text-lg'">{{ user.initials }}</span>
           </v-avatar>
         </template>
 
@@ -45,6 +47,13 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+
+const props = defineProps({
+  rail: {
+    type: Boolean,
+    default: false
+  }
+})
 
 const router = useRouter()
 
