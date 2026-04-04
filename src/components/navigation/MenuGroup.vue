@@ -14,9 +14,9 @@
         <v-icon v-if="rail" class="menu-icon" size="20">{{ item.icon }}</v-icon>
       </template>
       <template v-slot:append>
-        <div v-if="!rail" class="d-flex align-center gap-2">
-          <span class="menu-title">{{ item.title }}</span>
-          <v-icon class="menu-icon" size="20">{{ item.icon }}</v-icon>
+        <div v-if="!rail" class="d-flex align-center gap-2" style="min-width: 0;">
+          <span class="menu-title" :dir="isRtl ? 'rtl' : 'ltr'" style="flex: 1 1 auto; min-width: 0;">{{ item.title }}</span>
+          <v-icon class="menu-icon" style="flex-shrink: 0;" size="20">{{ item.icon }}</v-icon>
         </div>
       </template>
 
@@ -133,9 +133,9 @@
             <v-icon size="small" :class="{ 'rotate-180': isOpen }">mdi-chevron-down</v-icon>
           </template>
           <template v-slot:append>
-            <div class="d-flex align-center gap-2">
-            <span class="menu-title" :title="item.title">{{ item.title }}</span>
-              <v-icon class="menu-icon" size="20">{{ item.icon }}</v-icon>
+            <div class="d-flex align-center gap-2" style="min-width: 0;">
+              <span class="menu-title" :title="item.title" :dir="isRtl ? 'rtl' : 'ltr'" style="flex: 1 1 auto; min-width: 0;">{{ item.title }}</span>
+              <v-icon class="menu-icon" style="flex-shrink: 0;" size="20">{{ item.icon }}</v-icon>
             </div>
           </template>
         </v-list-item>
@@ -157,7 +157,7 @@
                   <v-icon size="small" :class="{ 'rotate-180': subOpen }">mdi-chevron-down</v-icon>
                 </template>
                 <template v-slot:append>
-         <span class="sub-menu-title" :title="subItem.title">{{ subItem.title }}</span>
+                  <span class="sub-menu-title" :title="subItem.title" :dir="isRtl ? 'rtl' : 'ltr'" style="min-width: 0; display: inline-block;">{{ subItem.title }}</span>
                 </template>
               </v-list-item>
             </template>
@@ -172,9 +172,9 @@
                 active-class="active-grand-item"
               >
                 <template v-slot:append>
-                  <div class="d-flex align-center gap-1">
-                <span class="grand-sub-title" :title="grandChild.title">{{ grandChild.title }}</span>
-                    <span class="bullet-dot">•</span>
+                  <div class="d-flex align-center gap-1" style="min-width: 0;">
+                    <span class="grand-sub-title" :title="grandChild.title" :dir="isRtl ? 'rtl' : 'ltr'" style="flex: 1 1 auto; min-width: 0;">{{ grandChild.title }}</span>
+                    <span class="bullet-dot" style="flex-shrink: 0;">•</span>
                   </div>
                 </template>
               </v-list-item>
@@ -189,7 +189,7 @@
             active-class="active-sub-item"
           >
             <template v-slot:append>
-              <span class="sub-menu-title">{{ subItem.title }}</span>
+              <span class="sub-menu-title" :dir="isRtl ? 'rtl' : 'ltr'" style="min-width: 0; display: inline-block;">{{ subItem.title }}</span>
             </template>
           </v-list-item>
 
@@ -607,5 +607,10 @@ const isRtl = computed(() =>
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 110px;
+}
+
+:deep(.v-list-item__append) {
+  min-width: 0 !important;
+  flex-shrink: 1 !important;
 }
 </style>
