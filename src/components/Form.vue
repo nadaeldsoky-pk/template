@@ -16,7 +16,7 @@
                             <h5 class="m-0 text-lg font-semibold">{{ sectionName }}</h5>
                         </div>
                         <div class="p-6">
-                            <div class="flex flex-wrap -mx-2 rtl text-right">
+                            <div class="flex flex-wrap -mx-2">
                                 <!-- Loop through fields in the section -->
                                 <template v-for="field in sectionFields" :key="field.name">
                                     <slot :name="field.name" :item="field">
