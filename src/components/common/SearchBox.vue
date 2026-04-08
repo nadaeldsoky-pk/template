@@ -10,6 +10,7 @@
       bg-color="white"
       rounded="8px"
       class="custom-search"
+      :class="{ 'is-ltr': current !== 'ar' }"
       @keyup.enter="performSearch"
       clearable
     ></v-text-field>
@@ -19,10 +20,12 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { useLocale } from 'vuetify'
 
 const emit = defineEmits(['search'])
 
 const router = useRouter()
+const { current } = useLocale()
 const searchQuery = ref('')
 
 watch(searchQuery, (newVal) => {
@@ -49,5 +52,9 @@ const performSearch = () => {
 .custom-search :deep(.v-field__input) {
   text-align: right;
   padding: 8px 12px;
+}
+
+.custom-search.is-ltr :deep(.v-field__input) {
+  text-align: left;
 }
 </style>
