@@ -1,13 +1,15 @@
-class Position {
+// @ts-nocheck
+class Job {
   constructor() {
     this.data = [
-      { id: 1, name: 'رئيس قسم' },
-      { id: 2, name: 'مدير إدارة' }
+      { id: 1, name: 'مدير نظام', is_manager: true },
+      { id: 2, name: 'مطور برمجيات', is_manager: false },
+      { id: 3, name: 'أخصائي موارد بشرية', is_manager: false }
     ];
   }
 
   async getAll(params = {}) {
-    console.log('Fake Position API: getAll', params);
+    console.log('Fake Job API: getAll', params);
     let filteredData = [...this.data];
 
     if (params.search) {
@@ -23,4 +25,4 @@ class Position {
   }
 }
 
-export default Position;
+export default Job;

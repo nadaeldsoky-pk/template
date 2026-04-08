@@ -1,14 +1,14 @@
-class Color {
+// @ts-nocheck
+class Position {
   constructor() {
     this.data = [
-      { id: 1, name: 'Red', hexcolor: '#FF0000' },
-      { id: 2, name: 'Blue', hexcolor: '#0000FF' },
-      { id: 3, name: 'Green', hexcolor: '#00FF00' }
+      { id: 1, name: 'رئيس قسم' },
+      { id: 2, name: 'مدير إدارة' }
     ];
   }
 
   async getAll(params = {}) {
-    console.log('Fake Color API: getAll', params);
+    console.log('Fake Position API: getAll', params);
     let filteredData = [...this.data];
 
     if (params.search) {
@@ -24,4 +24,4 @@ class Color {
   }
 }
 
-export default Color;
+export default Position;

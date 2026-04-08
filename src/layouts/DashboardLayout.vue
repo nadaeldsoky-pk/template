@@ -17,7 +17,7 @@
     </v-main>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import AppBar from '../components/layout/AppBar.vue'
 import Sidebar from '../components/layout/Sidebar.vue'

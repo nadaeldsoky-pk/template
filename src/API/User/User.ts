@@ -1,3 +1,4 @@
+// @ts-nocheck
 class User {
   constructor() {
     this.data = [

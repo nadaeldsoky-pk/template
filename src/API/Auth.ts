@@ -1,3 +1,4 @@
+// @ts-nocheck
 const Auth = {
   USER: {
     id: 1,

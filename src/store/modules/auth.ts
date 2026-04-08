@@ -1,14 +1,15 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import type { User, AuthCredentials, ActionResult } from '@/types'
 
 export const useAuthStore = defineStore('auth', () => {
   // State
-  const user = ref(null)
-  const token = ref(localStorage.getItem('auth_token') || null)
-  const isAuthenticated = computed(() => !!token.value)
+  const user = ref<User | null>(null)
+  const token = ref<string | null>(localStorage.getItem('auth_token') || null)
+  const isAuthenticated = computed<boolean>(() => !!token.value)
 
   // Actions
-  const login = async (credentials) => {
+  const login = async (credentials: AuthCredentials): Promise<ActionResult> => {
     try {
       // محاكاة API call
       // في الواقع، سيتم إجراء طلب API هنا
@@ -21,7 +22,7 @@ export const useAuthStore = defineStore('auth', () => {
           role: 'مدير الإدارة',
           initials: 'UU',
           avatar: null
-        }
+        } as User
       }
 
       token.value = response.token
@@ -36,24 +37,24 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  const logout = () => {
+  const logout = (): void => {
     user.value = null
     token.value = null
     localStorage.removeItem('auth_token')
     localStorage.removeItem('user')
   }
 
-  const loadUser = () => {
+  const loadUser = (): void => {
     const storedUser = localStorage.getItem('user')
     if (storedUser) {
-      user.value = JSON.parse(storedUser)
+      user.value = JSON.parse(storedUser) as User
     }
   }
 
-  const updateProfile = async (userData) => {
+  const updateProfile = async (userData: Partial<User>): Promise<ActionResult> => {
     try {
       // محاكاة API call
-      user.value = { ...user.value, ...userData }
+      user.value = { ...user.value, ...userData } as User
       localStorage.setItem('user', JSON.stringify(user.value))
       return { success: true }
     } catch (error) {

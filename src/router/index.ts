@@ -1,7 +1,7 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import DashboardLayout from '../layouts/DashboardLayout.vue'
 
-const routes = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: DashboardLayout,
@@ -129,7 +129,7 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior(_to, _from, savedPosition) {
     if (savedPosition) {
       return savedPosition
     } else {
@@ -139,14 +139,14 @@ const router = createRouter({
 })
 
 // Navigation Guards
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   // Set page title
   document.title = to.meta.title
     ? `${to.meta.title} - CyberMode`
     : 'CyberMode - GRC Platform'
 
   // Authentication check - localStorage only (Pinia store may not be ready here)
-  const isAuthenticated = !!localStorage.getItem('auth_token')
+  const isAuthenticated: boolean = !!localStorage.getItem('auth_token')
 
   if (to.name !== 'login' && to.name !== 'not-found' && !isAuthenticated) {
     next({ name: 'login' })

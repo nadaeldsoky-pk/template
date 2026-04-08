@@ -47,7 +47,8 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import type { PropType } from 'vue'
 
 defineProps({
   title: {
@@ -55,7 +56,7 @@ defineProps({
     default: 'النشاطات الأخيرة'
   },
   activities: {
-    type: Array,
+    type: Array as PropType<any[]>,
     required: true
   }
 })

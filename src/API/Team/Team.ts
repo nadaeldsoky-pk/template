@@ -1,3 +1,4 @@
+// @ts-nocheck
 class Team {
   constructor() {
     this.data = [

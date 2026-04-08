@@ -6,6 +6,7 @@ import i18n from './i18n'
 import permissionPlugin from './directives/permission'
 
 // Vuetify
+// @ts-ignore
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
@@ -16,8 +17,8 @@ import '@mdi/font/css/materialdesignicons.css'
 import './assets/styles/main.css'
 
 // ─── Apply saved language BEFORE Vue mounts (no flash) ───────────────────────
-const _savedLang = localStorage.getItem('app-language') || 'Arabic'
-const _isRTL = _savedLang !== 'English'
+const _savedLang: string = localStorage.getItem('app-language') || 'Arabic'
+const _isRTL: boolean = _savedLang !== 'English'
 document.documentElement.dir = _isRTL ? 'rtl' : 'ltr'
 document.documentElement.lang = _isRTL ? 'ar' : 'en'
 // ─────────────────────────────────────────────────────────────────────────────
@@ -27,6 +28,7 @@ const vuetify = createVuetify({
   components,
   directives,
   locale: {
+    // @ts-ignore
     defaultLocale: _isRTL ? 'ar' : 'en',
     rtl: {
       ar: true,

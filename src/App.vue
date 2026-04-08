@@ -5,7 +5,7 @@
   </v-app>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useAuthStore } from './store/modules/auth'
 import { useThemeStore } from './store/modules/theme'
 import GlobalFooter from '@/components/layout/Footer.vue'
