@@ -3,7 +3,7 @@
     <v-text-field
       v-model="searchQuery"
       placeholder="بحث..."
-      prepend-inner-icon="mdi-magnify"
+      append-inner-icon="mdi-magnify"
       density="comfortable"
       variant="outlined"
       hide-details
@@ -49,10 +49,5 @@ const performSearch = () => {
 .custom-search :deep(.v-field__input) {
   text-align: right;
   padding: 8px 12px;
-}
-
-.custom-search :deep(.v-field__prepend-inner) {
-  padding-right: 0;
-  padding-left: 8px;
 }
 </style>
