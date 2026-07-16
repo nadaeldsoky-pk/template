@@ -27,10 +27,8 @@
           <v-menu offset-y>
           <template v-slot:activator="{ props }">
             <v-btn v-bind="props" variant="outlined" class="lang-selector-btn">
-              <span class="flex items-center gap-1">
-                {{ selectedLanguage }}
-                <v-icon size="14">mdi-chevron-down</v-icon>
-              </span>
+              {{ selectedLanguage }}
+              <v-icon size="14">mdi-chevron-down</v-icon>
             </v-btn>
           </template>
           <v-list density="compact">
